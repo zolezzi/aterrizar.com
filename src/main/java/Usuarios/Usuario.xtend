@@ -1,0 +1,5 @@
+package Usuarios
+
+class Usuario {
+	
+}

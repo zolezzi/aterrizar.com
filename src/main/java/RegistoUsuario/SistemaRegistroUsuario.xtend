@@ -1,0 +1,5 @@
+package RegistoUsuario
+
+class SistemaRegistroUsuario {
+	
+}
