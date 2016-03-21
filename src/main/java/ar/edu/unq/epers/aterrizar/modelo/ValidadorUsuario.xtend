@@ -28,4 +28,11 @@ class ValidadorUsuario {
 	def borrarUsuarioAsociadoALaClave(String clave){
 		usuariosAValidar.remove(clave)
 	}
+	
+	def esUsuarioValido(Usuario usuario) {
+		return usuario.nombre != null && usuario.apellido != null 
+			   && usuario.nombreUsuario != null && usuario.contrasenia != null 
+			   && usuario.email != null
+	}
+	
 }
