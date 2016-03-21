@@ -1,5 +1,0 @@
-package testModelo
-
-class TestUsuario {
-	
-}
