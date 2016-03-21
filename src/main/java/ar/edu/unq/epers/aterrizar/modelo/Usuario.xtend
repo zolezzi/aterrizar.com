@@ -1,4 +1,4 @@
-package modelo
+package ar.edu.unq.epers.aterrizar.modelo
 
 class Usuario {
 	String nombre

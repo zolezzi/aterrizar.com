@@ -1,6 +1,6 @@
-package modelo
+package ar.edu.unq.epers.aterrizar.modelo
 
-import modelo.Usuario
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import java.util.HashMap
 
 class ValidadorUsuario {
