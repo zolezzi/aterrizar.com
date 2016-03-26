@@ -7,20 +7,35 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 
 //prueba basica de query
 class Persistencia {
-	//new Usuario(nombre,apellido,nombreDeUsuario,email,fechaDeNacimiento,contrasenia,false)
 		
 	boolean bValidado = false
 	Usuario usuario
 	
-	def InsertUser(String nombre, String apellido, String nombreDeUsuario, String email, String fechaDeNacimiento, String contrasenia, int validado){
+	def insertUser(Usuario usuario, int validado){
 		excecute[conn|
 			val ps = conn.prepareStatement("INSERT INTO users (nombreusuario, nombre, apellido, email, fechadenacimiento, contrasenia, validado) VALUES (?,?,?,?,?,?,?)")
-			ps.setString(1, nombreDeUsuario)
-			ps.setString(2, nombre)
-			ps.setString(3, apellido)
-			ps.setString(4, email)
-			ps.setString(5, fechaDeNacimiento)
-			ps.setString(6, contrasenia)
+			ps.setString(1, usuario.nombreUsuario)
+			ps.setString(2, usuario.nombre)
+			ps.setString(3, usuario.apellido)
+			ps.setString(4, usuario.email)
+			ps.setString(5, usuario.fechaNacimiento)
+			ps.setString(6, usuario.contrasenia)
+			ps.setInt(7, validado)
+			ps.execute()
+			ps.close()	
+			null
+		]	
+	}
+	//no esta claro, revisenlo porfavor.
+	def updateUser(Usuario usuario, int validado){
+		excecute[conn|
+			val ps = conn.prepareStatement("UPDATE users SET (nombreusuario, nombre, apellido, email, fechadenacimiento, contrasenia, validado) VALUES (?,?,?,?,?,?,?)")
+			ps.setString(1, usuario.nombreUsuario)
+			ps.setString(2, usuario.nombre)
+			ps.setString(3, usuario.apellido)
+			ps.setString(4, usuario.email)
+			ps.setString(5, usuario.fechaNacimiento)
+			ps.setString(6, usuario.contrasenia)
 			ps.setInt(7, validado)
 			ps.execute()
 			ps.close()	
@@ -28,7 +43,7 @@ class Persistencia {
 		]	
 	}
 	
-	def SelectUser(String nombreDeUsuario){
+	def Usuario selectUser(String nombreDeUsuario){
 		
 		excecute[conn| 
 			val ps = conn.prepareStatement("SELECT iduser,nombreUsuario FROM users WHERE nombreUsuario = ?")
@@ -53,11 +68,12 @@ class Persistencia {
 			}
 			
 			ps.close();
-			usuario
+			null			
 		]
+		return usuario
 	}
 	
-		def void excecute(Function1<Connection, Object> closure){
+	def void excecute(Function1<Connection, Object> closure){
 		var Connection conn = null
 		try{
 			conn = this.connection
@@ -70,6 +86,7 @@ class Persistencia {
 
 	def getConnection() {
 		Class.forName("com.mysql.jdbc.Driver");
+		//modificar la ruta, para la BD nuestra
 		return DriverManager.getConnection("jdbc:mysql://localhost:8889/Epers_Ej1?user=root&password=root")
 	}
 	

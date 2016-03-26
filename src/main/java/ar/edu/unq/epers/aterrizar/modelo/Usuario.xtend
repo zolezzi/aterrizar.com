@@ -25,6 +25,15 @@ class Usuario {
 	}
 	
 	def cambiarContrasenia (String nuevaContrasenia){
-		this.contrasenia = nuevaContrasenia
+		if(contrasenia != nuevaContrasenia){
+			this.contrasenia = nuevaContrasenia
+		}else{
+			throw new Exception
+		}
+		
+	}
+	
+	def validarContrasenia(String contrasenia){
+		this.contrasenia == contrasenia
 	}
 }
