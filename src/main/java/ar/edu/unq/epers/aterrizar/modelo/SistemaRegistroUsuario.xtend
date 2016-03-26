@@ -18,7 +18,7 @@ class SistemaRegistroUsuario {
 
 	def logear(String nombreUsuario, String contrasenia){
 		
-		var usuario = new Usuario("","","","","","",false)
+		var Usuario usuario
 		//Busca un usuario localmente, si no lo tiene, lo busca en la bases de datos.
 		if(usuarios.containsKey(nombreUsuario)){
 			usuario = usuarios.get(nombreUsuario)

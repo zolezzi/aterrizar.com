@@ -26,6 +26,7 @@ class Persistencia {
 			null
 		]	
 	}
+	
 	//no esta claro, revisenlo porfavor.
 	def updateUser(Usuario usuario, int validado){
 		excecute[conn|
