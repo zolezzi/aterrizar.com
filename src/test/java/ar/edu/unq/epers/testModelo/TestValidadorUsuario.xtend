@@ -12,8 +12,26 @@ class TestValidadorUsuario {
 	var ValidadorUsuario validador
 	
 	def setUp(){
-		usuario = new Usuario("carlos","albar","c_albar","c_albar@hotmail.com","12/3/1990","albar",false)
-		usuarioinvalido = new Usuario(null,"albar","c_albar","c_albar@hotmail.com","12/3/1990","albar",false)
+		usuario = new Usuario =>[
+				 	  nombre = "carlos"
+					  apellido = "albar"
+					  it.nombreUsuario = "c_albar"
+					  email = "c_alabar@hotmail.com"
+					  fechaNacimiento = "12/3/1990"
+					  contrasenia = "albar"
+					  logeado = false 
+	]				
+	
+		usuarioinvalido = new Usuario =>[
+				 	  nombre = null
+					  apellido = "albar"
+					  it.nombreUsuario = "c_albar"
+					  email = "c_alabar@hotmail.com"
+					  fechaNacimiento = "12/3/1990"
+					  contrasenia = "calbar"
+					  logeado = false 
+	]				
+	
 		validador = new ValidadorUsuario
 		validador.guardarUsuarioAValidar("clave",usuario)
 	}

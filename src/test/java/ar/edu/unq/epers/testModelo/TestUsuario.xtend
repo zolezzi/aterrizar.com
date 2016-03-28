@@ -10,7 +10,16 @@ class TestUsuario {
 	// new (String nombre, String apellido, String nombreUsuario, String email, String fechaNacimiento, 
 	//	 String contrasenia, Boolean logeado)
 	def setUp(){
-		usuario = new Usuario("carlos","albar","c_albar","c_albar@hotmail.com","12/3/1990","albar",false)
+		usuario = //new Usuario("carlos","albar","c_albar","c_albar@hotmail.com","12/3/1990","albar",false)
+		new Usuario =>[
+				 	  nombre = "carlos"
+					  apellido = "albar"
+					  it.nombreUsuario = "c_albar"
+					  email = "c_alabar@hotmail.com"
+					  fechaNacimiento = "12/3/1990"
+					  contrasenia = "albar"
+					  logeado = false 
+	]					
 	}
 	
 	@Test(expected = Exception)

@@ -48,18 +48,26 @@ class Persistencia {
 			while(rs.next()){
 				val nombreUsuario = rs.getString("nombreusuario")
 				if(nombreUsuario == nombreDeUsuario){
-					val nombredeusuario =rs.getString(1)
-					val nombre = rs.getString(2)
-					val apellido = rs.getString(3)
-					val email =rs.getString(4)
-					val fechadenacimiento =rs.getString(5)
-					val contrasenia = rs.getString(6)
-					val validado = rs.getInt(7)
+					val vNombredeusuario =rs.getString(1)
+					val vNombre = rs.getString(2)
+					val vApellido = rs.getString(3)
+					val vEmail =rs.getString(4)
+					val vFechadenacimiento =rs.getString(5)
+					val vContrasenia = rs.getString(6)
+					val vValidado = rs.getInt(7)
 					
-					if(validado == 1){
+					if(vValidado == 1){
 						bValidado = true
 					}
-					usuario = new Usuario(nombre,apellido,nombredeusuario,email,fechadenacimiento,contrasenia,bValidado);					
+					usuario = new Usuario =>[
+				 	  nombre = vNombre
+					  apellido = vApellido
+					  it.nombreUsuario = vNombredeusuario
+					  email = vEmail
+					  fechaNacimiento = vFechadenacimiento
+					  contrasenia = vContrasenia
+					  logeado = false 
+	]					
 				}		
 			}
 			
