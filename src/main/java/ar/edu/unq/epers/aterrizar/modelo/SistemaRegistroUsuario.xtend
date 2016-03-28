@@ -36,9 +36,16 @@ class SistemaRegistroUsuario {
 		}		
 	}
 	
-	def crearUsuario(String nombre, String apellido, String nombreDeUsuario, String email, String fechaDeNacimiento, String contrasenia){
-		var usuario = new Usuario(nombre,apellido,nombreDeUsuario,email,fechaDeNacimiento,contrasenia,false)
-		
+	def crearUsuario(String pNombre, String apellidoDeUsuario, String nombreDeUsuario, String emailDeUsuario, String fechaDeNacimiento, String contraseniaDeUsuario){
+		var usuario = new Usuario =>[
+				 	  nombre = pNombre
+					  apellido = apellidoDeUsuario
+					  nombreUsuario = nombreDeUsuario
+					  email = emailDeUsuario
+					  fechaNacimiento = fechaDeNacimiento
+					  contrasenia = contraseniaDeUsuario
+					  logeado = false 
+	]
 		if(validadorUsuario.esUsuarioValido(usuario)){
 			var cod = this.generarCod(usuario)
 			validadorUsuario.guardarUsuarioAValidar(cod,usuario)
