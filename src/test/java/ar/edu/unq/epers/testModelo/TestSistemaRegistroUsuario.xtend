@@ -11,24 +11,24 @@ class TestSistemaRegistroUsuario {
 	SistemaRegistroUsuario sistemaRegistroUsuario
 	
 	@Before
-	def setUp(){
+	def void setUp(){
 		usuario = new Usuario =>[
 				 	  nombre = "Ricky"
 					  apellido = "Fort"
-					  it.nombreUsuario = "Ricky_Miamee"
+					  nombreUsuario = "Ricky_Miamee"
 					  email = "ricky_miame2002@hotmail.com"
 					  fechaNacimiento = "05/11/1968"
 					  contrasenia = "miameeeee"
-					  logeado = false ]					
+					  logeado = false ]	
+	    sistemaRegistroUsuario = new SistemaRegistroUsuario()				
 	}
-	
 	
 	
 	@Test
 	def testRegistrarCodigo(){
 		var expected = ""
 		expected = sistemaRegistroUsuario.generarCod(usuario)
-		Assert.assertTrue(expected == "cod01" )
+		Assert.assertTrue(expected == "cod1")
 		
 	}
 }

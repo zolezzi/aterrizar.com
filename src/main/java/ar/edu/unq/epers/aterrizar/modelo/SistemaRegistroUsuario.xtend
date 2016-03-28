@@ -77,4 +77,22 @@ class SistemaRegistroUsuario {
 		enviadorEmails.enviarCodigoUsuario(cod, usuario)
 	}
 	
+	def cambiarContrasenia (String nuevaContrasenia, Usuario usuario){
+		
+		var Usuario usuarioAModificar = usuario
+		if(usuarios.containsKey(usuario.nombreUsuario)){
+			usuarioAModificar = usuarios.get(usuario.nombreUsuario)
+
+		}else{
+		 	usuarioAModificar = basesDeDatos.selectUser(usuario.nombreUsuario)
+			
+			if(usuario == null){
+				throw new Exception	
+				
+			}
+		}			
+		usuarioAModificar.cambiarContrasenia(nuevaContrasenia)
+		basesDeDatos.updateUser(usuarioAModificar)
+	}
+	
 }
