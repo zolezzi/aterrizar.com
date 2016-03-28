@@ -4,6 +4,7 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import org.junit.Test
 import ar.edu.unq.epers.aterrizar.modelo.ValidadorUsuario
 import org.junit.Assert
+import org.junit.Before
 
 class TestValidadorUsuario {
 	
@@ -11,6 +12,7 @@ class TestValidadorUsuario {
 	var Usuario usuarioinvalido
 	var ValidadorUsuario validador
 	
+	@Before
 	def setUp(){
 		usuario = new Usuario =>[
 				 	  nombre = "carlos"
@@ -38,20 +40,17 @@ class TestValidadorUsuario {
 	
 	@Test
 	def testvalidarClaveDeUsuario(){
-		this.setUp()
 		Assert.assertTrue(validador.validarClaveDeUsuario("clave"))
 		Assert.assertFalse(validador.validarClaveDeUsuario("clave2"))
 	}
 	
 	@Test
 	def testobtenerUsuarioDeClave(){
-		this.setUp()
 		Assert.assertEquals(validador.obtenerUsuarioDeClave("clave"),usuario)
 	}
 	
 	@Test
 	def testesUsuarioValido(){
-		this.setUp()
 		Assert.assertTrue(validador.esUsuarioValido(usuario))
 		Assert.assertFalse(validador.esUsuarioValido(usuarioinvalido))
 	}
