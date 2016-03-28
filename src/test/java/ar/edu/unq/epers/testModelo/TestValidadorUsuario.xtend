@@ -13,7 +13,7 @@ class TestValidadorUsuario {
 	var ValidadorUsuario validador
 	
 	@Before
-	def setUp(){
+	def void setUp(){
 		usuario = new Usuario =>[
 				 	  nombre = "carlos"
 					  apellido = "albar"
