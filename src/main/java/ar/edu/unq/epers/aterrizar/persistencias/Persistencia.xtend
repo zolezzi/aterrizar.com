@@ -13,7 +13,7 @@ class Persistencia {
 	
 	def insertUser(Usuario usuario, int validado){
 		excecute[conn|
-			val ps = conn.prepareStatement("INSERT INTO users (nombreusuario, nombre, apellido, email, fechadenacimiento, contrasenia, validado) VALUES (?,?,?,?,?,?,?)")
+			val ps = conn.prepareStatement("INSERT INTO users (nombreusuario, nombre, apellido, email, fechanacimiento, contrasenia, validado) VALUES (?,?,?,?,?,?,?)")
 			ps.setString(1, usuario.nombreUsuario)
 			ps.setString(2, usuario.nombre)
 			ps.setString(3, usuario.apellido)
@@ -27,6 +27,15 @@ class Persistencia {
 		]	
 	}
 	
+	def removeUser(Usuario usuario){
+		excecute[conn|
+			val ps = conn.prepareStatement("DELETE FROM users WHERE nombreusuario = ?")
+			ps.setString(1, usuario.nombreUsuario)
+			ps.execute()
+			ps.close()
+			null
+		]
+	}
 	
 	def updateUser(Usuario usuario){
 		excecute[conn|
@@ -42,19 +51,19 @@ class Persistencia {
 	def Usuario selectUser(String nombreDeUsuario){
 		
 		excecute[conn| 
-			val ps = conn.prepareStatement("SELECT iduser,nombreUsuario FROM users WHERE nombreUsuario = ?")
+			val ps = conn.prepareStatement("SELECT * FROM users WHERE nombreUsuario = ?")
 			ps.setString(1, nombreDeUsuario)
 			val rs = ps.executeQuery()
 			while(rs.next()){
 				val nombreUsuario = rs.getString("nombreusuario")
 				if(nombreUsuario == nombreDeUsuario){
-					val vNombredeusuario =rs.getString(1)
-					val vNombre = rs.getString(2)
-					val vApellido = rs.getString(3)
-					val vEmail =rs.getString(4)
-					val vFechadenacimiento =rs.getString(5)
-					val vContrasenia = rs.getString(6)
-					val vValidado = rs.getInt(7)
+					val vNombredeusuario =rs.getString("nombreUsuario")
+					val vNombre = rs.getString("Nombre")
+					val vApellido = rs.getString("apellido")
+					val vEmail =rs.getString("email")
+					val vFechadenacimiento =rs.getString("FechaNacimiento")
+					val vContrasenia = rs.getString("contrasenia")
+					val vValidado = rs.getInt("validado")
 					
 					if(vValidado == 1){
 						bValidado = true
@@ -67,10 +76,9 @@ class Persistencia {
 					  fechaNacimiento = vFechadenacimiento
 					  contrasenia = vContrasenia
 					  logeado = false 
-	]					
+					]					
 				}		
 			}
-			
 			ps.close();
 			null			
 		]
@@ -91,8 +99,6 @@ class Persistencia {
 	def getConnection() {
 		Class.forName("com.mysql.jdbc.Driver");
 		//modificar la ruta, para la BD nuestra
-		return DriverManager.getConnection("jdbc:mysql://localhost:8889/Epers_Ej1?user=root&password=root")
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=ezeLuna")
 	}
-	
-	
 }
