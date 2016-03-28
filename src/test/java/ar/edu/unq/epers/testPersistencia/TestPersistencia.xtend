@@ -10,12 +10,13 @@ import org.junit.After
 class TestPersistencia {
 	
 	Persistencia baseDeDatos
-	Usuario usuario
+	Usuario usuario0
+	Usuario usuario1
 	
 	@Before
 	def void setUp(){
 		baseDeDatos = new Persistencia
-		usuario = new Usuario =>[
+		usuario0 = new Usuario =>[
 			nombre = "Jose"
 			apellido = "Garcia"
 			nombreUsuario = "JGarcia2020"
@@ -23,31 +24,57 @@ class TestPersistencia {
 			fechaNacimiento = "17/8/1980"
 			contrasenia = "pepe"
 		]
+		usuario1 = new Usuario =>[
+			nombre = "Juan"
+			apellido = "Perez"
+			nombreUsuario = "Juancito"
+			email = "juancapo@yahoo.com.ar"
+			fechaNacimiento = "4/1/2000"
+			contrasenia = "adivinala"
+		]
 		
-		baseDeDatos.insertUser(usuario,1)
+		baseDeDatos.insertUser(usuario0,1)
 	}
 	
 	@Test
 	def testInsertarUsuario(){
 		
-		var Usuario usuarioRegistrado = baseDeDatos.selectUser("JGarcia2020")
+		baseDeDatos.insertUser(usuario1,2)
+		
+		var Usuario usuarioRegistrado = baseDeDatos.selectUser("Juancito")
 
-		Assert.assertEquals(usuario.getNombre,usuarioRegistrado.getNombre)
+		Assert.assertEquals(usuario1.getNombre,usuarioRegistrado.getNombre)
 	}
-	
+
 	@Test
 	def testActualizarUsuario(){
 		
-		usuario.cambiarContrasenia("hola")
-		baseDeDatos.updateUser(usuario)
+		usuario0.cambiarContrasenia("hola")
+		baseDeDatos.updateUser(usuario0)
 		
 		var Usuario usuarioActualizado = baseDeDatos.selectUser("JGarcia2020")
 		
-		Assert.assertEquals(usuario.getContrasenia,usuarioActualizado.getContrasenia)
+		Assert.assertEquals(usuario0.getContrasenia,usuarioActualizado.getContrasenia)
+	}
+	
+	@Test
+	def testQuitarUsuario(){
+	
+		baseDeDatos.removeUser(usuario0)
+		
+		var Usuario usuarioQueEstabaRegistrado = baseDeDatos.selectUser("JGarcia2020")
+		
+		Assert.assertEquals(usuarioQueEstabaRegistrado, null)
+	}
+	
+	@Test
+	def testSeleccionarUsuarioInexistente(){
+		
+		Assert.assertEquals(baseDeDatos.selectUser("Don2doSombra"), null)
 	}
 	
 	@After
 	def void setDown(){
-		baseDeDatos.removeUser(usuario)
+		baseDeDatos.removeUser(usuario0)
 	}
 }
