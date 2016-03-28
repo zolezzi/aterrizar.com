@@ -31,4 +31,34 @@ class TestSistemaRegistroUsuario {
 		Assert.assertTrue(expected == "cod1")
 		
 	}
+	
+	@Test(expected = Exception)
+	def testCrearUsuarioConUnoDeSusCampoInvalido(){			
+		Assert.assertEquals(sistemaRegistroUsuario.crearUsuario(null,"ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456"), Exception)		
+	}
+
+	@Test(expected = Exception)
+	def testLogearUnUsuarioValido(){
+		sistemaRegistroUsuario.crearUsuario("juan","ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456")
+		sistemaRegistroUsuario.logear(usuario.nombreUsuario, usuario.contrasenia)
+		Assert.assertTrue(usuario.logeado == true)
+	}
+
+	@Test(expected = Exception)
+	def testValidarClaveDeUsuarioQueNoEstaRegistradoEnSistema(){	
+		Assert.assertEquals(sistemaRegistroUsuario.validarClaveDeUsuario(usuario.contrasenia),Exception)	
+	}
+	
+	@Test
+	def testGuardarUnUsuario(){
+		sistemaRegistroUsuario.guardarUsuario(usuario)
+		Assert.assertTrue(sistemaRegistroUsuario.usuarios.size == 1)
+	}
+	
+	@Test(expected = Exception)
+	def testCambiarContraseniaDeUnUsuarioValido(){
+		sistemaRegistroUsuario.guardarUsuario(usuario)
+		sistemaRegistroUsuario.cambiarContrasenia("pepito",usuario)
+		Assert.assertTrue(usuario.contrasenia == "pepito")
+	}
 }

@@ -2,7 +2,9 @@ package ar.edu.unq.epers.aterrizar.modelo
 
 import java.util.HashMap
 import ar.edu.unq.epers.aterrizar.persistencias.Persistencia
+import org.eclipse.xtend.lib.annotations.Accessors
 
+@Accessors
 class SistemaRegistroUsuario {
 	//C = nombreUsuario, V = Usuario	
 	HashMap <String,Usuario> usuarios
@@ -10,6 +12,10 @@ class SistemaRegistroUsuario {
 	ValidadorUsuario validadorUsuario
 	Persistencia basesDeDatos
 	int codigo = 0
+	
+	new(){
+		usuarios = new HashMap<String, Usuario>()
+	}
 	
 	def generarCod(Usuario usuario){
 		codigo ++
@@ -70,7 +76,7 @@ class SistemaRegistroUsuario {
 	}
 	
 	def guardarUsuario(Usuario usuario){
-		usuarios.put(usuario.nombreUsuario,usuario)
+		usuarios.put(usuario.nombreUsuario, usuario)
 	}
 	
 	def enviarCodigo (String cod,Usuario usuario){
