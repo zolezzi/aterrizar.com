@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.persistencias
+package ar.edu.unq.epers.aterrizar.persistencias
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,17 +27,12 @@ class Persistencia {
 		]	
 	}
 	
-	//no esta claro, revisenlo porfavor.
-	def updateUser(Usuario usuario, int validado){
+	
+	def updateUser(Usuario usuario){
 		excecute[conn|
-			val ps = conn.prepareStatement("UPDATE users SET (nombreusuario, nombre, apellido, email, fechadenacimiento, contrasenia, validado) VALUES (?,?,?,?,?,?,?)")
-			ps.setString(1, usuario.nombreUsuario)
-			ps.setString(2, usuario.nombre)
-			ps.setString(3, usuario.apellido)
-			ps.setString(4, usuario.email)
-			ps.setString(5, usuario.fechaNacimiento)
-			ps.setString(6, usuario.contrasenia)
-			ps.setInt(7, validado)
+			val ps = conn.prepareStatement("UPDATE users SET contrasenia = ? WHERE nombreusuario = ?")
+			ps.setString(1, usuario.contrasenia)
+			ps.setString(2, usuario.nombreUsuario)
 			ps.execute()
 			ps.close()	
 			null

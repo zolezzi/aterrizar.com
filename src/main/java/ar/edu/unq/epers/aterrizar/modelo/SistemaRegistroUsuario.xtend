@@ -1,7 +1,7 @@
 package ar.edu.unq.epers.aterrizar.modelo
 
 import java.util.HashMap
-import ar.edu.unq.epers.persistencias.Persistencia
+import ar.edu.unq.epers.aterrizar.persistencias.Persistencia
 
 class SistemaRegistroUsuario {
 	//C = nombreUsuario, V = Usuario	
@@ -55,7 +55,7 @@ class SistemaRegistroUsuario {
 		if(validadorUsuario.validarClaveDeUsuario(clave)){
 			var usuario = validadorUsuario.obtenerUsuarioDeClave(clave)
 			this.guardarUsuario(usuario)
-			basesDeDatos.updateUser(usuario,1)
+			basesDeDatos.updateUser(usuario)
 			validadorUsuario.borrarUsuarioAsociadoALaClave(clave)
 		}else{
 			throw new Exception
