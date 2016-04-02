@@ -10,6 +10,7 @@ class Usuario {
 	String email
 	String fechaNacimiento
 	String contrasenia
+	String clave
 	Boolean logeado
 	
 

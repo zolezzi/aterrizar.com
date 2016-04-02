@@ -46,7 +46,7 @@ class TestSistemaRegistroUsuario {
 
 	@Test(expected = Exception)
 	def testValidarClaveDeUsuarioQueNoEstaRegistradoEnSistema(){	
-		Assert.assertEquals(sistemaRegistroUsuario.validarClaveDeUsuario(usuario.contrasenia),Exception)	
+		sistemaRegistroUsuario.validarClaveDeUsuario("Ricky_Miamee" , "falseCod")	
 	}
 	
 	@Test

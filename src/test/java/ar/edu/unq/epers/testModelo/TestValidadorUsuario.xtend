@@ -5,6 +5,7 @@ import org.junit.Test
 import ar.edu.unq.epers.aterrizar.modelo.ValidadorUsuario
 import org.junit.Assert
 import org.junit.Before
+import ar.edu.unq.epers.aterrizar.persistencias.Persistencia
 
 class TestValidadorUsuario {
 	
@@ -21,6 +22,7 @@ class TestValidadorUsuario {
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "albar"
+					  clave = "cod01"
 					  logeado = false 
 	]				
 	
@@ -31,22 +33,19 @@ class TestValidadorUsuario {
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "calbar"
+					  clave = "codNaN"
 					  logeado = false 
 	]				
 	
 		validador = new ValidadorUsuario
-		validador.guardarUsuarioAValidar("clave",usuario)
+		validador.basesDeDatos = new Persistencia
+		validador.guardarUsuarioAValidar(usuario, 0)
 	}
 	
 	@Test
 	def testvalidarClaveDeUsuario(){
-		Assert.assertTrue(validador.validarClaveDeUsuario("clave"))
-		Assert.assertFalse(validador.validarClaveDeUsuario("clave2"))
-	}
-	
-	@Test
-	def testobtenerUsuarioDeClave(){
-		Assert.assertEquals(validador.obtenerUsuarioDeClave("clave"),usuario)
+		Assert.assertTrue(validador.validarClaveDeUsuario(usuario,"cod01"))
+		Assert.assertFalse(validador.validarClaveDeUsuario(usuario,"clave2"))
 	}
 	
 	@Test

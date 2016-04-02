@@ -2,7 +2,7 @@ package ar.edu.unq.epers.aterrizar.modelo
 
 class EnviadorEmails {
 	
-	def enviarCodigoUsuario(String string, Usuario usuario) {
+	def enviarCodigoUsuario(Usuario usuario) {
 		return true
 	}
 	

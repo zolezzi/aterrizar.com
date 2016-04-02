@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 
-//prueba basica de query
+
 class Persistencia {
 		
 	boolean bValidado = false
@@ -13,7 +13,7 @@ class Persistencia {
 	
 	def insertUser(Usuario usuario, int validado){
 		excecute[conn|
-			val ps = conn.prepareStatement("INSERT INTO users (nombreusuario, nombre, apellido, email, fechanacimiento, contrasenia, validado) VALUES (?,?,?,?,?,?,?)")
+			val ps = conn.prepareStatement("INSERT INTO users (nombreusuario, nombre, apellido, email, fechanacimiento, contrasenia, validado, codvalidacion) VALUES (?,?,?,?,?,?,?,?)")
 			ps.setString(1, usuario.nombreUsuario)
 			ps.setString(2, usuario.nombre)
 			ps.setString(3, usuario.apellido)
@@ -21,6 +21,7 @@ class Persistencia {
 			ps.setString(5, usuario.fechaNacimiento)
 			ps.setString(6, usuario.contrasenia)
 			ps.setInt(7, validado)
+			ps.setString(8, usuario.clave)
 			ps.execute()
 			ps.close()	
 			null
@@ -35,6 +36,17 @@ class Persistencia {
 			ps.close()
 			null
 		]
+	}
+	
+	def validateUser(Usuario usuario){
+		excecute[conn|
+			val ps = conn.prepareStatement("UPDATE users SET validado = ? WHERE nombreusuario = ?")
+			ps.setInt(1, 1)
+			ps.setString(2, usuario.nombreUsuario)
+			ps.execute()
+			ps.close()	
+			null
+		]	
 	}
 	
 	def updateUser(Usuario usuario){
@@ -63,6 +75,7 @@ class Persistencia {
 					val vEmail =rs.getString("email")
 					val vFechadenacimiento =rs.getString("FechaNacimiento")
 					val vContrasenia = rs.getString("contrasenia")
+					val vCodValidacion = rs.getString("codvalidacion")
 					val vValidado = rs.getInt("validado")
 					
 					if(vValidado == 1){
@@ -75,6 +88,7 @@ class Persistencia {
 					  email = vEmail
 					  fechaNacimiento = vFechadenacimiento
 					  contrasenia = vContrasenia
+					  clave = vCodValidacion
 					  logeado = false 
 					]					
 				}		
@@ -98,7 +112,6 @@ class Persistencia {
 
 	def getConnection() {
 		Class.forName("com.mysql.jdbc.Driver");
-		//modificar la ruta, para la BD nuestra
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=ezeLuna")
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=root")
 	}
 }

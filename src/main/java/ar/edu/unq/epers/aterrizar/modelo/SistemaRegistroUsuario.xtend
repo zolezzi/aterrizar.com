@@ -15,6 +15,9 @@ class SistemaRegistroUsuario {
 	
 	new(){
 		usuarios = new HashMap<String, Usuario>()
+		basesDeDatos = new Persistencia()
+		validadorUsuario = new ValidadorUsuario
+		validadorUsuario.basesDeDatos = this.basesDeDatos
 	}
 	
 	def generarCod(Usuario usuario){
@@ -25,7 +28,6 @@ class SistemaRegistroUsuario {
 	def logear(String nombreUsuario, String contrasenia){
 		
 		var Usuario usuario
-		//Busca un usuario localmente, si no lo tiene, lo busca en la bases de datos.
 		if(usuarios.containsKey(nombreUsuario)){
 			usuario = usuarios.get(nombreUsuario)
 		}else{
@@ -49,27 +51,25 @@ class SistemaRegistroUsuario {
 					  nombreUsuario = nombreDeUsuario
 					  email = emailDeUsuario
 					  fechaNacimiento = fechaDeNacimiento
-					  contrasenia = contraseniaDeUsuario
+					  contrasenia = contraseniaDeUsuario					  
 					  logeado = false 
 	]
-		if(validadorUsuario.esUsuarioValido(usuario)){
-			var cod = this.generarCod(usuario)
-			validadorUsuario.guardarUsuarioAValidar(cod,usuario)
+		if(validadorUsuario.esUsuarioValido(usuario)){			
+			usuario.clave = this.generarCod(usuario)
 			basesDeDatos.insertUser(usuario,0)
-			this.enviarCodigo(cod, usuario)
+			this.enviarCodigo(usuario)
 		}
 		else {
 			 throw new Exception  
 		}	
 	}
 	
-	def validarClaveDeUsuario(String clave){
+	def validarClaveDeUsuario(String nombreUsuario, String clave){
 		
-		if(validadorUsuario.validarClaveDeUsuario(clave)){
-			var usuario = validadorUsuario.obtenerUsuarioDeClave(clave)
-			this.guardarUsuario(usuario)
-			basesDeDatos.updateUser(usuario)
-			validadorUsuario.borrarUsuarioAsociadoALaClave(clave)
+		var usuario = basesDeDatos.selectUser(nombreUsuario)
+		
+		if(validadorUsuario.validarClaveDeUsuario(usuario, clave)){
+			basesDeDatos.validateUser(usuario)
 		}else{
 			throw new Exception
 		}
@@ -79,23 +79,15 @@ class SistemaRegistroUsuario {
 		usuarios.put(usuario.nombreUsuario, usuario)
 	}
 	
-	def enviarCodigo (String cod,Usuario usuario){
-		enviadorEmails.enviarCodigoUsuario(cod, usuario)
+	def enviarCodigo (Usuario usuario){
+		enviadorEmails.enviarCodigoUsuario(usuario)
 	}
 	
 	def cambiarContrasenia (String nuevaContrasenia, Usuario usuario){
 		
-		var Usuario usuarioAModificar = usuario
-		if(usuarios.containsKey(usuario.nombreUsuario)){
-			usuarioAModificar = usuarios.get(usuario.nombreUsuario)
-
-		}else{
-		 	usuarioAModificar = basesDeDatos.selectUser(usuario.nombreUsuario)
-			
-			if(usuario == null){
-				throw new Exception	
-				
-			}
+		var Usuario usuarioAModificar = basesDeDatos.selectUser(usuario.nombreUsuario)
+		if(usuario == null){
+			throw new Exception	
 		}			
 		usuarioAModificar.cambiarContrasenia(nuevaContrasenia)
 		basesDeDatos.updateUser(usuarioAModificar)

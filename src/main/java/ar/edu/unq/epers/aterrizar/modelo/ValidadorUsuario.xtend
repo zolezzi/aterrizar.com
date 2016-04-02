@@ -1,32 +1,24 @@
 package ar.edu.unq.epers.aterrizar.modelo
 
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import java.util.HashMap
+import ar.edu.unq.epers.aterrizar.persistencias.Persistencia
+import org.eclipse.xtend.lib.annotations.Accessors
 
+@Accessors
 class ValidadorUsuario {
-	HashMap <String,Usuario> usuariosAValidar
 	
-	new(){
-		usuariosAValidar = new HashMap<String, Usuario>()
+	Persistencia basesDeDatos
+	
+	def guardarUsuarioAValidar(Usuario usuario, int validado){
+		basesDeDatos.insertUser(usuario,validado)
 	}
 	
-	def guardarUsuarioAValidar(String clave, Usuario usuario){
-		usuariosAValidar.put(clave,usuario);
-	}
-	
-	def validarClaveDeUsuario(String clave){
-		usuariosAValidar.containsKey(clave);
-	}
-	
-	/**
-	 * Se asume que se esta dando una clave valida.
-	 */
-	def obtenerUsuarioDeClave(String clave){
-		usuariosAValidar.get(clave);
-	}
-	
-	def borrarUsuarioAsociadoALaClave(String clave){
-		usuariosAValidar.remove(clave)
+	def validarClaveDeUsuario(Usuario usuario, String clave){
+		if(usuario != null){
+			usuario.clave == clave
+		}else{
+			false
+		}
 	}
 	
 	def esUsuarioValido(Usuario usuario) {

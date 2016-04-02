@@ -8,11 +8,9 @@ import org.junit.Before
 class TestUsuario {
 	
 	var Usuario usuario
-	// new (String nombre, String apellido, String nombreUsuario, String email, String fechaNacimiento, 
-	//	 String contrasenia, Boolean logeado)
 	@Before
-	def setUp(){
-		usuario = //new Usuario("carlos","albar","c_albar","c_albar@hotmail.com","12/3/1990","albar",false)
+	def void setUp(){
+		usuario = 
 		new Usuario =>[
 				 	  nombre = "carlos"
 					  apellido = "albar"
