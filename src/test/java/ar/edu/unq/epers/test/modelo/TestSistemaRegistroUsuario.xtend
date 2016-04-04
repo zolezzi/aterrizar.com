@@ -1,10 +1,12 @@
-package ar.edu.unq.epers.testModelo
+package ar.edu.unq.epers.test.modelo
 
 import org.junit.Test
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.modelo.SistemaRegistroUsuario
 import org.junit.Assert
 import org.junit.Before
+import ar.edu.unq.aterrizar.servicios.SistemaRegistroUsuario
+import org.junit.Rule
+import org.junit.rules.ExpectedException
 
 class TestSistemaRegistroUsuario {
 	Usuario usuario
@@ -18,11 +20,17 @@ class TestSistemaRegistroUsuario {
 					  nombreUsuario = "Ricky_Miamee"
 					  email = "ricky_miame2002@hotmail.com"
 					  fechaNacimiento = "05/11/1968"
-					  contrasenia = "miameeeee"
-					  logeado = false ]	
+					  contrasenia = "miameeeee"]	
 	    sistemaRegistroUsuario = new SistemaRegistroUsuario()				
 	}
+	@Rule
+	public ExpectedException thrown = ExpectedException.none()
 	
+	@Test(expected = Exception) 
+	def testCrearUsuarioConUnoDeSusCampoInvalido(){
+		sistemaRegistroUsuario.crearUsuario(null,"ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456")
+		thrown.expectMessage("Usuario invalido") 
+	}
 	
 	@Test
 	def testRegistrarCodigo(){
@@ -31,22 +39,19 @@ class TestSistemaRegistroUsuario {
 		Assert.assertTrue(expected == "cod1")
 		
 	}
-	
-	@Test(expected = Exception)
-	def testCrearUsuarioConUnoDeSusCampoInvalido(){			
-		Assert.assertEquals(sistemaRegistroUsuario.crearUsuario(null,"ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456"), Exception)		
-	}
 
 	@Test(expected = Exception)
 	def testLogearUnUsuarioValido(){
 		sistemaRegistroUsuario.crearUsuario("juan","ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456")
 		sistemaRegistroUsuario.logear(usuario.nombreUsuario, usuario.contrasenia)
-		Assert.assertTrue(usuario.logeado == true)
+		Assert.assertTrue(usuario.logeado)
 	}
+	
 
 	@Test(expected = Exception)
 	def testValidarClaveDeUsuarioQueNoEstaRegistradoEnSistema(){	
-		sistemaRegistroUsuario.validarClaveDeUsuario("Ricky_Miamee" , "falseCod")	
+		sistemaRegistroUsuario.validarClaveDeUsuario("Ricky_Miamee" , "falseCod")
+		thrown.expectMessage("Clave invalida") 	
 	}
 	
 	@Test
@@ -61,4 +66,11 @@ class TestSistemaRegistroUsuario {
 		sistemaRegistroUsuario.cambiarContrasenia("pepito",usuario)
 		Assert.assertTrue(usuario.contrasenia == "pepito")
 	}
+	
+		@Test(expected = Exception)
+	def testCambiarContraseniaDeUnUsuarioInvalido(){
+		sistemaRegistroUsuario.cambiarContrasenia("pepito",usuario)
+		thrown.expectMessage("Usuario no existe en la BD") 	
+	}
 }
+		

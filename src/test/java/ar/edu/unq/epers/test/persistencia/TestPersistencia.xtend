@@ -1,21 +1,21 @@
-package ar.edu.unq.epers.testPersistencia
+package ar.edu.unq.epers.test.persistencia
 
 import org.junit.Test
 import org.junit.Assert
 import org.junit.Before
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.persistencias.Persistencia
 import org.junit.After
+import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 
 class TestPersistencia {
 	
-	Persistencia baseDeDatos
+	RepositorioUsuarios baseDeDatos
 	Usuario usuario0
 	Usuario usuario1
 	
 	@Before
 	def void setUp(){
-		baseDeDatos = new Persistencia
+		baseDeDatos = new RepositorioUsuarios
 		usuario0 = new Usuario =>[
 			nombre = "Jose"
 			apellido = "Garcia"

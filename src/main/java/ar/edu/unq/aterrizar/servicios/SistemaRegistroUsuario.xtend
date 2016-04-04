@@ -1,8 +1,11 @@
-package ar.edu.unq.epers.aterrizar.modelo
+package ar.edu.unq.aterrizar.servicios
 
 import java.util.HashMap
-import ar.edu.unq.epers.aterrizar.persistencias.Persistencia
 import org.eclipse.xtend.lib.annotations.Accessors
+import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
+import ar.edu.unq.aterrizar.utils.EnviadorEmails
+import ar.edu.unq.epers.aterrizar.modelo.ValidadorUsuario
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
 
 @Accessors
 class SistemaRegistroUsuario {
@@ -10,12 +13,12 @@ class SistemaRegistroUsuario {
 	HashMap <String,Usuario> usuarios
 	EnviadorEmails enviadorEmails
 	ValidadorUsuario validadorUsuario
-	Persistencia basesDeDatos
+	RepositorioUsuarios basesDeDatos
 	int codigo = 0
 	
 	new(){
 		usuarios = new HashMap<String, Usuario>()
-		basesDeDatos = new Persistencia()
+		basesDeDatos = new RepositorioUsuarios()
 		validadorUsuario = new ValidadorUsuario
 		validadorUsuario.basesDeDatos = this.basesDeDatos
 	}
@@ -40,7 +43,7 @@ class SistemaRegistroUsuario {
 		if(usuario != null && usuario.validarContrasenia(contrasenia)){
 			usuario.logeado = true		
 		}else{
-			throw new Exception
+			throw new Exception("No pudo conectarse al sistema")
 		}		
 	}
 	
@@ -52,7 +55,6 @@ class SistemaRegistroUsuario {
 					  email = emailDeUsuario
 					  fechaNacimiento = fechaDeNacimiento
 					  contrasenia = contraseniaDeUsuario					  
-					  logeado = false 
 	]
 		if(validadorUsuario.esUsuarioValido(usuario)){			
 			usuario.clave = this.generarCod(usuario)
@@ -60,7 +62,7 @@ class SistemaRegistroUsuario {
 			this.enviarCodigo(usuario)
 		}
 		else {
-			 throw new Exception  
+			 throw new Exception ("usuario invalido")
 		}	
 	}
 	
@@ -71,7 +73,7 @@ class SistemaRegistroUsuario {
 		if(validadorUsuario.validarClaveDeUsuario(usuario, clave)){
 			basesDeDatos.validateUser(usuario)
 		}else{
-			throw new Exception
+			throw new Exception("Clave invalida")
 		}
 	}
 	
@@ -87,7 +89,7 @@ class SistemaRegistroUsuario {
 		
 		var Usuario usuarioAModificar = basesDeDatos.selectUser(usuario.nombreUsuario)
 		if(usuario == null){
-			throw new Exception	
+			throw new Exception	("Usuario no existe en la BD")
 		}			
 		usuarioAModificar.cambiarContrasenia(nuevaContrasenia)
 		basesDeDatos.updateUser(usuarioAModificar)

@@ -1,11 +1,11 @@
-package ar.edu.unq.epers.testModelo
+package ar.edu.unq.epers.test.modelo
 
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import org.junit.Test
 import ar.edu.unq.epers.aterrizar.modelo.ValidadorUsuario
 import org.junit.Assert
 import org.junit.Before
-import ar.edu.unq.epers.aterrizar.persistencias.Persistencia
+import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 
 class TestValidadorUsuario {
 	
@@ -22,8 +22,7 @@ class TestValidadorUsuario {
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "albar"
-					  clave = "cod01"
-					  logeado = false 
+					  clave = "cod01" 
 	]				
 	
 		usuarioinvalido = new Usuario =>[
@@ -34,11 +33,10 @@ class TestValidadorUsuario {
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "calbar"
 					  clave = "codNaN"
-					  logeado = false 
 	]				
 	
 		validador = new ValidadorUsuario
-		validador.basesDeDatos = new Persistencia
+		validador.basesDeDatos = new RepositorioUsuarios
 		validador.guardarUsuarioAValidar(usuario, 0)
 	}
 	

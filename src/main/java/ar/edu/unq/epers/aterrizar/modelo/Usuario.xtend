@@ -11,7 +11,7 @@ class Usuario {
 	String fechaNacimiento
 	String contrasenia
 	String clave
-	Boolean logeado
+	Boolean logeado = false
 	
 
 	
@@ -19,7 +19,7 @@ class Usuario {
 		if(contrasenia != nuevaContrasenia){
 			this.contrasenia = nuevaContrasenia
 		}else{
-			throw new Exception
+			throw new Exception("Contraseña invalida ")
 		}
 		
 	}

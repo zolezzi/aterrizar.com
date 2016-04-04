@@ -1,9 +1,11 @@
-package ar.edu.unq.epers.testModelo
+package ar.edu.unq.epers.test.modelo
 
 import org.junit.Test
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
+import org.junit.rules.ExpectedException
 
 class TestUsuario {
 	
@@ -17,19 +19,30 @@ class TestUsuario {
 					  it.nombreUsuario = "c_albar"
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
-					  contrasenia = "albar"
-					  logeado = false 
-	]					
+					  contrasenia = "albar" 
+					 ]					
 	}
 	
-	@Test(expected = Exception)
+	@Rule
+	public ExpectedException thrown = ExpectedException.none()
+	
+	@Test(expected = Exception) 
 	def testCambiarContrasenia(){
-		Assert.assertEquals(usuario.cambiarContrasenia("albar"),Exception)
-		Assert.assertNotEquals(usuario.cambiarContrasenia("calbar"), Exception)
+		usuario.cambiarContrasenia("albar")	
+		thrown.expectMessage("Contraseña invalida") 
 	}
 	
+	@Test
+	def testUsuarioCambiaContraseniaValida(){
+		usuario.cambiarContrasenia("ricky")
+		Assert.assertEquals(usuario.contrasenia, "ricky")	
+	}
+
 	@Test
 	def testValidarContrasenia(){
 		Assert.assertTrue(usuario.validarContrasenia("albar"))
 	}
+	
+
+	
 }

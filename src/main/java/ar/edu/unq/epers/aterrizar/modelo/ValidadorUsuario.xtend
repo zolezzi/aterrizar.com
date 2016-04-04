@@ -1,13 +1,13 @@
 package ar.edu.unq.epers.aterrizar.modelo
 
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.persistencias.Persistencia
 import org.eclipse.xtend.lib.annotations.Accessors
+import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 
 @Accessors
 class ValidadorUsuario {
 	
-	Persistencia basesDeDatos
+	RepositorioUsuarios basesDeDatos
 	
 	def guardarUsuarioAValidar(Usuario usuario, int validado){
 		basesDeDatos.insertUser(usuario,validado)

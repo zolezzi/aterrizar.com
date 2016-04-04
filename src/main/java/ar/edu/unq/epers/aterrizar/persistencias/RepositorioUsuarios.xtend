@@ -6,7 +6,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 
 
-class Persistencia {
+class RepositorioUsuarios {
 		
 	boolean bValidado = false
 	Usuario usuario
