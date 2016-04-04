@@ -9,7 +9,6 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 class RepositorioUsuarios {
 		
 	boolean bValidado = false
-	Usuario usuario
 	
 	def insertUser(Usuario usuario, int validado){
 		excecute[conn|
@@ -66,7 +65,8 @@ class RepositorioUsuarios {
 			val ps = conn.prepareStatement("SELECT * FROM users WHERE nombreUsuario = ?")
 			ps.setString(1, nombreDeUsuario)
 			val rs = ps.executeQuery()
-			while(rs.next()){
+			var Usuario usuario = null
+			if(rs.next()){
 				val nombreUsuario = rs.getString("nombreusuario")
 				if(nombreUsuario == nombreDeUsuario){
 					val vNombredeusuario =rs.getString("nombreUsuario")
@@ -89,21 +89,20 @@ class RepositorioUsuarios {
 					  fechaNacimiento = vFechadenacimiento
 					  contrasenia = vContrasenia
 					  clave = vCodValidacion
-					  logeado = false 
-					]					
+					]
 				}		
 			}
 			ps.close();
-			null			
-		]
-		return usuario
+			usuario 			
+		] 
+		
 	}
 	
-	def void excecute(Function1<Connection, Object> closure){
+	def <T> T excecute(Function1<Connection, T> closure){
 		var Connection conn = null
 		try{
 			conn = this.connection
-			closure.apply(conn)
+			return closure.apply(conn)
 		}finally{
 			if(conn != null)
 				conn.close();
