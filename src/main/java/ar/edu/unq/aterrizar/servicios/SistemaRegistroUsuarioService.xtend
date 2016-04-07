@@ -6,7 +6,7 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 
 class SistemaRegistroUsuarioService {
 		
-		def consultarJugador(int id) {
+		def consultarUsuario(int id) {
 		SessionManager.runInSession([
 			new UsuarioHome().get(id)
 		])
@@ -35,4 +35,5 @@ class SistemaRegistroUsuarioService {
 			jugador
 		]);
 	}
+	
 }

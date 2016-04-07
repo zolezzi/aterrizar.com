@@ -16,10 +16,10 @@ class TestSistemaRegistroUsuarioService {
 
 	@Test
 	def consultar() {
-		var usuario = new SistemaRegistroUsuarioService().consultarJugador(1);
+		var usuario = new SistemaRegistroUsuarioService().consultarUsuario(0);
 		Assert.assertEquals("Perez", usuario.getApellido());
-			}
-	
+	}
+
 	@Test
 	def modificar() {
 		var jugador = new SistemaRegistroUsuarioService().cambiarContrasenia(1,"Juanca");
