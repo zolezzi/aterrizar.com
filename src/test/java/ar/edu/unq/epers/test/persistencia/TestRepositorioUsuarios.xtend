@@ -23,7 +23,7 @@ class TestRepositorioUsuarios {
 			email = "jose_garcia@gmail.com"
 			fechaNacimiento = "17/8/1980"
 			contrasenia = "pepe"
-			clave = "000"
+			codValidacion = "000"
 		]
 		usuario1 = new Usuario =>[
 			nombre = "Juan"
@@ -32,7 +32,7 @@ class TestRepositorioUsuarios {
 			email = "juancapo@yahoo.com.ar"
 			fechaNacimiento = "4/1/2000"
 			contrasenia = "adivinala"
-			clave = "111"
+			codValidacion = "111"
 		]
 		
 		baseDeDatos.insertUser(usuario0,1)

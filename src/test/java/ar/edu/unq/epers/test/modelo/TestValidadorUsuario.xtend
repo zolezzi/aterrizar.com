@@ -22,7 +22,7 @@ class TestValidadorUsuario {
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "albar"
-					  clave = "cod01" 
+					  codValidacion = "cod01" 
 	]				
 	
 		usuarioinvalido = new Usuario =>[
@@ -32,7 +32,7 @@ class TestValidadorUsuario {
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "calbar"
-					  clave = "codNaN"
+					  codValidacion = "codNaN"
 	]				
 	
 		validador = new ValidadorUsuario

@@ -10,10 +10,11 @@ class Usuario {
 	String email
 	String fechaNacimiento
 	String contrasenia
-	String clave
+	String codValidacion
+	int id
 	Boolean logeado = false
 	
-
+	new(){}
 	
 	def cambiarContrasenia (String nuevaContrasenia){
 		if(contrasenia != nuevaContrasenia){

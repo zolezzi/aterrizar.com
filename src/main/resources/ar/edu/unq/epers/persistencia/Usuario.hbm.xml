@@ -12,7 +12,7 @@
         <property name="nombre" type="string">
             <column name="NOMBRE" length="20" not-null="true" unique="false" />
         </property>
-                
+        
         <property name="apellido" type="string">
             <column name="APELLIDO" length="20" not-null="true" unique="false" />
         </property>
@@ -21,7 +21,7 @@
             <column name="NOMBRE_USUARIO" not-null="true" unique="true"/>
         </property>
         
-        <property name="eMail" type="string">
+		<property name="email" type="string">
             <column name="EMAIL" not-null="true" unique="false"/>
         </property>
         
@@ -29,13 +29,13 @@
             <column name="FECHANACIMIENTO" not-null="false" unique="false"/>
         </property>
         
-        <property name="contrasenia" type="string">
+       <property name="contrasenia" type="string">
             <column name="CONTRASENHA" not-null="true" unique="false"/>
         </property>
         
-        <property name="clave" type="string">
+         <property name="codValidacion" type="string">
             <column name="CODIGO_VALIDACION" not-null="true" unique="false"/>
-        </property>
-        
+        </property>               
+       
     </class>
 </hibernate-mapping>

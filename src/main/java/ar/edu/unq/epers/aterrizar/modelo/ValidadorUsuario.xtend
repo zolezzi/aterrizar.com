@@ -15,7 +15,7 @@ class ValidadorUsuario {
 	
 	def validarClaveDeUsuario(Usuario usuario, String clave){
 		if(usuario != null){
-			usuario.clave == clave
+			usuario.codValidacion == clave
 		}else{
 			false
 		}

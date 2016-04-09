@@ -20,7 +20,7 @@ class RepositorioUsuarios {
 			ps.setString(5, usuario.fechaNacimiento)
 			ps.setString(6, usuario.contrasenia)
 			ps.setInt(7, validado)
-			ps.setString(8, usuario.clave)
+			ps.setString(8, usuario.codValidacion)
 			ps.execute()
 			ps.close()	
 			null
@@ -88,7 +88,7 @@ class RepositorioUsuarios {
 					  email = vEmail
 					  fechaNacimiento = vFechadenacimiento
 					  contrasenia = vContrasenia
-					  clave = vCodValidacion
+					  codValidacion = vCodValidacion
 					]
 				}		
 			}
@@ -111,6 +111,6 @@ class RepositorioUsuarios {
 
 	def getConnection() {
 		Class.forName("com.mysql.jdbc.Driver");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=root")
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=killer12")
 	}
 }

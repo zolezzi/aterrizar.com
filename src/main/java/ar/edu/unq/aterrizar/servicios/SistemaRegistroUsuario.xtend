@@ -57,7 +57,7 @@ class SistemaRegistroUsuario {
 					  contrasenia = contraseniaDeUsuario					  
 	]
 		if(validadorUsuario.esUsuarioValido(usuario)){			
-			usuario.clave = this.generarCod(usuario)
+			usuario.codValidacion = this.generarCod(usuario)
 			basesDeDatos.insertUser(usuario,0)
 			this.enviarCodigo(usuario)
 		}
