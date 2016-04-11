@@ -9,15 +9,7 @@ class UsuarioHome {
 	}
 
 	def save(Usuario u) {
-		SessionManager.getSession().save(u)
+		SessionManager.getSession().saveOrUpdate(u)
 	}
 	
-	//consultar
-	def saveOrUpdate(Usuario u){
-		try{
-		SessionManager.getSession().saveOrUpdate(u)
-		}catch(HibernateException e){
-			SessionManager.getSession().save(u)
-		}
-	}
 }

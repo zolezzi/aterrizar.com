@@ -10,11 +10,11 @@
         </id>
 
         <property name="nombre" type="string">
-            <column name="NOMBRE" length="20" not-null="true" unique="false" />
+            <column name="NOMBRE" length="20" not-null="true" />
         </property>
         
         <property name="apellido" type="string">
-            <column name="APELLIDO" length="20" not-null="true" unique="false" />
+            <column name="APELLIDO" length="20" not-null="true" />
         </property>
         
         <property name="nombreUsuario" type="string">
@@ -22,19 +22,19 @@
         </property>
         
 		<property name="email" type="string">
-            <column name="EMAIL" not-null="true" unique="false"/>
+            <column name="EMAIL" not-null="true"/>
         </property>
         
         <property name="fechaNacimiento" type="string">
-            <column name="FECHANACIMIENTO" not-null="false" unique="false"/>
+            <column name="FECHANACIMIENTO" not-null="false"/>
         </property>
         
        <property name="contrasenia" type="string">
-            <column name="CONTRASENHA" not-null="true" unique="false"/>
+            <column name="CONTRASENHA" not-null="true"/>
         </property>
         
          <property name="codValidacion" type="string">
-            <column name="CODIGO_VALIDACION" not-null="true" unique="false"/>
+            <column name="CODIGO_VALIDACION" not-null="true"/>
         </property>               
        
     </class>

@@ -24,7 +24,6 @@ class SistemaRegistroUsuarioService {
 				it.id = id
 				it.codValidacion = clave
 			]
-			//consultar, actualmente guarda infinitos usuarios por mas que sean iguales.
 			userHome.save(usuario)
 			usuario
 		]);
@@ -32,9 +31,9 @@ class SistemaRegistroUsuarioService {
 
 	def cambiarContrasenia(int id, String nombre) {
 		SessionManager.runInSession([
-			var jugador = userHome.get(id)
-			jugador.nombre = nombre
-			jugador
+			var usuario = userHome.get(id)
+			usuario.nombre = nombre
+			usuario
 		]);
 	}
 	
