@@ -1,16 +1,15 @@
 package ar.edu.unq.epers.aterrizar.servicios
 
 import ar.edu.unq.epers.aterrizar.modelo.Aerolinea
-import java.util.List
 import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 import ar.edu.unq.epers.aterrizar.persistencia.home.AerolineaHome
+import ar.edu.unq.epers.aterrizar.persistencia.home.VueloHome
+import ar.edu.unq.epers.aterrizar.modelo.Vuelo
 
 class SistemaRegistroAerolineas {
 	
 	AerolineaHome aerolineaHome = new AerolineaHome()
-	List<Aerolinea> aerolineas
-	
-	// realmente guardaria las aerolineas en la base de datos por ahora es una lista
+	VueloHome vueloHome = new VueloHome()
 	
 	
 		def registrarAerolinea(String nombre) {
@@ -40,10 +39,24 @@ class SistemaRegistroAerolineas {
 	}	
 	
 		def consultarAerolineaPor(String campo, String valor){
-			SessionManager.runInSession([
+			//SessionManager.runInSession([
 				aerolineaHome.getBy(campo,valor)
-			])
+			//])
 	}
 	
+		def actualizar(Aerolinea aerolinea) {
+			SessionManager.runInSession([
+			aerolineaHome.save (aerolinea)
+			null
+		])
+	}
+	
+	def agregaVuelo(Aerolinea aerolinea, Vuelo vuelo) {
+		SessionManager.runInSession([
+			aerolinea.registrarUnVuelo(vuelo)
+			aerolineaHome.save(aerolinea)
+			null
+		])
+	}
 	
 }

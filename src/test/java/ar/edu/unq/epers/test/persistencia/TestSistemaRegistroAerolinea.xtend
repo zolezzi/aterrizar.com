@@ -12,7 +12,6 @@ class TestSistemaRegistroAerolinea {
 	def void startUp(){
 		new SistemaRegistroAerolineas().registrarAerolinea("Aerolinea Payaso")
 	}
-	
  
 	@Test
 	def consultar() {

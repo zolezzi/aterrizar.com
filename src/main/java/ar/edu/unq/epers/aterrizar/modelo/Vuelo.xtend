@@ -14,7 +14,9 @@ class Vuelo {
 	Date fechaSalida
 	Date fechaLlegada
 	Timer duracion
-	Integer Precio
+	Integer precio
+	Integer id
 	
+	new(){}
 	
 }

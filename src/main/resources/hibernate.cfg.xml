@@ -11,11 +11,12 @@
         <property name="hibernate.connection.password">root</property>
 
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="show_sql">true</property>
 
         <mapping resource="ar/edu/unq/epers/persistencia/Usuario.hbm.xml"></mapping>
-         <mapping resource="ar/edu/unq/epers/persistencia/Aerolinea.hbm.xml"></mapping>
+        <mapping resource="ar/edu/unq/epers/persistencia/Aerolinea.hbm.xml"></mapping>         
+        <mapping resource="ar/edu/unq/epers/persistencia/Vuelo.hbm.xml"></mapping>
 		
     </session-factory>
 </hibernate-configuration>

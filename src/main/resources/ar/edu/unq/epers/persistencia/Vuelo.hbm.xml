@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
  
 <hibernate-mapping>
-    <class name="ar.edu.unq.epers.aterrizar.modelo.Vuelo" table="aerolineas" >
+    <class name="ar.edu.unq.epers.aterrizar.modelo.Vuelo" table="vuelos" >
         <id name="id" type="java.lang.Integer">
             <column name="ID_VUELO" />
             <generator class="identity" />
@@ -24,9 +24,9 @@
             <column name="FECHA_LLEGADA" />
         </property>
         
-        <property name="duracion" type="java.util.Timer">
-            <column name="DURACION" />
-        </property>
+<!--         <property name="duracion" type="java.util.Timer"> -->
+<!--             <column name="DURACION" /> -->
+<!--         </property> -->
         
        <property name="precio" type="java.lang.Integer">
             <column name="PRECIO" />

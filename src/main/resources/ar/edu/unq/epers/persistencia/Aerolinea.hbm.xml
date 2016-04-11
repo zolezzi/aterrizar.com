@@ -11,6 +11,12 @@
 
         <property name="nombreAerolinea" type="string">
             <column name="NOMBRE_AEROLINEA" length="20" not-null="true" unique="true" />
-        </property>                         
+        </property> 
+        
+        <bag name="vuelos" table = "vuelos" cascade="all" lazy= "false">
+        	<key column = "ID_AEROLINEA"/>
+        	<one-to-many class = "ar.edu.unq.epers.aterrizar.modelo.Vuelo"/>
+        </bag>
+                               
     </class>
 </hibernate-mapping>
