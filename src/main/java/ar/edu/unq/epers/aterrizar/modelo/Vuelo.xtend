@@ -3,6 +3,7 @@ package ar.edu.unq.epers.aterrizar.modelo
 import java.util.List
 import java.util.Date
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.Timer
 
 @Accessors
 class Vuelo {
@@ -12,7 +13,7 @@ class Vuelo {
 	String destino
 	Date fechaSalida
 	Date fechaLlegada
-	Integer duracion // o podria ser un timer
+	Timer duracion
 	Integer Precio
 	
 	

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="ar.edu.unq.epers.aterrizar.modelo.Vuelo" table="aerolineas" >
+        <id name="id" type="java.lang.Integer">
+            <column name="ID_VUELO" />
+            <generator class="identity" />
+        </id>
+
+        <property name="destino" type="string">
+            <column name="DESTINO" length="20" />
+        </property>                   
+               <property name="origen" type="string">
+            <column name="ORIGEN" length="20"  />
+        </property>
+        
+        <property name="fechaSalida" type="java.util.Date">
+            <column name="FECHA_SALIDA"/>
+        </property>
+        
+		<property name="fechaLlegada" type="java.util.Date">
+            <column name="FECHA_LLEGADA" />
+        </property>
+        
+        <property name="duracion" type="java.util.Timer">
+            <column name="DURACION" />
+        </property>
+        
+       <property name="precio" type="java.lang.Integer">
+            <column name="PRECIO" />
+        </property>
+    </class>
+</hibernate-mapping>

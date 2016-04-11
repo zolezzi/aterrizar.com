@@ -8,13 +8,14 @@
         
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/aterrizar_p2</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">killer12</property>
+        <property name="hibernate.connection.password">root</property>
 
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="show_sql">true</property>
 
         <mapping resource="ar/edu/unq/epers/persistencia/Usuario.hbm.xml"></mapping>
+         <mapping resource="ar/edu/unq/epers/persistencia/Aerolinea.hbm.xml"></mapping>
 		
     </session-factory>
 </hibernate-configuration>
