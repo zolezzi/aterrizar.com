@@ -4,9 +4,9 @@ import org.junit.Test
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import org.junit.Assert
 import org.junit.Before
-import ar.edu.unq.aterrizar.servicios.SistemaRegistroUsuario
 import org.junit.Rule
 import org.junit.rules.ExpectedException
+import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroUsuario
 
 class TestSistemaRegistroUsuario {
 	Usuario usuario

@@ -1,9 +1,10 @@
 package ar.edu.unq.epers.test.persistencia
 
-import ar.edu.unq.aterrizar.servicios.SistemaRegistroUsuarioService
+
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert
+import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroUsuarioService
 
 class TestSistemaRegistroUsuarioService {
 	

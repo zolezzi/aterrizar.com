@@ -1,4 +1,4 @@
-package ar.edu.unq.aterrizar.utils
+package ar.edu.unq.epers.aterrizar.utils
 
 class EnviadorEmails {
 	

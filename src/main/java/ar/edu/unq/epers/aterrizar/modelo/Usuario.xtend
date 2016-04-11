@@ -1,6 +1,8 @@
 package ar.edu.unq.epers.aterrizar.modelo
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.List
+import ar.edu.unq.epers.aterrizar.servicios.CriterioDeBusqueda
 
 @Accessors
 class Usuario {
@@ -13,6 +15,7 @@ class Usuario {
 	String codValidacion
 	int id
 	Boolean logeado = false
+	List<CriterioDeBusqueda> busquedasDelUsuario
 	
 	new(){}
 	
