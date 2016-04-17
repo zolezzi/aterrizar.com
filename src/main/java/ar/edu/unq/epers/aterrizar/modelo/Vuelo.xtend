@@ -19,4 +19,7 @@ class Vuelo {
 	
 	new(){}
 	
+	def agregarUnTramo(Tramo tramo){
+		tramos.add(tramo)
+	}
 }

@@ -27,6 +27,10 @@
        <property name="precio" type="java.lang.Integer">
             <column name="PRECIO" />
        </property>
+       
+       <property name="reservado" type="java.lang.Boolean">
+            <column name="RESERVADO" />
+       </property>
       
        <one-to-one name="tramo" cascade="all" />
     </class>

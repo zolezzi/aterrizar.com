@@ -17,7 +17,9 @@ class Usuario {
 	Boolean logeado = false
 	List<CriterioDeBusqueda> busquedasDelUsuario
 	
-	new(){}
+	new(){
+		
+	}
 	
 	def cambiarContrasenia (String nuevaContrasenia){
 		if(contrasenia != nuevaContrasenia){

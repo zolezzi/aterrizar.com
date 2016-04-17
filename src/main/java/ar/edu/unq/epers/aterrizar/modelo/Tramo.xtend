@@ -16,4 +16,8 @@ class Tramo {
 	Integer id
 	
 	new (){}
+	
+	def agregarAsiento(Asiento asiento){
+		asientos.add(asiento)
+	}
 }

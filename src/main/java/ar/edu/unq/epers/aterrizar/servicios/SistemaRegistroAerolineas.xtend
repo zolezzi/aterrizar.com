@@ -5,12 +5,16 @@ import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 import ar.edu.unq.epers.aterrizar.persistencia.home.AerolineaHome
 import ar.edu.unq.epers.aterrizar.persistencia.home.VueloHome
 import ar.edu.unq.epers.aterrizar.modelo.Vuelo
+import ar.edu.unq.epers.aterrizar.persistencia.home.TramoHome
+import ar.edu.unq.epers.aterrizar.modelo.Tramo
+import ar.edu.unq.epers.aterrizar.modelo.Asiento
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
 
 class SistemaRegistroAerolineas {
 	
 	AerolineaHome aerolineaHome = new AerolineaHome()
 	VueloHome vueloHome = new VueloHome()
-	
+	TramoHome tramoHome= new TramoHome()
 	
 		def registrarAerolinea(String nombre) {
 		SessionManager.runInSession([
@@ -55,6 +59,29 @@ class SistemaRegistroAerolineas {
 		SessionManager.runInSession([
 			aerolinea.registrarUnVuelo(vuelo)
 			aerolineaHome.save(aerolinea)
+			null
+		])
+	}
+	
+	def agregaTramoA(Vuelo vuelo, Tramo tramo) {
+		SessionManager.runInSession([
+			vuelo.agregarUnTramo(tramo)
+			vueloHome.save(vuelo)
+			null
+		])
+	}
+	
+	def reservarAsientoDeTramo(String origen, String destino, int posicionAsiento, Usuario usuario){
+		SessionManager.runInSession([
+			var Tramo tramo = tramoHome.getBy("origen", origen, "destino", destino)
+			if(tramo != null){
+				var Asiento asiento = tramo.asientos.get(posicionAsiento - 1)
+				asiento.reservado = true
+				asiento.usuario = usuario
+				tramoHome.save(tramo)
+			}else{
+				throw new Exception("No se encontro un Tramo para esa busqueda")
+			}			
 			null
 		])
 	}

@@ -7,6 +7,7 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 class SistemaRegistroUsuarioService {
 	UsuarioHome userHome= new UsuarioHome()
 	
+	
 	def consultarUsuario(int id) {
 		SessionManager.runInSession([
 			userHome.get(id)
@@ -66,4 +67,7 @@ class SistemaRegistroUsuarioService {
 			null
 		])
 	}
+	
+
+	
 }

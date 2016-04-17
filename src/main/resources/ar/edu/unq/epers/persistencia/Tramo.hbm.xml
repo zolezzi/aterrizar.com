@@ -27,6 +27,7 @@
        <property name="precio_base" type="java.lang.Double">
             <column name="PRECIO_BASE" />
         </property>
+        
         <bag name="asientos" table = "asientos" cascade="all" lazy= "false">
         	<key column = "ID_TRAMO"/>
         	<one-to-many class = "ar.edu.unq.epers.aterrizar.modelo.Asiento"/>

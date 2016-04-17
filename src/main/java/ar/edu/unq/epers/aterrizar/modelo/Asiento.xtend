@@ -17,4 +17,6 @@ class Asiento {
 	Date fechaLlegada
 	Integer precio 
 	Boolean reservado = false
+	
+	new (){}
 }

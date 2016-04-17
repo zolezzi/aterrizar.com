@@ -22,4 +22,12 @@ class TramoHome {
 		var tramo = criteria.add(Restrictions.eq(campo, valor)).uniqueResult()
 		tramo as Tramo
 	}
+	
+	def getBy(String campo, String valor, String campoII, String valorII){
+		var criteria = SessionManager.getSession().createCriteria(Tramo);
+		var tramo = criteria.add(Restrictions.eq(campo, valor))
+							.add(Restrictions.eq(campoII, valorII))
+							.uniqueResult()
+		tramo as Tramo
+	}
 }
