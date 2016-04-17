@@ -1,7 +1,9 @@
 package ar.edu.unq.epers.aterrizar.modelo
 
-import java.util.List
+import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.Date
 
+@Accessors
 class Asiento {
 	
 
@@ -9,5 +11,10 @@ class Asiento {
 	Categoria categoria
 	Usuario usuario
 	Integer id
+	String origen
+	String destino
+	Date fechaSalida
+	Date fechaLlegada
+	Integer precio 
 	Boolean reservado = false
 }
