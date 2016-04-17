@@ -39,9 +39,9 @@ class SistemaRegistroAerolineas {
 	}	
 	
 		def consultarAerolineaPor(String campo, String valor){
-			//SessionManager.runInSession([
+			SessionManager.runInSession([
 				aerolineaHome.getBy(campo,valor)
-			//])
+			])
 	}
 	
 		def actualizar(Aerolinea aerolinea) {

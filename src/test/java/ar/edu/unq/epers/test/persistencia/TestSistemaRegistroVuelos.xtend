@@ -32,11 +32,11 @@ class TestSistemaRegistroVuelos {
 	}
  
 	@Test
-	def void consultar() {
+	def void consultarSiSeRegistroUnaAerolinea() {
 		SessionManager.runInSession([
 		var aerolinea = new SistemaRegistroAerolineas().consultarAerolineaPor("nombreAerolinea","Aerolinea Payaso");
 		Assert.assertEquals(aerolinea.vuelos.size, 1)
-null
+		null
 		])
 	}
 	

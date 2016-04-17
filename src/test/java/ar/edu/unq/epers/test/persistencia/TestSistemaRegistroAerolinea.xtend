@@ -14,7 +14,7 @@ class TestSistemaRegistroAerolinea {
 	}
  
 	@Test
-	def consultar() {
+	def testResgistroDeAerolineaYLePreguntoSuNombre() {
 		var aerolinea = new SistemaRegistroAerolineas().consultarAerolineaPor("nombreAerolinea","Aerolinea Payaso");
 		Assert.assertEquals("Aerolinea Payaso", aerolinea.getNombreAerolinea)
 	}

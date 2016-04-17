@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="ar.edu.unq.epers.aterrizar.modelo.Tramo" table="tramos" >
+        <id name="id" type="java.lang.Integer">
+            <column name="ID_TRAMO" />
+            <generator class="identity" />
+        </id>
+
+        <property name="destino" type="string">
+            <column name="DESTINO" length="20" />
+        </property>                   
+               <property name="origen" type="string">
+            <column name="ORIGEN" length="20"  />
+        </property>
+        
+        <property name="hora_llegada" type="string">
+            <column name="HORA_LLEGADA"/>
+        </property>
+        
+		<property name="hora_salida" type="string">
+            <column name="HORA_SALIDA" />
+        </property>
+        
+       <property name="precio_base" type="java.lang.Double">
+            <column name="PRECIO_BASE" />
+        </property>
+        <bag name="asientos" table = "asientos" cascade="all" lazy= "false">
+        	<key column = "ID_TRAMO"/>
+        	<one-to-many class = "ar.edu.unq.epers.aterrizar.modelo.Asiento"/>
+        </bag>
+    </class>
+</hibernate-mapping>

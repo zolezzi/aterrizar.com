@@ -21,10 +21,10 @@ class SessionManager {
 	}
 	
 	def static <T> T runInSession(Function0<T> cmd){
-		var sessionFactory = SessionManager.getSessionFactory();
-		var Transaction transaction = null;
-		var T result = null;
-		var Session session = null;
+		var sessionFactory = SessionManager.getSessionFactory()
+		var Transaction transaction = null
+		var T result = null
+		var Session session = null
 		
 		try {
 			session = sessionFactory.openSession();
