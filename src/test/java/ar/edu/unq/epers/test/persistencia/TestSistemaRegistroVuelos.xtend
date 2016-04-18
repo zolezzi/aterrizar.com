@@ -25,6 +25,7 @@ class TestSistemaRegistroVuelos {
 	
 	Usuario usuario
 	Usuario usuarioII
+	Tramo tramo
 	
 	@Before
 	def void startUp(){
@@ -38,7 +39,7 @@ class TestSistemaRegistroVuelos {
 			precio = 1000
 		]
 		
-		var Tramo tramo = new Tramo =>[
+		tramo = new Tramo =>[
 			asientos = new ArrayList<Asiento>
 			origen = "Argentina"
 			destino = "Chile"
@@ -61,7 +62,7 @@ class TestSistemaRegistroVuelos {
 			categoria = new CategoriaTurista()
 			usuario = null
 			origen = "Argentina"
-			destino = "Peru"
+			destino = "Chile"
 			fechaSalida = new Date (2016,5,12)
 			fechaLlegada = new Date (2016,5,13)
 			precio = 150		
@@ -70,8 +71,8 @@ class TestSistemaRegistroVuelos {
 		var Asiento asientoIII = new Asiento =>[
 			categoria = new CategoriaTurista()
 			usuario = null
-			origen = "Peru"
-			destino = "Panama"
+			origen = "Argentina"
+			destino = "Chile"
 			fechaSalida = new Date (2016,5,12)
 			fechaLlegada = new Date (2016,5,13)
 			precio = 150		
@@ -162,6 +163,20 @@ class TestSistemaRegistroVuelos {
 			Assert.assertEquals(tramo.asientos.get(0).reservado, true) 
 			null
 		])
+	}
+	
+	@Test
+	def void asientosLibres(){
+		var asientos = new SistemaRegistroAerolineas().consultarAsientosLibresDeTramo(tramo)
+		Assert.assertEquals(asientos.length,3);
+	}
+	
+	@Test
+	def void noHayAsientosLibres(){
+		tramo.origen = "Peru"
+		tramo.origen = "Panama"
+		var asientos = new SistemaRegistroAerolineas().consultarAsientosLibresDeTramo(tramo)
+		Assert.assertEquals(asientos.length,0);
 	}
 	
 	 

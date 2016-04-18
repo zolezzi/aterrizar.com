@@ -31,6 +31,15 @@ class AsientoHome {
 		asiento
 	}
 	
+	def getFreeSeatsOfSection(String campo, String valor, String campoII, String valorII){
+		var criteria = SessionManager.getSession().createCriteria(Asiento);
+		var Asientos = criteria.add(Restrictions.eq(campo, valor))
+							.add(Restrictions.eq(campoII, valorII))
+							.add(Restrictions.eq("reservado",false)							)
+							.list()
+		Asientos 
+	}
+	
 	def getRange(Integer cantidadDeAsientos) {
 		var criteria = SessionManager.getSession().createCriteria(Asiento);
 		var List<Asiento> asientos = criteria.add(Restrictions.eq("reservado", false)).setMaxResults(cantidadDeAsientos).list()

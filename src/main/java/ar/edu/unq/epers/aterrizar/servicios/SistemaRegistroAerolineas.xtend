@@ -107,4 +107,11 @@ class SistemaRegistroAerolineas {
 		])
 	}
 	
+	def consultarAsientosLibresDeTramo(Tramo tramo){
+		SessionManager.runInSession([
+			var List<Asiento> asientos = asientoHome.getFreeSeatsOfSection("origen", tramo.origen,"destino",tramo.destino)
+			asientos
+		])
+	}
+	
 }
