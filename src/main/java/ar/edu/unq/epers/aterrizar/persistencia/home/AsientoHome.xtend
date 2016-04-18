@@ -2,6 +2,7 @@ package ar.edu.unq.epers.aterrizar.persistencia.home
 
 import ar.edu.unq.epers.aterrizar.modelo.Asiento
 import org.hibernate.criterion.Restrictions
+import java.util.List
 
 class AsientoHome {
 
@@ -22,6 +23,12 @@ class AsientoHome {
 		var criteria = SessionManager.getSession().createCriteria(Asiento);
 		var asiento = criteria.add(Restrictions.eq(campo, valor)).uniqueResult()
 		asiento as Asiento
+	}
+	
+	def getRange(Integer cantidadDeAsientos) {
+		var criteria = SessionManager.getSession().createCriteria(Asiento);
+		var List<Asiento> asientos = criteria.add(Restrictions.eq("reservado", false)).setMaxResults(cantidadDeAsientos).list()
+		asientos	
 	}
 
 	
