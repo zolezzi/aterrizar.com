@@ -25,6 +25,12 @@ class AsientoHome {
 		asiento as Asiento
 	}
 	
+	def getBy(String campo, boolean valor){
+		var criteria = SessionManager.getSession().createCriteria(Asiento);
+		var asiento = criteria.add(Restrictions.eq(campo, valor)).list()
+		asiento
+	}
+	
 	def getRange(Integer cantidadDeAsientos) {
 		var criteria = SessionManager.getSession().createCriteria(Asiento);
 		var List<Asiento> asientos = criteria.add(Restrictions.eq("reservado", false)).setMaxResults(cantidadDeAsientos).list()
