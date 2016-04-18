@@ -33,5 +33,10 @@
        </property>
       
        <one-to-one name="tramo" cascade="all" />
+       
+       <bag name="usuarios" table = "usuarios" cascade="all" lazy= "false">
+       		<key column = "ID_USUARIO"/>
+        	<one-to-many class = "ar.edu.unq.epers.aterrizar.modelo.Usuario"/>
+       </bag>
     </class>
 </hibernate-mapping>
