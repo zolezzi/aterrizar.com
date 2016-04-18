@@ -9,12 +9,15 @@ import ar.edu.unq.epers.aterrizar.persistencia.home.TramoHome
 import ar.edu.unq.epers.aterrizar.modelo.Tramo
 import ar.edu.unq.epers.aterrizar.modelo.Asiento
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
+import ar.edu.unq.epers.aterrizar.persistencia.home.AsientoHome
+import java.util.List
 
 class SistemaRegistroAerolineas {
 	
 	AerolineaHome aerolineaHome = new AerolineaHome()
 	VueloHome vueloHome = new VueloHome()
 	TramoHome tramoHome= new TramoHome()
+	AsientoHome asientoHome = new AsientoHome()
 	
 		def registrarAerolinea(String nombre) {
 		SessionManager.runInSession([
@@ -74,7 +77,7 @@ class SistemaRegistroAerolineas {
 	def reservarAsientoDeTramo(String origen, String destino, int posicionAsiento, Usuario usuario){
 		SessionManager.runInSession([
 			var Tramo tramo = tramoHome.getBy("origen", origen, "destino", destino)
-			if(tramo != null){
+			if(tramo != null ){
 				var Asiento asiento = tramo.asientos.get(posicionAsiento - 1)
 				asiento.reservado = true
 				asiento.usuario = usuario
@@ -82,6 +85,24 @@ class SistemaRegistroAerolineas {
 			}else{
 				throw new Exception("No se encontro un Tramo para esa busqueda")
 			}			
+			null
+		])
+	}
+	
+	def reservarAsientos(Integer cantidadAsientos, Usuario usuario){
+		SessionManager.runInSession([
+			var List<Asiento> asientos = asientoHome.getRange(cantidadAsientos)
+			if(asientos.length == cantidadAsientos){
+				(asientos).forEach[asiento | 
+					asiento.reservado = true
+					asiento.usuario = usuario
+				]
+				(asientos).forEach[asiento | 
+					asientoHome.save(asiento)
+				]			
+			}else{
+				throw new Exception("No hay suficientes asientos libres")
+			}
 			null
 		])
 	}
