@@ -6,12 +6,16 @@ import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.junit.After
+import org.hibernate.Query
 
 class TestAerolineaHome {
 	
 	Aerolinea aerolineasPayaso
 	
 	AerolineaHome aerolineaHome = new AerolineaHome
+	
+	Query query
 	
 	@Before
 	def void setUp(){
@@ -50,9 +54,16 @@ class TestAerolineaHome {
 		
 		SessionManager.runInSession([
 			aerolineaHome.save(aerolineasPayaso)
-			var aerolineaPersistida = aerolineaHome.getBy("NOMBRE_AEROLINEA",aerolineasPayaso.nombreAerolinea)
+			var aerolineaPersistida = aerolineaHome.getBy("nombreAerolinea",aerolineasPayaso.nombreAerolinea)
 			Assert.assertEquals(aerolineasPayaso,aerolineaPersistida)
 			null
 		])
+	}
+	
+	@After
+	def void setDown(){
+		
+		query =	SessionManager.getSession.createQuery("DELETE FROM aerolineas WHERE nombreAerolinea 'Aerolineas Payaso'")	
+		query.executeUpdate
 	}
 }
