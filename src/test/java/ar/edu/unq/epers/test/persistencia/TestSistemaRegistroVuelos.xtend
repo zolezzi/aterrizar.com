@@ -20,6 +20,7 @@ import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 
 class TestSistemaRegistroVuelos {
 	
+	Usuario usuario
 	
 	@Before
 	def void startUp(){
@@ -49,7 +50,17 @@ class TestSistemaRegistroVuelos {
 			destino = "Chile"
 			fechaSalida = new Date (2016,5,12)
 			fechaLlegada = new Date (2016,5,13)
-			precio = 150
+			precio = 150		
+		]
+		
+		usuario = new Usuario =>[
+			nombre = "Juan"
+			apellido = "pepito"
+			nombreUsuario = "juan08"
+			email = "juan@hotmail.com"
+			fechaNacimiento = "12/10/90"
+			contrasenia = "blabla"
+			codValidacion = "000000"
 		]
 		tramo.agregarAsiento(asiento)
 		vuelo1.agregarUnTramo(tramo)
@@ -72,19 +83,18 @@ class TestSistemaRegistroVuelos {
  
 	@Test (expected = Exception) 
 	def void RegistroUsuarioAUnAsientoInvalidodeTramo(){
-		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile",0,new Usuario())
+		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile",0,usuario)
 		thrown.expectMessage("No se encontro un Tramo para esa busqueda") 
 	}
 	 
 	@Test (expected = Exception) 
 	def void RegistroUsuarioAUnTramoInvalido(){
-		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Peru",1,new Usuario())
+		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Peru",1, usuario)
 		thrown.expectMessage("No se encontro un Tramo para esa busqueda") 
 	}
 	
 	@Test
 	def void RegistroUsuarioAUnTramoValido(){
-		var Usuario usuario = new Usuario()
 		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile",1,usuario)
 		SessionManager.runInSession([
 			var Tramo tramo = new TramoHome().getBy("origen","Argentina","destino","Chile")
@@ -95,7 +105,6 @@ class TestSistemaRegistroVuelos {
 
 	@Test
 	def void RegistroUsuarioAUnAsientoValidodeTramo(){
-		var Usuario usuario = new Usuario()
 		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile",1,usuario)
 		SessionManager.runInSession([
 			var Tramo tramo = new TramoHome().getBy("origen","Argentina","destino","Chile")

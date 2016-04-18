@@ -10,11 +10,11 @@
         </id>
 
         <property name="nombre" type="string">
-            <column name="NOMBRE" length="20" not-null="true" />
+            <column name="NOMBRE" length="20"  />
         </property>
         
         <property name="apellido" type="string">
-            <column name="APELLIDO" length="20" not-null="true" />
+            <column name="APELLIDO" length="20"  />
         </property>
         
         <property name="nombreUsuario" type="string">
