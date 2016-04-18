@@ -62,8 +62,11 @@ class TestAerolineaHome {
 	
 	@After
 	def void setDown(){
-		
-		query =	SessionManager.getSession.createQuery("DELETE FROM aerolineas WHERE nombreAerolinea 'Aerolineas Payaso'")	
-		query.executeUpdate
+		SessionManager.runInSession([
+			SessionManager.getSession.createSQLQuery("USE aterrizar_p2").executeUpdate
+			SessionManager.getSession.createSQLQuery("SET SQL_SAFE_UPDATES=0").executeUpdate
+			SessionManager.getSession.createSQLQuery("DELETE FROM usuarios").executeUpdate
+			SessionManager.getSession.createSQLQuery("DELETE FROM aerolineas").executeUpdate
+		])
 	}
 }
