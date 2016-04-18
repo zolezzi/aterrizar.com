@@ -10,8 +10,8 @@ class Tramo {
 	List<Asiento> asientos
 	String origen
 	String destino
-	Timer hora_llegada
-	Timer hora_salida
+	String hora_llegada
+	String hora_salida
 	double precio_base
 	Integer id
 	

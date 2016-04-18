@@ -9,6 +9,7 @@ import java.util.Date
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.junit.After
 
 class TestAsientoHome {
 	
@@ -81,5 +82,14 @@ class TestAsientoHome {
 			Assert.assertEquals(asientoHome.getRange(2).size,1)
 			null
 		])
+	}
+	
+	@After
+	def void dropData(){
+		SessionManager.runInSession([
+			asientoHome.delete(asiento)
+			asientoHome.delete(asiento2)
+			null
+		])	
 	}
 }
