@@ -32,8 +32,8 @@
             <column name="RESERVADO" />
        </property>
       
-       <one-to-one name="tramo" cascade="all" />
+       <one-to-one name="tramo" cascade="all"/>
       
-	   <one-to-one name="usuario" cascade="all" />
+	   <one-to-one name="usuario" cascade="all"/>
     </class>
 </hibernate-mapping>
