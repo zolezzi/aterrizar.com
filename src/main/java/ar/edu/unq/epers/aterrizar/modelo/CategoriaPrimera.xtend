@@ -4,5 +4,6 @@ class CategoriaPrimera extends Categoria {
 	
 	new(){
 		factorDePrecio = 40
+		tipo = "Primera"
 	}
 }

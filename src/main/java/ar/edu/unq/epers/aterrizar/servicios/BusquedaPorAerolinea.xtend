@@ -8,5 +8,5 @@ class BusquedaPorAerolinea extends BusquedaSimple {
 	override filtrarVuelo(List<Vuelo> vuelos) {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
-	
+		
 }

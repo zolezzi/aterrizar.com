@@ -4,5 +4,6 @@ class CategoriaTurista extends Categoria {
 
 	new(){
 		factorDePrecio = -10
+		tipo = "Turista"
 	}
 }
