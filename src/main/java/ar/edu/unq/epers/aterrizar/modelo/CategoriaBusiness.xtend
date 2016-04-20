@@ -5,7 +5,7 @@ class CategoriaBusiness extends Categoria {
 	
 	
 	new(){
-		factorDePrecio = 15
+		factor_de_precio = 15
 		tipo = "Business"
 	}
 }

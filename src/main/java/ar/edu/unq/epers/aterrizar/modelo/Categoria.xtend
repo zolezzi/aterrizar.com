@@ -5,11 +5,11 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Accessors
 abstract class Categoria {
 	
-	int factorDePrecio
+	int factor_de_precio
 	Integer id
 	String tipo
 	
 	def double calcularPrecio(int precioDeUnTramo){
-		precioDeUnTramo+(precioDeUnTramo*(factorDePrecio/100))
+		precioDeUnTramo+(precioDeUnTramo*(factor_de_precio/100))
 	}
 }

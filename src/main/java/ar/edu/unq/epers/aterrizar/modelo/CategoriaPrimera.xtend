@@ -3,7 +3,7 @@ package ar.edu.unq.epers.aterrizar.modelo
 class CategoriaPrimera extends Categoria {
 	
 	new(){
-		factorDePrecio = 40
+		factor_de_precio = 40
 		tipo = "Primera"
 	}
 }
