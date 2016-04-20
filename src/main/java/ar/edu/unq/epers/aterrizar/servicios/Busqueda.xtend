@@ -5,7 +5,9 @@ import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 import java.util.List
 import ar.edu.unq.epers.aterrizar.modelo.Aerolinea
 import java.util.Date
+import org.eclipse.xtend.lib.annotations.Accessors
 
+@Accessors
 class Busqueda {
 	var ArrayList <String> criterios = new ArrayList<String>()
 	var String orden = " "
