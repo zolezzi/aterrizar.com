@@ -2,8 +2,6 @@ package ar.edu.unq.epers.aterrizar.servicios
 
 import java.util.ArrayList
 import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
-import java.util.List
-import ar.edu.unq.epers.aterrizar.modelo.Aerolinea
 import java.util.Date
 import org.eclipse.xtend.lib.annotations.Accessors
 
@@ -13,23 +11,22 @@ class Busqueda {
 	var String orden = " "
 	var String query = " "
 	var String queryFinal
-	String queryinicial = "select distinct aerolinea from Aerolinea as aerolinea join aerolinea.vuelos as vuelos join vuelos.tramos as tramos join tramos.asientos as asientos "
+	String queryinicial = "select distinct vuelos from Aerolinea as aerolinea join aerolinea.vuelos as vuelos left join vuelos.tramos as tramos left join tramos.asientos as asientos "
 	
 	def agregarCriterioAerolinea(String aerolinea){
 		criterios.add("aerolinea.nombreAerolinea = '" + aerolinea + "'")
 	}
-	//to do: falta definir bien como persistir categorias para poder filtrarlas
-	// son libres de inventar :P
+
 	def agregarCriterioCategoriaBusiness(){
-		
+		criterios.add("asiento.categoria = 'Business'")
 	}
 	
 	def agregarCriterioCategoriaPrimera(){
-		
+		criterios.add("asiento.categoria = 'Primera'")
 	}
 	
 	def agregarCriterioCategoriaTurista(){
-		
+	    criterios.add("asiento.categoria = 'Turista'")	
 	}
 	
 	def agregarCriteroFechaSalida(Date fecha){
@@ -49,7 +46,7 @@ class Busqueda {
 	}
 	
 	def ordenadoPorMenorCosto(){
-		orden = ("order by vuelos.precio desc")
+		orden = ("order by vuelos.precio asc")
 	}
 	
 	def ordenadoPorMenorEscala(){
@@ -57,7 +54,7 @@ class Busqueda {
 	}
 	
 	def ordenadoPorMenorDuracion(){
-		orden = ("order by vuelos.duracion desc")
+		orden = ("order by vuelos.duracion asc")
 	}
 	
 	def formarQuery(){
@@ -81,7 +78,9 @@ class Busqueda {
 		queryFinal = formarQuery() + orden
 		println(queryFinal)
 		SessionManager.runInSession([
-			return SessionManager.getSession().createQuery(queryFinal).list() as List<Aerolinea>
+			var r = SessionManager.getSession().createQuery(queryFinal).list()
+			println("!!!!!!!!!!!!!!!!!!!!!!!SIZE:" +r.size)
+			r
 		])
 	}
 }

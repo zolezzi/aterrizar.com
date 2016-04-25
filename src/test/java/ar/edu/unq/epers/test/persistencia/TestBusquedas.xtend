@@ -25,7 +25,7 @@ class TestBusquedas {
 			destino = "Panama"
 			fechaSalida = new Date(2016,1,1)
 			fechaLlegada = new Date(2016,1,2)
-			duracion = new Timer() //cambiar a otro tipo, no soporta timer la BD
+			duracion = new Timer() 
 			precio = 1000
 		]
 		
@@ -35,7 +35,7 @@ class TestBusquedas {
 			destino = "Mexico"
 			fechaSalida = new Date(2016,1,1)
 			fechaLlegada = new Date(2016,1,2)
-			duracion = new Timer() //cambiar a otro tipo, la BD no soporta timer
+			duracion = new Timer() 
 			precio = 1500
 		]
 		
@@ -66,7 +66,17 @@ class TestBusquedas {
 			fechaLlegada = new Date (2016,5,13)
 			precio = 150		
 		]
+		var Asiento asiento2 = new Asiento =>[
+			categoria = new CategoriaTurista()
+			usuario = null
+			origen = "Argentina"
+			destino = "Chile"
+			fechaSalida = new Date (2016,5,12)
+			fechaLlegada = new Date (2016,5,13)
+			precio = 200		
+		]
 		tramo.agregarAsiento(asiento)
+		tramo2.agregarAsiento(asiento2)
 		vuelo1.agregarUnTramo(tramo)
 		vuelo2.agregarUnTramo(tramo)
 		vuelo2.agregarUnTramo(tramo2)
@@ -75,62 +85,66 @@ class TestBusquedas {
 		new SistemaRegistroAerolineas().agregaVuelo(aerolinea, vuelo2)
 		
 	}
-	 
+	
 	@Test
 	def void busquedaPorAerolinea(){
 		var Busqueda busqueda = new Busqueda()
 		busqueda.agregarCriterioAerolinea("Aerolinea Payaso")
-		var List<Aerolinea> result = busqueda.buscar()
-		Assert.assertEquals(result.size(), 1)
-		
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(), 2)		
 	}
 	
 	@Test
 	def void busquedaPorOrigen(){
 		var Busqueda busqueda = new Busqueda()
 		busqueda.agregarCriterioOrigen("Argentina")
-		var List<Aerolinea> result = busqueda.buscar()
-		Assert.assertEquals(result.size(), 1)		
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(), 2)
+		Assert.assertEquals(result.get(0).origen, "Argentina")		
 	}
 	
 	@Test
 	def void busquedaPorDestino(){
 		var Busqueda busqueda = new Busqueda()
 		busqueda.agregarCriterioDestino("Mexico")
-		var List<Aerolinea> result = busqueda.buscar()
-		Assert.assertEquals(result.size(), 1)		
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(), 1)
+		Assert.assertEquals(result.get(0).destino,"Mexico")		
 	}
 
-	
+ 
 	@Test
-	def void busquedaCompuestaSinOrden(){
+	def void busquedaCompuesta(){
 		var Busqueda busqueda = new Busqueda()
 		busqueda.agregarCriterioAerolinea("Aerolinea Payaso")
 		busqueda.agregarCriterioDestino("Mexico")
 		busqueda.agregarCriterioOrigen("Argentina")
-		var List<Aerolinea> result = busqueda.buscar()
-		Assert.assertEquals(result.size(), 1)		
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(), 1)
+		Assert.assertEquals(result.get(0).destino,"Mexico")	
+		Assert.assertEquals(result.get(0).origen,"Argentina")	
 	}
-	
+
 	@Test
 	def void ordenadoPorCosto(){
 		var Busqueda busqueda = new Busqueda()
 		busqueda.ordenadoPorMenorCosto()
-		var List<Aerolinea> result = busqueda.buscar()
-		Assert.assertEquals(result.get(0).vuelos.size(), 2)		
-		Assert.assertEquals(result.get(0).vuelos.get(0).precio, 1000)
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(), 2)		
+		Assert.assertEquals(result.get(0).precio, 1000)
+		Assert.assertEquals(result.get(1).precio, 1500)
 	}
 	
 	@Test
 	def void ordenadoPorMenosEscalas(){
 		var Busqueda busqueda = new Busqueda()
 		busqueda.ordenadoPorMenorEscala()
-		var List<Aerolinea> result = busqueda.buscar()
-		Assert.assertEquals(result.get(0).vuelos.size(), 2)		
-		Assert.assertEquals(result.get(0).vuelos.get(0).destino, "Panama")
-	}
-	
-	 
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(), 2)		
+		Assert.assertEquals(result.get(0).destino, "Panama")
+		Assert.assertEquals(result.get(1).destino, "Mexico")
+	}	
+
 	@After
 	def void dropData(){
 		new SistemaRegistroAerolineas().eliminarAerolineaPor("nombreAerolinea","Aerolinea Payaso")
