@@ -54,15 +54,8 @@ class TestSistemaRegistroUsuario {
 		thrown.expectMessage("Clave invalida") 	
 	}
 	
-	@Test
-	def testGuardarUnUsuario(){
-		sistemaRegistroUsuario.guardarUsuario(usuario)
-		Assert.assertTrue(sistemaRegistroUsuario.usuarios.size == 1)
-	}
-	
 	@Test(expected = Exception)
 	def testCambiarContraseniaDeUnUsuarioValido(){
-		sistemaRegistroUsuario.guardarUsuario(usuario)
 		sistemaRegistroUsuario.cambiarContrasenia("pepito",usuario)
 		Assert.assertTrue(usuario.contrasenia == "pepito")
 	}

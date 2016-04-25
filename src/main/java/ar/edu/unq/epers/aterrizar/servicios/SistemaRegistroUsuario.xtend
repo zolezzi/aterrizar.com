@@ -9,15 +9,13 @@ import ar.edu.unq.epers.aterrizar.utils.EnviadorEmails
 
 @Accessors
 class SistemaRegistroUsuario {
-	//C = nombreUsuario, V = Usuario	
-	HashMap <String,Usuario> usuarios
+	//C = nombreUsuario, V = Usuario
 	EnviadorEmails enviadorEmails
 	ValidadorUsuario validadorUsuario
 	RepositorioUsuarios basesDeDatos
 	int codigo = 0
 	
 	new(){
-		usuarios = new HashMap<String, Usuario>()
 		basesDeDatos = new RepositorioUsuarios()
 		validadorUsuario = new ValidadorUsuario
 		validadorUsuario.basesDeDatos = this.basesDeDatos
@@ -31,19 +29,11 @@ class SistemaRegistroUsuario {
 	def logear(String nombreUsuario, String contrasenia){
 		
 		var Usuario usuario
-		if(usuarios.containsKey(nombreUsuario)){
-			usuario = usuarios.get(nombreUsuario)
-		}else{
 			usuario = basesDeDatos.selectUser(nombreUsuario)
-			if(usuario != null){
-				guardarUsuario(usuario)
-			}
-		}
-		
-		if(usuario != null && usuario.validarContrasenia(contrasenia)){
-			usuario.logeado = true		
-		}else{
-			throw new Exception("No pudo conectarse al sistema")
+			if(usuario != null && usuario.validarContrasenia(contrasenia)){
+				usuario.logeado = true		
+			}else{
+				throw new Exception("No pudo conectarse al sistema")
 		}		
 	}
 	
@@ -77,9 +67,6 @@ class SistemaRegistroUsuario {
 		}
 	}
 	
-	def guardarUsuario(Usuario usuario){
-		usuarios.put(usuario.nombreUsuario, usuario)
-	}
 	
 	def enviarCodigo (Usuario usuario){
 		enviadorEmails.enviarCodigoUsuario(usuario)
