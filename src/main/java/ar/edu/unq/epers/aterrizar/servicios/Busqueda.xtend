@@ -11,7 +11,7 @@ class Busqueda {
 	var String orden = " "
 	var String query = " "
 	var String queryFinal
-	String queryinicial = "select distinct vuelos from Aerolinea as aerolinea join aerolinea.vuelos as vuelos left join vuelos.tramos as tramos left join tramos.asientos as asientos "
+	String queryinicial = "select distinct vuelos from Aerolinea as aerolinea join aerolinea.vuelos as vuelos left join vuelos.tramos as tramos left join tramos.asientos as asientos"
 	
 	def agregarCriterioAerolinea(String aerolinea){
 		criterios.add("aerolinea.nombreAerolinea = '" + aerolinea + "'")
@@ -78,9 +78,7 @@ class Busqueda {
 		queryFinal = formarQuery() + orden
 		println(queryFinal)
 		SessionManager.runInSession([
-			var r = SessionManager.getSession().createQuery(queryFinal).list()
-			println("!!!!!!!!!!!!!!!!!!!!!!!SIZE:" +r.size)
-			r
+			SessionManager.getSession().createQuery(queryFinal).list()
 		])
 	}
 }
