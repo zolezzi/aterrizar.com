@@ -2,6 +2,7 @@ package ar.edu.unq.epers.aterrizar.modelo
 
 import ar.edu.unq.epers.aterrizar.servicios.BuscadorDeVuelo
 import org.eclipse.xtend.lib.annotations.Accessors
+import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 
 @Accessors
 class Usuario {
@@ -20,14 +21,14 @@ class Usuario {
 		
 	}
 	
-	def cambiarContrasenia (String nuevaContrasenia){
-		if(contrasenia != nuevaContrasenia){
-			this.contrasenia = nuevaContrasenia
-		}else{
-			throw new Exception("Contraseña invalida ")
-		}
-	}
-	
+	def cambiarContrasenia (String nuevaContrasenia){	
+			if(contrasenia != nuevaContrasenia){
+				this.contrasenia = nuevaContrasenia
+		 	}
+		 	else{
+			 	throw new ExceptionUsuario("Contraseña invalida ")
+			}
+}	
 	def validarContrasenia(String contrasenia){
 		this.contrasenia == contrasenia
 	}

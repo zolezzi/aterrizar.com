@@ -6,6 +6,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.ExpectedException
+import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 
 class TestUsuario {
 	
@@ -27,9 +28,9 @@ class TestUsuario {
 	public ExpectedException thrown = ExpectedException.none()
 	
 	@Test(expected = Exception) 
-	def testCambiarContrasenia(){
+	def void testCambiarContrasenia(){
 		usuario.cambiarContrasenia("albar")	
-		thrown.expectMessage("Contraseña invalida") 
+		thrown.expectMessage("Contraseña invalida ")
 	}
 	
 	@Test
