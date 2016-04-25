@@ -19,9 +19,7 @@
         <mapping resource="ar/edu/unq/epers/persistencia/Vuelo.hbm.xml"></mapping>
         <mapping resource="ar/edu/unq/epers/persistencia/Tramo.hbm.xml"></mapping>
         <mapping resource="ar/edu/unq/epers/persistencia/Asiento.hbm.xml"></mapping>
-        <mapping resource="ar/edu/unq/epers/persistencia/CategoriaTurista.hbm.xml"></mapping>
-        <mapping resource="ar/edu/unq/epers/persistencia/CategoriaBusiness.hbm.xml"></mapping>
-        <mapping resource="ar/edu/unq/epers/persistencia/CategoriaPrimera.hbm.xml"></mapping>
+        <mapping resource="ar/edu/unq/epers/persistencia/Categoria.hbm.xml"></mapping>
 		
     </session-factory>
 </hibernate-configuration>
