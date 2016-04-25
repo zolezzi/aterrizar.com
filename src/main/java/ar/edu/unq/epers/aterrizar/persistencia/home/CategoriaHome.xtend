@@ -5,8 +5,8 @@ import org.hibernate.criterion.Restrictions
 
 class CategoriaHome {
 	
-	def get(String tipo){
-		return SessionManager.getSession().get(typeof(Categoria) ,tipo) as Categoria
+	def get(Integer id){
+		return SessionManager.getSession().get(typeof(Categoria) ,id) as Categoria
 	}
 
 	def save(Categoria c) {

@@ -12,6 +12,10 @@
 		
 		<discriminator column="DISC" type="string"/>
 		
+		<property name="tipo" type="string">
+			<column name="TIPO_CATEGORIA"/>
+		</property>
+		
 		<property name="factor_de_precio" type="int">
             <column name="FACTOR_DE_PRECIO"/>
         </property>

@@ -32,8 +32,31 @@ class TestCategoriaHome {
 		
 		SessionManager.runInSession([
 			categoriaHome.save(categoriaTurista)
-			var categoriaPersistida = categoriaHome.get(categoriaTurista.tipo)
+			var categoriaPersistida = categoriaHome.get(categoriaTurista.id)
 			Assert.assertEquals(categoriaTurista,categoriaPersistida)
+			null
+		])
+	}
+	
+	@Test
+	def void testDeleteCategoria(){
+		
+		SessionManager.runInSession([
+			categoriaHome.save(categoriaPrimera)
+			categoriaHome.delete(categoriaPrimera)
+			var categoriaPersistida = categoriaHome.get(categoriaPrimera.id)
+			Assert.assertEquals(categoriaPersistida,null)
+			null
+		])
+	}
+	
+	@Test
+	def void testGetBy(){
+		
+		SessionManager.runInSession([
+			categoriaHome.save(categoriaBusiness)
+			var categoriaPersistida = categoriaHome.getBy("tipo", "Business")
+			Assert.assertEquals(categoriaPersistida,categoriaBusiness)
 			null
 		])
 	}
