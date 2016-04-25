@@ -9,6 +9,12 @@ abstract class Categoria {
 	Integer id
 	String tipo
 	
+	new(String tipo, int factorDePrecio) {
+		
+		this.tipo = tipo
+		this.factor_de_precio = factorDePrecio
+	}
+	
 	def double calcularPrecio(int precioDeUnTramo){
 		precioDeUnTramo+(precioDeUnTramo*(factor_de_precio/100))
 	}
