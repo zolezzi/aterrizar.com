@@ -12,7 +12,8 @@
         <property name="destino" type="string">
             <column name="DESTINO" length="20" />
         </property>                   
-               <property name="origen" type="string">
+        
+        <property name="origen" type="string">
             <column name="ORIGEN" length="20"  />
         </property>
         
@@ -35,5 +36,7 @@
        <one-to-one name="tramo" cascade="all"/>
       
 	   <one-to-one name="usuario" cascade="all"/>
+	   
+	   <one-to-one name="categoria" cascade="all" />
     </class>
 </hibernate-mapping>

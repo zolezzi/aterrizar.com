@@ -1,8 +1,10 @@
 package ar.edu.unq.epers.aterrizar.modelo
 
-import ar.edu.unq.epers.aterrizar.servicios.BuscadorDeVuelo
 import org.eclipse.xtend.lib.annotations.Accessors
 import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
+import ar.edu.unq.epers.aterrizar.servicios.Busqueda
+import java.util.List
+import java.util.ArrayList
 
 @Accessors
 class Usuario {
@@ -15,10 +17,23 @@ class Usuario {
 	String codValidacion
 	int id
 	Boolean logeado = false
-	BuscadorDeVuelo buscador = new BuscadorDeVuelo
+	List<String> historialDeBusquedas = new ArrayList<String>
 	
 	new(){
 		
+	}
+	
+	
+	def guardarBusqueda(Busqueda busqueda){
+		historialDeBusquedas.add(busqueda.queryFinal)
+	}
+	
+	def obtenerUltimaBusqueda(){
+		if(historialDeBusquedas.size() > 0){
+			historialDeBusquedas.get(0) 
+		}else{
+			" "
+		}
 	}
 	
 	def cambiarContrasenia (String nuevaContrasenia){	

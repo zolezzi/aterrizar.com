@@ -5,7 +5,6 @@ import org.junit.Test
 import org.junit.After
 import ar.edu.unq.epers.aterrizar.servicios.Busqueda
 import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroAerolineas
-import ar.edu.unq.epers.aterrizar.modelo.Aerolinea
 import java.util.List
 import java.util.ArrayList
 import ar.edu.unq.epers.aterrizar.modelo.Tramo
@@ -14,8 +13,13 @@ import java.util.Date
 import java.util.Timer
 import ar.edu.unq.epers.aterrizar.modelo.Asiento
 import ar.edu.unq.epers.aterrizar.modelo.CategoriaTurista
+import ar.edu.unq.epers.aterrizar.modelo.CategoriaBusiness
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
 
 class TestBusquedas {
+	
+	var Usuario usuario 				
+	
 	@Before
 	def void startUp(){
 		
@@ -67,7 +71,7 @@ class TestBusquedas {
 			precio = 150		
 		]
 		var Asiento asiento2 = new Asiento =>[
-			categoria = new CategoriaTurista()
+			categoria = new CategoriaBusiness()
 			usuario = null
 			origen = "Argentina"
 			destino = "Chile"
@@ -75,6 +79,17 @@ class TestBusquedas {
 			fechaLlegada = new Date (2016,5,13)
 			precio = 200		
 		]
+		
+		usuario = new Usuario =>[
+				 	  nombre = "carlos"
+					  apellido = "albar"
+					  it.nombreUsuario = "c_albar"
+					  email = "c_alabar@hotmail.com"
+					  fechaNacimiento = "12/3/1990"
+					  contrasenia = "albar" 
+					 ]	
+
+					 				
 		tramo.agregarAsiento(asiento)
 		tramo2.agregarAsiento(asiento2)
 		vuelo1.agregarUnTramo(tramo)
@@ -143,7 +158,50 @@ class TestBusquedas {
 		Assert.assertEquals(result.size(), 2)		
 		Assert.assertEquals(result.get(0).destino, "Panama")
 		Assert.assertEquals(result.get(1).destino, "Mexico")
+	}
+	
+	@Test
+	def void vuelosConAsientosBusiness(){
+		var Busqueda busqueda = new Busqueda()
+		busqueda.agregarCriterioCategoriaBusiness()
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(),1)
 	}	
+	
+	@Test
+	def void vuelosConAsientosTrusita(){
+		var Busqueda busqueda = new Busqueda()
+		busqueda.agregarCriterioCategoriaTurista()
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(),1)
+	}
+	
+	@Test
+	def void vuelosConAsientosPrimera(){
+		var Busqueda busqueda = new Busqueda()
+		busqueda.agregarCriterioCategoriaPrimera()
+		var List<Vuelo> result = busqueda.buscar()
+		Assert.assertEquals(result.size(),0)
+	}
+	
+	@Test
+	def void guardarHistorialBusquedasEnUsuario(){
+		var Busqueda busqueda = new Busqueda()
+		busqueda.agregarCriterioCategoriaPrimera()
+		var List<Vuelo> result = busqueda.buscar()
+		usuario.guardarBusqueda(busqueda)
+		Assert.assertEquals(usuario.obtenerUltimaBusqueda, busqueda.queryFinal)		
+	}
+	
+	@Test
+	def void ejecutarQueryDeHistorial(){
+		var Busqueda busqueda = new Busqueda()
+		busqueda.agregarCriterioCategoriaPrimera()
+		var List<Vuelo> result = busqueda.buscar()
+		usuario.guardarBusqueda(busqueda)
+		var List<Vuelo> result2 = busqueda.buscarQuery(usuario.obtenerUltimaBusqueda)
+		Assert.assertEquals(result.size(),result2.size())		
+	}
 
 	@After
 	def void dropData(){

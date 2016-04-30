@@ -43,7 +43,5 @@ class TestUsuario {
 	def testValidarContrasenia(){
 		Assert.assertTrue(usuario.validarContrasenia("albar"))
 	}
-	
 
-	
 }

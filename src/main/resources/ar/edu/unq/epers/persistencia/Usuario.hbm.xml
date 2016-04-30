@@ -35,7 +35,12 @@
         
          <property name="codValidacion" type="string">
             <column name="CODIGO_VALIDACION" not-null="true"/>
-        </property>               
+        </property>    
+                   
+        <bag name="historialDeBusquedas" table = "historialDeBusquedas" cascade="all" lazy= "false">
+        	<key column = "ID_USUARIO"/>
+        	<element column="query_busqueda" type="string"></element>  
+        </bag>
        
     </class>
 </hibernate-mapping>

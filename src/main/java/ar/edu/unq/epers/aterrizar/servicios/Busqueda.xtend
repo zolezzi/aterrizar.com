@@ -11,22 +11,22 @@ class Busqueda {
 	var String orden = " "
 	var String query = " "
 	var String queryFinal
-	String queryinicial = "select distinct vuelos from Aerolinea as aerolinea join aerolinea.vuelos as vuelos left join vuelos.tramos as tramos left join tramos.asientos as asientos"
+	String queryinicial = "select distinct vuelos from Aerolinea as aerolinea join aerolinea.vuelos as vuelos left join vuelos.tramos as tramos left join tramos.asientos as asientos left join asientos.categoria as categoria"
 	
 	def agregarCriterioAerolinea(String aerolinea){
 		criterios.add("aerolinea.nombreAerolinea = '" + aerolinea + "'")
 	}
 
 	def agregarCriterioCategoriaBusiness(){
-		criterios.add("asiento.categoria = 'Business'")
+		criterios.add("categoria.tipo = 'Business'")
 	}
 	
 	def agregarCriterioCategoriaPrimera(){
-		criterios.add("asiento.categoria = 'Primera'")
+		criterios.add("categoria.tipo = 'Primera'")
 	}
 	
 	def agregarCriterioCategoriaTurista(){
-	    criterios.add("asiento.categoria = 'Turista'")	
+	    criterios.add("categoria.tipo = 'Turista'")	
 	}
 	
 	def agregarCriteroFechaSalida(Date fecha){
@@ -81,4 +81,11 @@ class Busqueda {
 			SessionManager.getSession().createQuery(queryFinal).list()
 		])
 	}
+	
+	def buscarQuery(String query) {
+		SessionManager.runInSession([
+			SessionManager.getSession().createQuery(query).list()
+		])
+	}
+	
 }
