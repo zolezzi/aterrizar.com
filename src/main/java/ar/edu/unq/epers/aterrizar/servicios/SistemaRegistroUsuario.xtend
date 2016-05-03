@@ -1,11 +1,11 @@
 package ar.edu.unq.epers.aterrizar.servicios
 
-import java.util.HashMap
 import org.eclipse.xtend.lib.annotations.Accessors
 import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 import ar.edu.unq.epers.aterrizar.modelo.ValidadorUsuario
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.utils.EnviadorEmails
+import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 
 @Accessors
 class SistemaRegistroUsuario {
@@ -37,7 +37,10 @@ class SistemaRegistroUsuario {
 		}		
 	}
 	
-	def crearUsuario(String pNombre, String apellidoDeUsuario, String nombreDeUsuario, String emailDeUsuario, String fechaDeNacimiento, String contraseniaDeUsuario){
+	def crearUsuario(String pNombre, String apellidoDeUsuario, String nombreDeUsuario,
+		String emailDeUsuario, String fechaDeNacimiento, String contraseniaDeUsuario
+								) throws ExceptionUsuario {
+		
 		var usuario = new Usuario =>[
 				 	  nombre = pNombre
 					  apellido = apellidoDeUsuario
@@ -52,18 +55,18 @@ class SistemaRegistroUsuario {
 			this.enviarCodigo(usuario)
 		}
 		else {
-			 throw new Exception ("usuario invalido")
+			 throw new ExceptionUsuario ("Usuario invalido")
 		}	
 	}
 	
-	def validarClaveDeUsuario(String nombreUsuario, String clave){
+	def validarClaveDeUsuario(String nombreUsuario, String clave) throws ExceptionUsuario {
 		
 		var usuario = basesDeDatos.selectUser(nombreUsuario)
 		
 		if(validadorUsuario.validarClaveDeUsuario(usuario, clave)){
 			basesDeDatos.validateUser(usuario)
 		}else{
-			throw new Exception("Clave invalida")
+			throw new ExceptionUsuario("Clave invalida")
 		}
 	}
 	
@@ -72,11 +75,11 @@ class SistemaRegistroUsuario {
 		enviadorEmails.enviarCodigoUsuario(usuario)
 	}
 	
-	def cambiarContrasenia (String nuevaContrasenia, Usuario usuario){
+	def cambiarContrasenia (String nuevaContrasenia, Usuario usuario) throws ExceptionUsuario {
 		
 		var Usuario usuarioAModificar = basesDeDatos.selectUser(usuario.nombreUsuario)
 		if(usuario == null){
-			throw new Exception	("Usuario no existe en la BD")
+			throw new ExceptionUsuario ("Usuario no existe en la BD")
 		}			
 		usuarioAModificar.cambiarContrasenia(nuevaContrasenia)
 		basesDeDatos.updateUser(usuarioAModificar)

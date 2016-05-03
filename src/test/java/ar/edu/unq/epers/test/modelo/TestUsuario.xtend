@@ -27,7 +27,7 @@ class TestUsuario {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none()
 	
-	@Test(expected = Exception) 
+	@Test(expected = ExceptionUsuario)
 	def void testCambiarContrasenia(){
 		usuario.cambiarContrasenia("albar")	
 		thrown.expectMessage("Contraseña invalida ")
