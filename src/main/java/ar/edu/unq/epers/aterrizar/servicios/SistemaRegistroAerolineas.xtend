@@ -77,11 +77,15 @@ class SistemaRegistroAerolineas {
 	def reservarAsientoDeTramo(String origen, String destino, int posicionAsiento, Usuario usuario){
 		SessionManager.runInSession([
 			var Tramo tramo = tramoHome.getBy("origen", origen, "destino", destino)
-			if(tramo != null ){
+			if(tramo != null){
 				var Asiento asiento = tramo.asientos.get(posicionAsiento - 1)
-				asiento.reservado = true
-				asiento.usuario = usuario
-				tramoHome.save(tramo)
+				if(!asiento.reservado){
+					asiento.reservado = true
+					asiento.usuario = usuario
+					tramoHome.save(tramo)
+				}else{
+					throw new Exception("El Asiento en esa posición no está disponible para el Tramo solicitado")
+				}
 			}else{
 				throw new Exception("No se encontro un Tramo para esa busqueda")
 			}			
