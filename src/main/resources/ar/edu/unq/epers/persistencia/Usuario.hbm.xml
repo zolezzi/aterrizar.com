@@ -38,9 +38,9 @@
         </property>    
                    
         <bag name="historialDeBusquedas" table = "historialDeBusquedas" cascade="all" lazy= "false">
-        	<key column = "ID_USUARIO"/>
-        	<element column="query_busqueda" type="string"></element>  
+        	<key column = "ID_BUSQUEDA"/>
+        	<one-to-many class="ar.edu.unq.epers.aterrizar.modelo.Busqueda"></one-to-many>  
         </bag>
-       
+         
     </class>
 </hibernate-mapping>

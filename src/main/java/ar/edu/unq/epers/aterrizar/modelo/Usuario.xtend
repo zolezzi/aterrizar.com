@@ -2,7 +2,6 @@ package ar.edu.unq.epers.aterrizar.modelo
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
-import ar.edu.unq.epers.aterrizar.servicios.Busqueda
 import java.util.List
 import java.util.ArrayList
 
@@ -17,7 +16,7 @@ class Usuario {
 	String codValidacion
 	int id
 	Boolean logeado = false
-	List<String> historialDeBusquedas = new ArrayList<String>
+	List<Busqueda> historialDeBusquedas = new ArrayList<Busqueda>
 	
 	new(){
 		
@@ -25,7 +24,7 @@ class Usuario {
 	
 	
 	def guardarBusqueda(Busqueda busqueda){
-		historialDeBusquedas.add(busqueda.queryFinal)
+		historialDeBusquedas.add(busqueda)
 	}
 	
 	def obtenerUltimaBusqueda(){

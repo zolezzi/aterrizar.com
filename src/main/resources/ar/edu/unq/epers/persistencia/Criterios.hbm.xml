@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+<hibernate-mapping>
+    <class name="ar.edu.unq.epers.aterrizar.modelo.Criterios" table="criterios" >
+		
+		<id name="id" type= "java.lang.Integer">
+			<column name="ID_CRITERIO"/>
+			<generator class="identity"/>
+		</id>
+		
+		<discriminator column="DISC" type="string"/>
+        
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioAerolinea" discriminator-value="crtAero">
+        	<property name="nombreAerolinea"/>
+        </subclass>
+        
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoBusiness" discriminator-value="crtAsBsn">       
+        </subclass>
+        
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoTurista" discriminator-value="crtAsTrst">
+        </subclass>
+        
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoPrimera" discriminator-value="crtAsPrmr">
+        </subclass>
+        
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioDestino" discriminator-value="crtDstn">
+        	<property name="nombreDestino" />
+        </subclass>
+        
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioOrigen" discriminator-value="crtOrg">
+        	<property name="nombreOrigen" />
+        </subclass>
+        
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioFechaLLegada" discriminator-value="crtFchLlgd">
+        </subclass>
+        
+         <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioFechaSalida" discriminator-value="crtFchSld">
+        </subclass>
+        
+ <!--    No tengo idea por que lanza un error que no puede determinar el modelo de Criterios:
+ 		 "org.hibernate.MappingException: Could not determine type for:
+ 		 ar.edu.unq.epers.aterrizar.modelo.Criterios, at table: criterios,
+ 		 for columns: [org.hibernate.mapping.Column(IZQ)]"
+ 		 Sucede en todos los mapeos similares, es posible que este usando mal la Property. -->
+ 
+ <!-- 
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriteriosCompuestos" discriminator-value="crtCmps">
+        	<property name="izq" type="ar.edu.unq.epers.aterrizar.modelo.Criterios">
+                 <column name="IZQ"/>
+            </property>
+            
+            <property name="der" type="ar.edu.unq.epers.aterrizar.modelo.Criterios">
+                 <column name="DER"/>
+            </property>
+        	
+        	 <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioAND" discriminator-value="crtAnd">
+             </subclass>
+             
+             <subclass name="ar.edu.unq.epers.aterrizar.modelo.CriterioOR" discriminator-value="crtOr">
+             </subclass>
+        </subclass>
+ -->       	
+
+    </class>
+</hibernate-mapping>

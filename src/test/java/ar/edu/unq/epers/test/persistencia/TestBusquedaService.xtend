@@ -1,23 +1,35 @@
 package ar.edu.unq.epers.test.persistencia
-import org.junit.Assert
+
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import org.junit.Before
-import org.junit.Test
-import org.junit.After
-import ar.edu.unq.epers.aterrizar.servicios.Busqueda
-import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroAerolineas
-import java.util.List
-import java.util.ArrayList
-import ar.edu.unq.epers.aterrizar.modelo.Tramo
 import ar.edu.unq.epers.aterrizar.modelo.Vuelo
+import ar.edu.unq.epers.aterrizar.modelo.Tramo
+import java.util.ArrayList
+import ar.edu.unq.epers.aterrizar.modelo.Asiento
 import java.util.Date
 import java.util.Timer
-import ar.edu.unq.epers.aterrizar.modelo.Asiento
 import ar.edu.unq.epers.aterrizar.modelo.CategoriaTurista
 import ar.edu.unq.epers.aterrizar.modelo.CategoriaBusiness
-import ar.edu.unq.epers.aterrizar.modelo.Usuario
+import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroAerolineas
+import ar.edu.unq.epers.aterrizar.modelo.Busqueda
+import ar.edu.unq.epers.aterrizar.servicios.BusquedaService
+import org.junit.Test
+import ar.edu.unq.epers.aterrizar.modelo.CriterioAerolinea
+import ar.edu.unq.epers.aterrizar.modelo.Criterios
+import java.util.List
+import org.junit.Assert
+import ar.edu.unq.epers.aterrizar.modelo.CriterioOrigen
+import org.junit.After
+import ar.edu.unq.epers.aterrizar.modelo.CriterioDestino
+import ar.edu.unq.epers.aterrizar.modelo.OrdenCosto
+import ar.edu.unq.epers.aterrizar.modelo.Orden
+import ar.edu.unq.epers.aterrizar.modelo.OrdenEscala
+import ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoBusiness
+import ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoTurista
+import ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoPrimera
+import ar.edu.unq.epers.aterrizar.modelo.CriterioAND
 
-class TestBusquedas {
-	
+class TestBusquedaService {
 	var Usuario usuario 				
 	
 	@Before
@@ -103,58 +115,59 @@ class TestBusquedas {
 	
 	@Test
 	def void busquedaPorAerolinea(){
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioAerolinea("Aerolinea Payaso")
-		var List<Vuelo> result = busqueda.buscar()
+		var Criterios criterio = new CriterioAerolinea("Aerolinea Payaso")
+		busqueda.agregarCriterioBusqueda(criterio)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(), 2)		
 	}
 	
 	@Test
 	def void busquedaPorOrigen(){
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioOrigen("Argentina")
-		var List<Vuelo> result = busqueda.buscar()
+		var Criterios criterio = new CriterioOrigen("Argentina")
+		busqueda.agregarCriterioBusqueda(criterio)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		
 		Assert.assertEquals(result.size(), 2)
 		Assert.assertEquals(result.get(0).origen, "Argentina")		
 	}
 	
 	@Test
 	def void busquedaPorDestino(){
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioDestino("Mexico")
-		var List<Vuelo> result = busqueda.buscar()
+		var Criterios criterio = new CriterioDestino("Mexico")
+		busqueda.agregarCriterioBusqueda(criterio)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		
 		Assert.assertEquals(result.size(), 1)
 		Assert.assertEquals(result.get(0).destino,"Mexico")		
 	}
-
- 
-	@Test
-	def void busquedaCompuesta(){
-		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioAerolinea("Aerolinea Payaso")
-		busqueda.agregarCriterioDestino("Mexico")
-		busqueda.agregarCriterioOrigen("Argentina")
-		var List<Vuelo> result = busqueda.buscar()
-		Assert.assertEquals(result.size(), 1)
-		Assert.assertEquals(result.get(0).destino,"Mexico")	
-		Assert.assertEquals(result.get(0).origen,"Argentina")	
-	}
-
+	
 	@Test
 	def void ordenadoPorCosto(){
+		
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.ordenadoPorMenorCosto()
-		var List<Vuelo> result = busqueda.buscar()
+		busqueda.orden = new OrdenCosto()
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(), 2)		
 		Assert.assertEquals(result.get(0).precio, 1000)
 		Assert.assertEquals(result.get(1).precio, 1500)
+		
 	}
 	
 	@Test
 	def void ordenadoPorMenosEscalas(){
+		
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.ordenadoPorMenorEscala()
-		var List<Vuelo> result = busqueda.buscar()
+		busqueda.orden = new OrdenEscala()
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		
 		Assert.assertEquals(result.size(), 2)		
 		Assert.assertEquals(result.get(0).destino, "Panama")
 		Assert.assertEquals(result.get(1).destino, "Mexico")
@@ -162,50 +175,82 @@ class TestBusquedas {
 	
 	@Test
 	def void vuelosConAsientosBusiness(){
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioCategoriaBusiness()
-		var List<Vuelo> result = busqueda.buscar()
+		var Criterios criterio = new CriterioAsientoBusiness()
+		busqueda.agregarCriterioBusqueda(criterio)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(),1)
-	}	
-	
+	}
+		
 	@Test
 	def void vuelosConAsientosTrusita(){
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioCategoriaTurista()
-		var List<Vuelo> result = busqueda.buscar()
+		var Criterios criterio = new CriterioAsientoTurista()
+		busqueda.agregarCriterioBusqueda(criterio)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(),1)
 	}
 	
 	@Test
 	def void vuelosConAsientosPrimera(){
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioCategoriaPrimera()
-		var List<Vuelo> result = busqueda.buscar()
+		var Criterios criterio = new CriterioAsientoPrimera()
+		busqueda.agregarCriterioBusqueda(criterio)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(),0)
 	}
 	
 	@Test
-	def void guardarHistorialBusquedasEnUsuario(){
+	def void busquedaCompuesta(){
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioCategoriaPrimera()
-		var List<Vuelo> result = busqueda.buscar()
-		usuario.guardarBusqueda(busqueda)
-		Assert.assertEquals(usuario.obtenerUltimaBusqueda, busqueda.queryFinal)		
+		var Criterios criterio = new CriterioAerolinea("Aerolinea Payaso")
+		var Criterios criterio2= new CriterioDestino("Mexico")
+		var Criterios criterio3= new CriterioOrigen("Argentina")
+		var Criterios andCrit = new CriterioAND(criterio, criterio2)
+		var Criterios andCrit2 = new CriterioAND(andCrit,criterio3)
+		busqueda.agregarCriterioBusqueda(andCrit2)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+	
+		Assert.assertEquals(result.size(), 1)
+		Assert.assertEquals(result.get(0).destino,"Mexico")	
+		Assert.assertEquals(result.get(0).origen,"Argentina")	
 	}
 	
 	@Test
-	def void ejecutarQueryDeHistorial(){
+	def void guardarHistorialBusquedasEnUsuario(){
+		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
-		busqueda.agregarCriterioCategoriaPrimera()
-		var List<Vuelo> result = busqueda.buscar()
+		var Criterios criterio = new CriterioAsientoPrimera()
+		busqueda.agregarCriterioBusqueda(criterio)
+		buscador.EjecutarBusqueda(busqueda)
 		usuario.guardarBusqueda(busqueda)
-		var List<Vuelo> result2 = busqueda.buscarQuery(usuario.obtenerUltimaBusqueda)
-		Assert.assertEquals(result.size(),result2.size())		
+		Assert.assertEquals(usuario.obtenerUltimaBusqueda, busqueda)		
 	}
-
+	
+	
 	@After
 	def void dropData(){
 		new SistemaRegistroAerolineas().eliminarAerolineaPor("nombreAerolinea","Aerolinea Payaso")
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

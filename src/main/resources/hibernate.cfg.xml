@@ -20,6 +20,9 @@
         <mapping resource="ar/edu/unq/epers/persistencia/Tramo.hbm.xml"></mapping>
         <mapping resource="ar/edu/unq/epers/persistencia/Asiento.hbm.xml"></mapping>
         <mapping resource="ar/edu/unq/epers/persistencia/Categoria.hbm.xml"></mapping>
+		<mapping resource="ar/edu/unq/epers/persistencia/Criterios.hbm.xml"></mapping>
+        <mapping resource="ar/edu/unq/epers/persistencia/Orden.hbm.xml"></mapping>
+        <mapping resource="ar/edu/unq/epers/persistencia/Busqueda.hbm.xml"></mapping>
 		
     </session-factory>
 </hibernate-configuration>
