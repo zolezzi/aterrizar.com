@@ -8,30 +8,32 @@ import org.junit.Rule
 import org.junit.rules.ExpectedException
 import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroUsuario
 import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
+import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 
 class TestSistemaRegistroUsuario {
 	Usuario usuario
 	SistemaRegistroUsuario sistemaRegistroUsuario
+	RepositorioUsuarios basesDeDatos
 	
 	@Before
 	def void setUp(){
+		
+		basesDeDatos = new RepositorioUsuarios()
+		
 		usuario = new Usuario =>[
 				 	  nombre = "Ricky"
 					  apellido = "Fort"
 					  nombreUsuario = "Ricky_Miamee"
 					  email = "ricky_miame2002@hotmail.com"
 					  fechaNacimiento = "05/11/1968"
-					  contrasenia = "miameeeee"]	
+					  contrasenia = "miameeeee"]
+					  	
 	    sistemaRegistroUsuario = new SistemaRegistroUsuario()				
 	}
 	@Rule
 	public ExpectedException thrown = ExpectedException.none()
 	
-	@Test(expected = ExceptionUsuario) 
-	def testCrearUsuarioConUnoDeSusCampoInvalido(){
-		sistemaRegistroUsuario.crearUsuario(null,"ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456")
-		thrown.expectMessage("Usuario invalido") 
-	}
+
 	
 	@Test
 	def testRegistrarCodigo(){
@@ -57,14 +59,23 @@ class TestSistemaRegistroUsuario {
 	
 	@Test
 	def testCambiarContraseniaDeUnUsuarioValido(){
-		sistemaRegistroUsuario.cambiarContrasenia("pepito",usuario)
-		Assert.assertTrue(usuario.contrasenia == "pepito")
+		sistemaRegistroUsuario.crearUsuario("nico","capo","nico2000","nicokapo@hotmail.com","17/02/2000","123456")
+		var usuarioValido = basesDeDatos.selectUser("nico2000")
+		//sistemaRegistroUsuario.cambiarContrasenia("hola",usuarioValido)
+		//basesDeDatos.updateUser(usuarioValido)
+		Assert.assertTrue(usuarioValido.contrasenia == "hola")
 	}
 	
 	@Test(expected = ExceptionUsuario)
 	def testCambiarContraseniaDeUnUsuarioInvalido(){
 		sistemaRegistroUsuario.cambiarContrasenia("pepito",usuario)
 		thrown.expectMessage("Usuario no existe en la BD") 	
+	}
+	
+	@Test(expected = ExceptionUsuario) 
+	def testCrearUsuarioConUnoDeSusCampoInvalido(){
+		sistemaRegistroUsuario.crearUsuario(null,"ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456")
+		thrown.expectMessage("Usuario invalido") 
 	}
 }
 		

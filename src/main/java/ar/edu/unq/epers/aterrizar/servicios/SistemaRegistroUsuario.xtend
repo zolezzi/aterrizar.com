@@ -19,6 +19,7 @@ class SistemaRegistroUsuario {
 		basesDeDatos = new RepositorioUsuarios()
 		validadorUsuario = new ValidadorUsuario
 		validadorUsuario.basesDeDatos = this.basesDeDatos
+		enviadorEmails = new EnviadorEmails()
 	}
 	
 	def generarCod(Usuario usuario){
@@ -33,7 +34,7 @@ class SistemaRegistroUsuario {
 			if(usuario != null && usuario.validarContrasenia(contrasenia)){
 				usuario.logeado = true		
 			}else{
-				throw new Exception("No pudo conectarse al sistema")
+				throw new ExceptionUsuario("No pudo conectarse al sistema")
 		}		
 	}
 	
@@ -78,7 +79,7 @@ class SistemaRegistroUsuario {
 	def cambiarContrasenia (String nuevaContrasenia, Usuario usuario) throws ExceptionUsuario {
 		
 		var Usuario usuarioAModificar = basesDeDatos.selectUser(usuario.nombreUsuario)
-		if(usuario == null){
+		if(usuarioAModificar == null){
 			throw new ExceptionUsuario ("Usuario no existe en la BD")
 		}			
 		usuarioAModificar.cambiarContrasenia(nuevaContrasenia)

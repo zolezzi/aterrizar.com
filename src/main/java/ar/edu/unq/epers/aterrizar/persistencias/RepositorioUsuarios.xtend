@@ -111,6 +111,6 @@ class RepositorioUsuarios {
 
 	def getConnection() {
 		Class.forName("com.mysql.jdbc.Driver");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=killer12")
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=root")
 	}
 }
