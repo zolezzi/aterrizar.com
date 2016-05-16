@@ -32,5 +32,6 @@
         	<key column = "ID_TRAMO"/>
         	<one-to-many class = "ar.edu.unq.epers.aterrizar.modelo.Asiento"/>
         </bag>
+        
     </class>
 </hibernate-mapping>

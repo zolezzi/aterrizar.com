@@ -1,13 +1,21 @@
 package ar.edu.unq.epers.aterrizar.persistencia.home
 
-import org.eclipse.xtend.lib.annotations.Accessors
+import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
 
-@Accessors
 class BusquedaHome {
 	
-	def Search(String search){
-		SessionManager.runInSession([
-			SessionManager.getSession().createQuery(search).list()
-		])
+	
+	def get(int id){
+		return SessionManager.getSession().get(typeof(Busqueda) ,id) as Busqueda
 	}
+
+	def save(Busqueda b) {
+		SessionManager.getSession().saveOrUpdate(b)		
+	}
+	
+	def delete(Busqueda b){
+		SessionManager.getSession().delete(b)
+	}
+	
+	
 }

@@ -2,9 +2,10 @@ package ar.edu.unq.epers.aterrizar.servicios
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.List
-import ar.edu.unq.epers.aterrizar.modelo.Criterios
-import ar.edu.unq.epers.aterrizar.modelo.Busqueda
 import ar.edu.unq.epers.aterrizar.persistencia.home.BusquedaHome
+import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.Criterios
+import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 
 @Accessors
 class BusquedaService {
@@ -30,6 +31,12 @@ class BusquedaService {
 			query = query + " " + busqueda.orden.darOrden()
 		}
 		println(query)
-		busquedaHome.Search(query)
+		this.Search(query)
+	}
+	
+	def Search(String search){
+		SessionManager.runInSession([
+			SessionManager.getSession().createQuery(search).list()
+		])
 	}
 }

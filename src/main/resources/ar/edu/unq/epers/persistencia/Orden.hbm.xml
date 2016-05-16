@@ -3,27 +3,27 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
  
 <hibernate-mapping>
-    <class name="ar.edu.unq.epers.aterrizar.modelo.Orden" table="Orden" >
+    <class name="ar.edu.unq.epers.aterrizar.modelo.modeloorden.Orden" table="Orden" >
         <id name="id" type="java.lang.Integer">
             <column name="ID_ORDEN" />
             <generator class="identity" />
         </id>
-<!-- 
+         
 		<discriminator column="DISC" type="string"/>
 		
 		 <property name="queryOrden" type="string">
                <column name="QUERY_ORDEN"/>
          </property>
         
-        <subclass name="ar.edu.unq.epers.aterrizar.modelo.OrdenCosto" discriminator-value="ordCst">
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.modeloorden.OrdenCosto" discriminator-value="ordCst">
         </subclass>
         
-        <subclass name="ar.edu.unq.epers.aterrizar.modelo.OrdenDuracion" discriminator-value="ordDsn">
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.modeloorden.OrdenDuracion" discriminator-value="ordDsn">
         </subclass>
         
-        <subclass name="ar.edu.unq.epers.aterrizar.modelo.OrdenEscala" discriminator-value="ordEscl">
+        <subclass name="ar.edu.unq.epers.aterrizar.modelo.modeloorden.OrdenEscala" discriminator-value="ordEscl">
         </subclass>
- -->
+
 		
     </class>
 </hibernate-mapping>

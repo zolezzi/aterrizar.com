@@ -4,6 +4,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 import java.util.List
 import java.util.ArrayList
+import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
 
 @Accessors
 class Usuario {

@@ -1,7 +1,8 @@
-package ar.edu.unq.epers.aterrizar.modelo
+package ar.edu.unq.epers.aterrizar.modelo.modelocriterios
 
 import java.util.Date
 import org.eclipse.xtend.lib.annotations.Accessors
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.Criterios
 
 @Accessors
 class CriterioFechaLLegada extends Criterios{

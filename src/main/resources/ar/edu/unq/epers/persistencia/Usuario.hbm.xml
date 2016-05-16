@@ -36,11 +36,12 @@
          <property name="codValidacion" type="string">
             <column name="CODIGO_VALIDACION" not-null="true"/>
         </property>    
-                   
+ 
         <bag name="historialDeBusquedas" table = "historialDeBusquedas" cascade="all" lazy= "false">
-        	<key column = "ID_BUSQUEDA"/>
-        	<one-to-many class="ar.edu.unq.epers.aterrizar.modelo.Busqueda"></one-to-many>  
+        	<key column = "ID_USUARIO"/>
+        	<one-to-many class="ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda"></one-to-many>  
         </bag>
+                   
          
     </class>
 </hibernate-mapping>

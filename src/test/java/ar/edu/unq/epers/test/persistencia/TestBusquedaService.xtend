@@ -11,23 +11,24 @@ import java.util.Timer
 import ar.edu.unq.epers.aterrizar.modelo.CategoriaTurista
 import ar.edu.unq.epers.aterrizar.modelo.CategoriaBusiness
 import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroAerolineas
-import ar.edu.unq.epers.aterrizar.modelo.Busqueda
 import ar.edu.unq.epers.aterrizar.servicios.BusquedaService
 import org.junit.Test
-import ar.edu.unq.epers.aterrizar.modelo.CriterioAerolinea
-import ar.edu.unq.epers.aterrizar.modelo.Criterios
 import java.util.List
 import org.junit.Assert
-import ar.edu.unq.epers.aterrizar.modelo.CriterioOrigen
 import org.junit.After
-import ar.edu.unq.epers.aterrizar.modelo.CriterioDestino
-import ar.edu.unq.epers.aterrizar.modelo.OrdenCosto
-import ar.edu.unq.epers.aterrizar.modelo.Orden
-import ar.edu.unq.epers.aterrizar.modelo.OrdenEscala
-import ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoBusiness
-import ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoTurista
-import ar.edu.unq.epers.aterrizar.modelo.CriterioAsientoPrimera
-import ar.edu.unq.epers.aterrizar.modelo.CriterioAND
+import ar.edu.unq.epers.aterrizar.modelo.modeloorden.OrdenEscala
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAerolinea
+import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.Criterios
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioOrigen
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioDestino
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAND
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoBusiness
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoTurista
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoPrimera
+import ar.edu.unq.epers.aterrizar.modelo.modeloorden.OrdenCosto
+import ar.edu.unq.epers.aterrizar.persistencia.home.UsuarioHome
+import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 
 class TestBusquedaService {
 	var Usuario usuario 				
@@ -98,7 +99,8 @@ class TestBusquedaService {
 					  it.nombreUsuario = "c_albar"
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
-					  contrasenia = "albar" 
+					  contrasenia = "albar"
+					  codValidacion = "cod001" 
 					 ]	
 
 					 				
@@ -231,25 +233,43 @@ class TestBusquedaService {
 		Assert.assertEquals(usuario.obtenerUltimaBusqueda, busqueda)		
 	}
 	
+	@Test
+	def void buscarDesdeElHistorial(){
+		var BusquedaService buscador = new BusquedaService()
+		var Busqueda busqueda = new Busqueda()
+		var Criterios criterio = new CriterioAsientoPrimera()
+		busqueda.agregarCriterioBusqueda(criterio)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		usuario.guardarBusqueda(busqueda)
+		busqueda = usuario.historialDeBusquedas.last
+		var List<Vuelo> result2 = buscador.EjecutarBusqueda(busqueda)
+		Assert.assertEquals(result.size, result2.size)		
+	}	
+	
+	@Test
+	def void buscarDesdeUsuarioPersisitidoElHistorial(){
+		var BusquedaService buscador = new BusquedaService()
+		var Busqueda busqueda = new Busqueda()
+		var Criterios criterio = new CriterioAsientoPrimera()
+		busqueda.agregarCriterioBusqueda(criterio)
+		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		usuario.guardarBusqueda(busqueda)
+		SessionManager.runInSession([
+		new UsuarioHome().save(usuario)
+		null
+		])
+		usuario = SessionManager.runInSession([
+		new UsuarioHome().get(usuario.id)
+		])
+		busqueda = usuario.historialDeBusquedas.last
+		var List<Vuelo> result2 = buscador.EjecutarBusqueda(busqueda)
+		Assert.assertEquals(result.size, result2.size)		
+	}
 	
 	@After
 	def void dropData(){
 		new SistemaRegistroAerolineas().eliminarAerolineaPor("nombreAerolinea","Aerolinea Payaso")
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

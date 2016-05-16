@@ -7,6 +7,9 @@ import org.junit.Test
 import org.junit.Assert
 import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 import org.junit.After
+import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.Criterios
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoPrimera
 
 class TestUsuarioHome {
 	
@@ -17,6 +20,11 @@ class TestUsuarioHome {
 	
 	@Before
 	def void startUp(){
+		
+		var Busqueda busqueda = new Busqueda()
+		var Criterios criterio = new CriterioAsientoPrimera()
+		busqueda.agregarCriterioBusqueda(criterio)
+		
 		usuario = 
 		new Usuario =>[
 				 	  nombre = "carlos"
@@ -35,7 +43,9 @@ class TestUsuarioHome {
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "albar" 
 					  codValidacion = "cod2Tst"
-					 ]							
+					 
+					 ]
+									
 		
 	}
 	
