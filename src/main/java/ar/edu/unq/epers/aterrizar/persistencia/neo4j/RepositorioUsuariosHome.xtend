@@ -8,6 +8,8 @@ import org.neo4j.graphdb.Node
 import org.neo4j.graphdb.RelationshipType
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.relacion.TipoDeRelacion
+import org.neo4j.graphdb.traversal.Evaluators
+import org.neo4j.graphdb.traversal.Uniqueness
 
 class RepositorioUsuariosHome {
 	
@@ -55,7 +57,7 @@ class RepositorioUsuariosHome {
 		val nodoUsuario = getNodo(u)
 		val nodos = nodosRelacionados(nodoUsuario, TipoDeRelacion.AMIGO, Direction.OUTGOING)
 		var amigos = nodos.map[toUsuario(it)].toSet
-		amigos.removeIf([it.nombreUsuario.equals(u.nombreUsuario)])
+		//amigos.removeIf([it.nombreUsuario.equals(u.nombreUsuario)])
 		return amigos
 	}
 	
@@ -63,12 +65,9 @@ class RepositorioUsuariosHome {
 		val nodoUsuario = getNodo(u)
 		val nodos = todasLasRelaciones(nodoUsuario, TipoDeRelacion.AMIGO, Direction.OUTGOING)
 		val amigos = nodos.map[toUsuario(it)].toSet
-		amigos.forEach[
-			System.out.println(it.nombreUsuario)
-		]
 		return amigos
 	}
-	
+
 	def relacionar(Usuario relacionando, Usuario aRelacionar, TipoDeRelacion relacion){
 		val nodoRelacionando = getNodo(relacionando)
 		val nodoARelacionar = getNodo(aRelacionar)
@@ -85,9 +84,17 @@ class RepositorioUsuariosHome {
 	
 	def todasLasRelaciones(Node nodo, RelationshipType relacion, Direction direction){
 
-
-
+		val traveler = graph.traversalDescription
+			.depthFirst
+			.relationships(relacion,direction)
+			.evaluator(Evaluators.excludeStartPosition)
+			.uniqueness(Uniqueness.NODE_GLOBAL)
+			
+		val nodos = traveler.traverse(nodo).nodes
+		
+		return nodos
 	}
+
 	def toUsuario(Node node) {
 		new Usuario => [
 			nombreUsuario = node.getProperty("nombreUsuario") as String
