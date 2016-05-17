@@ -6,10 +6,11 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import org.junit.Before
 import org.junit.Assert
 import org.junit.After
+import ar.edu.unq.epers.aterrizar.servicios.neo4j.GraphServiceRunner
 
 class TestRepositorioUsuariosHome {
 	
-	RepositorioUsuariosHome repositorioUsuariosHome = new RepositorioUsuariosHome(SistemaRegistroUsuarios)
+	RepositorioUsuariosHome repositorioUsuariosHome = new RepositorioUsuariosHome(GraphServiceRunner.graphDb)
 	Usuario josePerez = new Usuario => [
 		nombre = "José"
 		apellido = "Pérez"
