@@ -1,12 +1,12 @@
 package ar.edu.unq.epers.test.persistencia.neo4j
 
+
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.servicios.neo4j.RepositorioUsuariosService
-import org.junit.Before
 import org.junit.After
-import org.junit.Test
 import org.junit.Assert
-import org.neo4j.graphdb.GraphDatabaseService
+import org.junit.Before
+import org.junit.Test
 
 class TestRepositorioUsuariosService {
 	
@@ -88,11 +88,8 @@ class TestRepositorioUsuariosService {
 		
 		
 	@Test
-	def void testRelacionarUnAmigoAumentaLaCantidadDeAmigosQueTieneEnUno(){
-		
-		
-		var cantidadDeAmigos = repositorioService.cuantosConozco(charlie)
-		
+	def void testConsultarCantidadAmigos(){
+		var cantidadDeAmigos = repositorioService.cuantosConozco(charlie)	
 		Assert.assertEquals(1, cantidadDeAmigos)
 		
 	}
