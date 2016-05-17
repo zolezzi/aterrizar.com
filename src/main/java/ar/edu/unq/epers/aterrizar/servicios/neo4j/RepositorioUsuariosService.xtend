@@ -16,6 +16,10 @@ class RepositorioUsuariosService {
 		
 	}	
 	
+	def getbase(){
+		return basesDeDatosUsuarios
+	}
+	
 	def eliminarUsuario(Usuario u) {
 		GraphServiceRunner::run[
 			createHome(it).eliminarNodo(u)
@@ -43,7 +47,7 @@ class RepositorioUsuariosService {
 			todosMisAmigos.toList
 		]
 	}
-		def consultarACuantoConozco(Usuario u){
+		def cuantosConozco(Usuario u){
 		amigosDeUsuario(u).length
 	}
 }
