@@ -16,6 +16,7 @@ class TestAsientoHome {
 	AsientoHome asientoHome = new AsientoHome()
 	Asiento asiento
 	Asiento asiento2
+	Asiento asiento3
 	Usuario usuario
 	
 	
@@ -51,6 +52,16 @@ class TestAsientoHome {
 			fechaLlegada = new Date (2016,5,14)
 			precio = 1050					
 		]
+		
+		asiento3 = new Asiento =>[
+			categoria = new CategoriaTurista()
+			usuario = usuario
+			origen = "Argentina"
+			destino = "Chile"
+			fechaSalida = new Date (2016,5,12)
+			fechaLlegada = new Date (2016,5,13)
+			precio = 150					
+		]
 
 	}
 	
@@ -58,6 +69,7 @@ class TestAsientoHome {
 	def void testSaveAsiento(){
 		SessionManager.runInSession([
 			asientoHome.save(asiento)
+			asientoHome.save(asiento2)
 			Assert.assertEquals(asientoHome.get(asiento.id).precio, 150 )
 			null
 		])
@@ -73,14 +85,14 @@ class TestAsientoHome {
 		])
 	}
 	
-		@Test
+	@Test
 	def void  testAsientoDelete(){
+		
 		SessionManager.runInSession([
-			asientoHome.save(asiento)
-			asientoHome.save(asiento2)
-			asientoHome.delete(asiento2)
-			Assert.assertEquals(asientoHome.getRange(2).size,1)
-			null
+		asientoHome.save(asiento3)
+		asientoHome.delete(asiento3)
+		Assert.assertNull(asientoHome.get(asiento3.id))
+		null
 		])
 	}
 	

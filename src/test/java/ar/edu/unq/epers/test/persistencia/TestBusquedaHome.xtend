@@ -8,6 +8,7 @@ import org.junit.Test
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAerolinea
 import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
 import ar.edu.unq.epers.aterrizar.modelo.modeloorden.OrdenCosto
+import org.junit.Assert
 
 class TestBusquedaHome {
 	
@@ -26,9 +27,21 @@ class TestBusquedaHome {
 	def void TestSave(){
 		SessionManager.runInSession([
 		home.save(this.busqueda)
+		Assert.assertEquals(home.get(busqueda.id).id,busqueda.id)
 		null
 		])
 	}
+	
+	@Test
+	def void TestDelete(){
+		SessionManager.runInSession([
+		home.delete(this.busqueda)
+		Assert.assertNull(home.get(busqueda.id))
+		null
+		])
+	}
+	
+	
 	
 	
 	@After
