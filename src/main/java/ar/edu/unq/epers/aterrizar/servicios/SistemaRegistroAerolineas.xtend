@@ -11,6 +11,7 @@ import ar.edu.unq.epers.aterrizar.modelo.Asiento
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.persistencia.home.AsientoHome
 import java.util.List
+import java.util.ArrayList
 
 class SistemaRegistroAerolineas {
 	
@@ -74,12 +75,19 @@ class SistemaRegistroAerolineas {
 		])
 	}
 	
-	def reservarAsientoDeTramo(String origen, String destino, int posicionAsiento, Usuario usuario){
+	def reservarAsientoDeTramo(String origen, String destino, String numeroAsiento, Usuario usuario){
 		SessionManager.runInSession([
 			var Tramo tramo = tramoHome.getBy("origen", origen, "destino", destino)
 			if(tramo != null){
-				var Asiento asiento = tramo.asientos.get(posicionAsiento - 1)
-				if(!asiento.reservado){
+				var Asiento asiento
+				
+				for (Asiento a : tramo.asientos) {
+  					if(a.numeroAsiento == numeroAsiento){
+  						asiento = a
+  					}
+				}
+				
+				if(asiento!=null){
 					asiento.reservado = true
 					asiento.usuario = usuario
 					tramoHome.save(tramo)
@@ -93,20 +101,40 @@ class SistemaRegistroAerolineas {
 		])
 	}
 	
-	def reservarAsientos(Integer cantidadAsientos, Usuario usuario){
+	def reservarAsientos(ArrayList<String> numeroAsientos, ArrayList<Usuario> usuarios, String origen, String destino){
 		SessionManager.runInSession([
-			var List<Asiento> asientos = asientoHome.getRange(cantidadAsientos)
-			if(asientos.length == cantidadAsientos){
-				(asientos).forEach[asiento | 
-					asiento.reservado = true
-					asiento.usuario = usuario
-				]
-				(asientos).forEach[asiento | 
-					asientoHome.save(asiento)
-				]			
+			var Tramo tramo = tramoHome.getBy("origen", origen, "destino", destino)
+			if(tramo != null){
+				var ArrayList<Asiento> asientosAReservar = new ArrayList()
+				
+				for (Asiento a : tramo.asientos) {
+					for(String numero : numeroAsientos){
+						if(a.numeroAsiento == numero){
+							if(!a.reservado){
+								asientosAReservar.add(a)
+							}else{
+								throw new Exception("El asiento solicitado ya esta reservado")
+							}
+						}
+
+					}
+				}
+				
+				if(asientosAReservar.size == numeroAsientos.size){
+					var int i = 0
+					for(Asiento a : asientosAReservar){
+						a.reservado = true
+						a.usuario = usuarios.get(i)
+						i++;
+						new AsientoHome().save(a)
+					}
+					tramoHome.save(tramo)
+				}else{
+					throw new Exception("No hay suficientes asientos libres")
+				}
 			}else{
-				throw new Exception("No hay suficientes asientos libres")
-			}
+				throw new Exception("No se encontro un Tramo para esa busqueda")
+			}			
 			null
 		])
 	}

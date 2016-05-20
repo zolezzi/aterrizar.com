@@ -23,9 +23,13 @@ import ar.edu.unq.epers.aterrizar.persistencia.home.UsuarioHome
 
 class TestSistemaRegistroVuelos {
 	
-	Usuario usuario
-	Usuario usuarioII
+	Usuario usuario = new Usuario()
+	Usuario usuarioII = new Usuario
+	Usuario usuarioIII 
+	Usuario usuarioIV
 	Tramo tramo
+	ArrayList<String> asientos = new ArrayList<String>
+	ArrayList<Usuario> usuarios = new ArrayList<Usuario>
 	
 	@Before
 	def void startUp(){
@@ -53,6 +57,7 @@ class TestSistemaRegistroVuelos {
 			usuario = null
 			origen = "Argentina"
 			destino = "Chile"
+			numeroAsiento = "A1"
 			fechaSalida = new Date (2016,5,12)
 			fechaLlegada = new Date (2016,5,13)
 			precio = 150		
@@ -63,6 +68,7 @@ class TestSistemaRegistroVuelos {
 			usuario = null
 			origen = "Argentina"
 			destino = "Chile"
+			numeroAsiento = "A2"
 			fechaSalida = new Date (2016,5,12)
 			fechaLlegada = new Date (2016,5,13)
 			precio = 150		
@@ -73,6 +79,7 @@ class TestSistemaRegistroVuelos {
 			usuario = null
 			origen = "Argentina"
 			destino = "Chile"
+			numeroAsiento = "A3"
 			fechaSalida = new Date (2016,5,12)
 			fechaLlegada = new Date (2016,5,13)
 			precio = 150		
@@ -97,10 +104,34 @@ class TestSistemaRegistroVuelos {
 			contrasenia = "blabla"
 			codValidacion = "000000"
 		]
+		
+		usuarioIII = new Usuario =>[
+			nombre = "Juan"
+			apellido = "pepito"
+			nombreUsuario = "juan10"
+			email = "juan@hotmail.com"
+			fechaNacimiento = "12/10/90"
+			contrasenia = "blabla"
+			codValidacion = "000000"
+		]
+		
+		usuarioIV = new Usuario =>[
+			nombre = "Juan"
+			apellido = "pepito"
+			nombreUsuario = "juan11"
+			email = "juan@hotmail.com"
+			fechaNacimiento = "12/10/90"
+			contrasenia = "blabla"
+			codValidacion = "000000"
+		]
 		tramo.agregarAsiento(asiento)
 		tramo.agregarAsiento(asientoII)
 		tramo.agregarAsiento(asientoIII)
 		vuelo1.agregarUnTramo(tramo)
+		asientos.add("A1")
+		asientos.add("A2")
+		usuarios.add(usuario)
+		usuarios.add(usuarioII)
 		
 		var aerolinea = new SistemaRegistroAerolineas().registrarAerolinea("Aerolinea Payaso")
 		new SistemaRegistroAerolineas().agregaVuelo(aerolinea, vuelo1)
@@ -117,50 +148,80 @@ class TestSistemaRegistroVuelos {
 		null
 		])
 	}
-	
+
+ 
 	@Test
 	def void RegistroUsuarioAUnAsientoValidodeTramo(){
-		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile",1,usuarioII)
+		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile","A1",usuarioIV)
 		SessionManager.runInSession([
 			var Tramo tramo = new TramoHome().getBy("origen","Argentina","destino","Chile")
-			Assert.assertEquals(tramo.asientos.get(0).reservado, true) 
+			Assert.assertEquals(tramo.asientos.get(0).reservado, true) 			
 			null
 		])
 	}
+ 	
 
 	 
 	@Test (expected = Exception) 
 	def void RegistroUsuarioAUnTramoInvalido(){
-		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Peru",1, usuario)
+		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Peru","A1", usuario)
 		thrown.expectMessage("No se encontro un Tramo para esa busqueda") 
 	}
-		
+ 
 	@Test
 	def void ReservarAsientos(){
-		new SistemaRegistroAerolineas().reservarAsientos(3,usuario)
+		new SistemaRegistroAerolineas().reservarAsientos(asientos,usuarios,"Argentina","Chile")
 
 		SessionManager.runInSession([
-			var List<Asiento> asientos = new AsientoHome().getRange(3)
-			(asientos).forEach[asiento | 
+			var tramo = new TramoHome().getBy("origen","Argentina","destino","Chile")
+			for(Asiento asiento: tramo.asientos)  
+				if(asiento.numeroAsiento=="A1" || asiento.numeroAsiento == "A2"){
 					Assert.assertTrue(asiento.reservado == true)
-					Assert.assertTrue(asiento.usuario == usuario)
-				]
+				}else{
+					Assert.assertTrue(asiento.reservado == false)
+				}
 			null
 		])
 	}
+	  
+	@Test (expected = Exception) 
+	def void ReservarAsientosYaReservados(){
+		new SistemaRegistroAerolineas().reservarAsientos(asientos,usuarios,"Argentina","Chile")
+		new SistemaRegistroAerolineas().reservarAsientos(asientos,usuarios,"Argentina","Chile")
+		thrown.expectMessage("El asiento solicitado ya esta reservado")
+
+	}
+	
+	@Test (expected = Exception) 
+	def void ReservarMasAsientosDeLosDisponibles(){
+		asientos.add("A3")
+		asientos.add("A4")
+		usuarios.add(usuario)
+		usuarios.add(usuario)
+		new SistemaRegistroAerolineas().reservarAsientos(asientos,usuarios,"Argentina","Chile")
+		thrown.expectMessage("No hay suficientes asientos libres")
+	}
+	
+	
 	
 	@Test (expected = Exception) 
 	def void RegistroUsuarioAUnAsientoInvalidodeTramo(){
-		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile",0,usuario)
-		thrown.expectMessage("No se encontro un Tramo para esa busqueda") 
+		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile","A10",usuario)
+		thrown.expectMessage("El Asiento en esa posición no está disponible para el Tramo solicitado") 
 	}
 	
 	@Test
 	def void RegistroUsuarioAUnTramoValido(){
-		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile",1,usuario)
+		new SistemaRegistroAerolineas().reservarAsientoDeTramo("Argentina","Chile","A1",usuarioIII)
 		SessionManager.runInSession([
 			var Tramo tramo = new TramoHome().getBy("origen","Argentina","destino","Chile")
-			Assert.assertEquals(tramo.asientos.get(0).reservado, true) 
+			var Asiento asiento
+			for(Asiento a : tramo.asientos){
+				if (a.numeroAsiento == "A1"){
+					asiento = a
+				}
+			}
+			Assert.assertEquals(asiento.reservado, true) 
 			null
 		])
 	}
@@ -183,8 +244,8 @@ class TestSistemaRegistroVuelos {
 	@After
 	def void dropData(){
 		new SistemaRegistroAerolineas().eliminarAerolineaPor("nombreAerolinea","Aerolinea Payaso")
+
 	}
-	 
 	 
 	
 }

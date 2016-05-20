@@ -11,6 +11,7 @@ class Asiento {
 	Categoria categoria
 	Usuario usuario
 	Integer id
+	String numeroAsiento
 	String origen
 	String destino
 	Date fechaSalida

@@ -8,7 +8,10 @@
             <column name="ID_ASIENTO" />
             <generator class="identity" />
         </id>
-
+		<property name="numeroAsiento" type="string">
+            <column name="NUMERO_ASIENTO" length="20" />
+        </property>  
+		
         <property name="destino" type="string">
             <column name="DESTINO" length="20" />
         </property>                   
