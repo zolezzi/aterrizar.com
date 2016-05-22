@@ -108,6 +108,15 @@ class RepositorioUsuarios {
 				conn.close();
 		}
 	}
+	
+	def truncateUser(){
+		excecute[conn|
+			val ps = conn.prepareStatement("TRUNCATE TABLE users")
+			ps.execute()
+			ps.close()	
+			null
+		]	
+	}
 
 	def getConnection() {
 		Class.forName("com.mysql.jdbc.Driver");

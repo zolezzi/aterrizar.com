@@ -12,7 +12,7 @@ import org.hibernate.Query
 class TestAerolineaHome {
 	
 	Aerolinea aerolineasPayaso
-	
+	Aerolinea aerolineasPayaso2
 	AerolineaHome aerolineaHome = new AerolineaHome
 	
 	Query query
@@ -24,10 +24,14 @@ class TestAerolineaHome {
 			
 			nombreAerolinea = "Aerolineas Payaso"
 		]
+		aerolineasPayaso2 = new Aerolinea () => [
+			
+			nombreAerolinea = "Aerolineas Payaso 2"
+		]
 	}
 
 	@Test
-	def void testSavaAerolinea() {
+	def void testSave() {
 		
 		SessionManager.runInSession([
 			aerolineaHome.save(aerolineasPayaso)
@@ -38,12 +42,12 @@ class TestAerolineaHome {
 	}
 	
 	@Test
-	def void testDeleteAerolinea() {
+	def void testDelete() {
 		
 		SessionManager.runInSession([
-			aerolineaHome.save(aerolineasPayaso)
-			aerolineaHome.delete(aerolineasPayaso)
-			var aerolineaPersistida = aerolineaHome.get(aerolineasPayaso.id)
+			aerolineaHome.save(aerolineasPayaso2)
+			aerolineaHome.delete(aerolineasPayaso2)
+			var aerolineaPersistida = aerolineaHome.get(aerolineasPayaso2.id)
 			Assert.assertEquals(aerolineaPersistida,null)
 			null
 		])
@@ -63,10 +67,8 @@ class TestAerolineaHome {
 	@After
 	def void setDown(){
 		SessionManager.runInSession([
-			SessionManager.getSession.createSQLQuery("USE aterrizar_p2").executeUpdate
-			SessionManager.getSession.createSQLQuery("SET SQL_SAFE_UPDATES=0").executeUpdate
-			SessionManager.getSession.createSQLQuery("DELETE FROM usuarios").executeUpdate
-			SessionManager.getSession.createSQLQuery("DELETE FROM aerolineas").executeUpdate
+			aerolineaHome.delete(aerolineasPayaso)
+			null
 		])
 	}
 }

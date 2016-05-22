@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.test.persistencia
+package ar.edu.unq.epers.test.servicios
 
 import org.junit.Before
 import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroAerolineas

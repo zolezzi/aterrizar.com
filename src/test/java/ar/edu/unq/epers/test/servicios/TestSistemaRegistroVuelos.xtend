@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.test.persistencia
+package ar.edu.unq.epers.test.servicios
 
 import org.junit.Before
 import org.junit.Test
@@ -23,8 +23,8 @@ import ar.edu.unq.epers.aterrizar.persistencia.home.UsuarioHome
 
 class TestSistemaRegistroVuelos {
 	
-	Usuario usuario = new Usuario()
-	Usuario usuarioII = new Usuario
+	Usuario usuario
+	Usuario usuarioII
 	Usuario usuarioIII 
 	Usuario usuarioIV
 	Tramo tramo

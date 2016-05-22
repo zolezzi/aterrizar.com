@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.test.persistencia
+package ar.edu.unq.epers.test.persistencia.neo4j
 
 import org.junit.Test
 import ar.edu.unq.epers.aterrizar.persistencia.neo4j.RepositorioUsuariosHome

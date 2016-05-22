@@ -24,7 +24,7 @@ class TestBusquedaHome {
 	}
 	
 	@Test
-	def void TestSave(){
+	def void testSave(){
 		SessionManager.runInSession([
 		home.save(this.busqueda)
 		Assert.assertEquals(home.get(busqueda.id).id,busqueda.id)
@@ -33,7 +33,7 @@ class TestBusquedaHome {
 	}
 	
 	@Test
-	def void TestDelete(){
+	def void testDelete(){
 		SessionManager.runInSession([
 		home.delete(this.busqueda)
 		Assert.assertNull(home.get(busqueda.id))

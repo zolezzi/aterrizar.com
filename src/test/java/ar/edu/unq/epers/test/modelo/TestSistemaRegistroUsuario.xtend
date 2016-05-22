@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException
 import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroUsuario
 import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
+import org.junit.After
 
 class TestSistemaRegistroUsuario {
 	Usuario usuario
@@ -61,8 +62,8 @@ class TestSistemaRegistroUsuario {
 	def testCambiarContraseniaDeUnUsuarioValido(){
 		sistemaRegistroUsuario.crearUsuario("nico","capo","nico2000","nicokapo@hotmail.com","17/02/2000","123456")
 		var usuarioValido = basesDeDatos.selectUser("nico2000")
-		//sistemaRegistroUsuario.cambiarContrasenia("hola",usuarioValido)
-		//basesDeDatos.updateUser(usuarioValido)
+		sistemaRegistroUsuario.cambiarContrasenia("hola",usuarioValido)
+		usuarioValido = basesDeDatos.selectUser("nico2000")
 		Assert.assertTrue(usuarioValido.contrasenia == "hola")
 	}
 	
@@ -76,6 +77,11 @@ class TestSistemaRegistroUsuario {
 	def testCrearUsuarioConUnoDeSusCampoInvalido(){
 		sistemaRegistroUsuario.crearUsuario(null,"ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456")
 		thrown.expectMessage("Usuario invalido") 
+	}
+	
+	@After
+	def void dropData(){
+		basesDeDatos.truncateUser()
 	}
 }
 		

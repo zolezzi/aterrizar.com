@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.test.persistencia
+package ar.edu.unq.epers.test.servicios
 
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import org.junit.Before

@@ -27,18 +27,18 @@ class TestUsuarioHome {
 		
 		usuario = 
 		new Usuario =>[
-				 	  nombre = "carlos"
+				 	  nombre = "alberto"
 					  apellido = "albar"
-					  it.nombreUsuario = "c_albar"
+					  it.nombreUsuario = "AA_albar"
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "albar" 
 					  codValidacion = "codTst"
 					 ]
 		usuario2 = 	new Usuario =>[
-				 	  nombre = "carlos"
+				 	  nombre = "Pepe"
 					  apellido = "albar"
-					  it.nombreUsuario = "c2_albar"
+					  it.nombreUsuario = "pepe_albar"
 					  email = "c_alabar@hotmail.com"
 					  fechaNacimiento = "12/3/1990"
 					  contrasenia = "albar" 
