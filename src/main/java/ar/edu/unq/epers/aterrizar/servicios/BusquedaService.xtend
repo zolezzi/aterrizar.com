@@ -12,7 +12,7 @@ class BusquedaService {
 	
 	var BusquedaHome busquedaHome = new BusquedaHome()
 	
-	def EjecutarBusqueda(Busqueda busqueda){
+	def ejecutarBusqueda(Busqueda busqueda){
 		var List<Criterios> criterios = busqueda.criterios
 		var String query = "select distinct vuelos from Aerolinea as aerolinea 
 							join aerolinea.vuelos as vuelos 
@@ -31,10 +31,10 @@ class BusquedaService {
 			query = query + " " + busqueda.orden.darOrden()
 		}
 		println(query)
-		this.Search(query)
+		this.search(query)
 	}
 	
-	def Search(String search){
+	def search(String search){
 		SessionManager.runInSession([
 			SessionManager.getSession().createQuery(search).list()
 		])

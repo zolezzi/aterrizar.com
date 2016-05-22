@@ -121,7 +121,7 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioAerolinea("Aerolinea Payaso")
 		busqueda.agregarCriterioBusqueda(criterio)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(), 2)		
 	}
 	
@@ -131,7 +131,7 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioOrigen("Argentina")
 		busqueda.agregarCriterioBusqueda(criterio)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		
 		Assert.assertEquals(result.size(), 2)
 		Assert.assertEquals(result.get(0).origen, "Argentina")		
@@ -143,7 +143,7 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioDestino("Mexico")
 		busqueda.agregarCriterioBusqueda(criterio)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		
 		Assert.assertEquals(result.size(), 1)
 		Assert.assertEquals(result.get(0).destino,"Mexico")		
@@ -155,7 +155,7 @@ class TestBusquedaService {
 		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
 		busqueda.orden = new OrdenCosto()
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(), 2)		
 		Assert.assertEquals(result.get(0).precio, 1000)
 		Assert.assertEquals(result.get(1).precio, 1500)
@@ -168,7 +168,7 @@ class TestBusquedaService {
 		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
 		busqueda.orden = new OrdenEscala()
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		
 		Assert.assertEquals(result.size(), 2)		
 		Assert.assertEquals(result.get(0).destino, "Panama")
@@ -181,7 +181,7 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioAsientoBusiness()
 		busqueda.agregarCriterioBusqueda(criterio)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(),1)
 	}
 		
@@ -191,7 +191,7 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioAsientoTurista()
 		busqueda.agregarCriterioBusqueda(criterio)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(),1)
 	}
 	
@@ -201,7 +201,7 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioAsientoPrimera()
 		busqueda.agregarCriterioBusqueda(criterio)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size(),0)
 	}
 	
@@ -215,7 +215,7 @@ class TestBusquedaService {
 		var Criterios andCrit = new CriterioAND(criterio, criterio2)
 		var Criterios andCrit2 = new CriterioAND(andCrit,criterio3)
 		busqueda.agregarCriterioBusqueda(andCrit2)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 	
 		Assert.assertEquals(result.size(), 1)
 		Assert.assertEquals(result.get(0).destino,"Mexico")	
@@ -228,7 +228,7 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioAsientoPrimera()
 		busqueda.agregarCriterioBusqueda(criterio)
-		buscador.EjecutarBusqueda(busqueda)
+		buscador.ejecutarBusqueda(busqueda)
 		usuario.guardarBusqueda(busqueda)
 		Assert.assertEquals(usuario.obtenerUltimaBusqueda, busqueda)		
 	}
@@ -239,10 +239,10 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioAsientoPrimera()
 		busqueda.agregarCriterioBusqueda(criterio)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		usuario.guardarBusqueda(busqueda)
 		busqueda = usuario.historialDeBusquedas.last
-		var List<Vuelo> result2 = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result2 = buscador.ejecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size, result2.size)		
 	}	
 	
@@ -252,7 +252,7 @@ class TestBusquedaService {
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioAsientoPrimera()
 		busqueda.agregarCriterioBusqueda(criterio)
-		var List<Vuelo> result = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result = buscador.ejecutarBusqueda(busqueda)
 		usuario.guardarBusqueda(busqueda)
 		SessionManager.runInSession([
 		new UsuarioHome().save(usuario)
@@ -262,7 +262,7 @@ class TestBusquedaService {
 		new UsuarioHome().get(usuario.id)
 		])
 		busqueda = usuario.historialDeBusquedas.last
-		var List<Vuelo> result2 = buscador.EjecutarBusqueda(busqueda)
+		var List<Vuelo> result2 = buscador.ejecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size, result2.size)		
 	}
 	
