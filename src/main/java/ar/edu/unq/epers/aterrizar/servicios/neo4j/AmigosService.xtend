@@ -12,8 +12,7 @@ class AmigosService {
 	RepositorioUsuarios basesDeDatosUsuarios = new RepositorioUsuarios
 
 	private def createHome(GraphDatabaseService graph) {
-		repositorioHome = new RepositorioUsuariosHome(graph)
-		
+		repositorioHome = new RepositorioUsuariosHome(graph)		
 	}	
 	
 	def getbase(){
@@ -38,7 +37,7 @@ class AmigosService {
 		]
 	} 
 		
-		def List<Usuario> amigosDeUsuario(Usuario u){
+	def List<Usuario> amigosDeUsuario(Usuario u){
 		
 		val usuario = basesDeDatosUsuarios.selectUser(u.nombreUsuario)
 		

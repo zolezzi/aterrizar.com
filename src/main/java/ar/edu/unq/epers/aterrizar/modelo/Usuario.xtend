@@ -15,6 +15,7 @@ class Usuario {
 	String fechaNacimiento
 	String contrasenia
 	String codValidacion
+	Byte validado
 	int id
 	Boolean logeado = false
 	List<Busqueda> historialDeBusquedas = new ArrayList<Busqueda>

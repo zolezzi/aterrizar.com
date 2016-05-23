@@ -7,6 +7,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
+import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 
 class TestRepositorioUsuariosService {
 	
@@ -17,11 +18,13 @@ class TestRepositorioUsuariosService {
 	Usuario miami
 	
 	AmigosService repositorioService
+	RepositorioUsuarios BD_SQL
 	
 	@Before
 	def void setUp(){
 
 		repositorioService = new AmigosService() 
+		BD_SQL = new RepositorioUsuarios()
 
 		ricky = new Usuario => [
 			nombreUsuario = "ricky"
@@ -63,7 +66,7 @@ class TestRepositorioUsuariosService {
 			codValidacion = "cod2Tst"
 		]
 		
-		  miami = new Usuario => [
+		miami = new Usuario => [
 			nombreUsuario = "miami"
 			nombre = "carlos"
 			apellido = "albar"		  
@@ -71,17 +74,19 @@ class TestRepositorioUsuariosService {
 			fechaNacimiento = "12/3/1990"
 			contrasenia = "albar" 
 			codValidacion = "cod2Tst"
-					]
+		]
+								
+		repositorioService.getbase.insertUser(charlie , 1)
+		repositorioService.getbase.insertUser(nico , 1)
+		repositorioService.getbase.insertUser(ricky , 1)
+		repositorioService.getbase.insertUser(miami , 1)
+		repositorioService.getbase.insertUser(ezequiel , 1)
+		
 		repositorioService.agregarAmigo(ricky, charlie)
 		repositorioService.agregarAmigo(charlie, ezequiel)
 		repositorioService.agregarAmigo(nico, miami)
 		repositorioService.agregarAmigo(ezequiel, nico)
 		
-		repositorioService.getbase.insertUser(charlie , 0)
-		repositorioService.getbase.insertUser(nico , 1)
-		repositorioService.getbase.insertUser(ricky , 2)
-		repositorioService.getbase.insertUser(miami , 3)
-		repositorioService.getbase.insertUser(ezequiel , 4)
 		
 		
 		}
@@ -93,6 +98,5 @@ class TestRepositorioUsuariosService {
 		Assert.assertEquals(1, cantidadDeAmigos)
 		
 	}
-	@After
-	def void after(){}
+
 }

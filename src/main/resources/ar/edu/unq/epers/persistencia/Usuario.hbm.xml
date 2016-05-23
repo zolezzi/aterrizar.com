@@ -35,7 +35,11 @@
         
          <property name="codValidacion" type="string">
             <column name="CODVALIDACION" not-null="true"/>
-        </property>    
+        </property>
+        
+        <property name="Validado" type="byte">
+            <column name="VALIDADO"/>
+        </property>     
  
         <bag name="historialDeBusquedas" table = "historialDeBusquedas" cascade="all" lazy= "false">
         	<key column = "ID_USUARIO"/>

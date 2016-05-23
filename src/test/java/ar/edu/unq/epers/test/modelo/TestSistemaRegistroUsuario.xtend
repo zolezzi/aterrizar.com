@@ -45,10 +45,12 @@ class TestSistemaRegistroUsuario {
 	}
 
 	@Test(expected = ExceptionUsuario)
-	def testLogearUnUsuarioValido(){
-		sistemaRegistroUsuario.crearUsuario("juan","ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456")
+	def void testLogearUnUsuarioValido(){
+		
 		sistemaRegistroUsuario.logear(usuario.nombreUsuario, usuario.contrasenia)
+		var usuarioCreado = basesDeDatos.selectUser("juan_08")
 		Assert.assertTrue(usuario.logeado)
+		basesDeDatos.removeUser(usuarioCreado)
 	}
 	
 
@@ -59,12 +61,13 @@ class TestSistemaRegistroUsuario {
 	}
 	
 	@Test
-	def testCambiarContraseniaDeUnUsuarioValido(){
+	def void testCambiarContraseniaDeUnUsuarioValido(){
 		sistemaRegistroUsuario.crearUsuario("nico","capo","nico2000","nicokapo@hotmail.com","17/02/2000","123456")
 		var usuarioValido = basesDeDatos.selectUser("nico2000")
 		sistemaRegistroUsuario.cambiarContrasenia("hola",usuarioValido)
 		usuarioValido = basesDeDatos.selectUser("nico2000")
 		Assert.assertTrue(usuarioValido.contrasenia == "hola")
+		basesDeDatos.removeUser(usuarioValido)
 	}
 	
 	@Test(expected = ExceptionUsuario)
@@ -75,13 +78,13 @@ class TestSistemaRegistroUsuario {
 	
 	@Test(expected = ExceptionUsuario) 
 	def testCrearUsuarioConUnoDeSusCampoInvalido(){
-		sistemaRegistroUsuario.crearUsuario(null,"ejemplo","juan_08","juan_08@hotmail.com","17/02/1990","123456")
+		sistemaRegistroUsuario.crearUsuario(null,"ejemplo","juan_09","juan_08@hotmail.com","17/02/1990","123456")
 		thrown.expectMessage("Usuario invalido") 
 	}
 	
 	@After
 	def void dropData(){
-		basesDeDatos.truncateUser()
+		basesDeDatos.removeUser(usuario)
 	}
 }
 		

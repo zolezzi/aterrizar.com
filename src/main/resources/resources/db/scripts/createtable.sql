@@ -1,6 +1,6 @@
-CREATE TABLE `aterrizar_schema`.`users` (
+CREATE TABLE `aterrizar_schema`.`usuarios` (
 										  `ID_USUARIO` INT NOT NULL AUTO_INCREMENT,  
-										  `NOMBREUSUARIO` VARCHAR(45) NOT NULL,
+										  `NOMBRE_USUARIO` VARCHAR(45) NOT NULL,
 								  		  `NOMBRE` VARCHAR(45) NOT NULL, 					   
 										  `APELLIDO` VARCHAR(45) NOT NULL, 
  					  					  `EMAIL` VARCHAR(45) NOT NULL, 
@@ -8,4 +8,4 @@ CREATE TABLE `aterrizar_schema`.`users` (
 					   					  `CONTRASENHA` VARCHAR(45) NOT NULL,  					 
 					   					  `VALIDADO` TINYINT(1) NULL,					   					  
   										  `CODVALIDACION` VARCHAR(45) NOT NULL,  										  
-					    				   PRIMARY KEY (`ID_USUARIO`, `NOMBREUSUARIO`));
+					    				   PRIMARY KEY (`ID_USUARIO`, `NOMBRE_USUARIO`));
