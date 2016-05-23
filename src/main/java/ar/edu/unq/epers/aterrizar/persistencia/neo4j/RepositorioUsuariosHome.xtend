@@ -98,7 +98,7 @@ class RepositorioUsuariosHome {
 	def toUsuario(Node node) {
 		new Usuario => [
 			nombreUsuario = node.getProperty("nombreUsuario") as String
-			id = node.getProperty("id") as Integer
+			//id = node.getProperty("id") as Integer
 		]
 	}
 	
