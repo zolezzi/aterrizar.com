@@ -86,7 +86,6 @@ class TestRepositorioUsuariosService {
 				
 		}
 		
-		
 	@Test
 	def void testConsultarCantidadAmigos(){
 		var cantidadDeAmigos = repositorioService.cuantosConozco(charlie)	
