@@ -12,7 +12,7 @@ class RepositorioUsuarios {
 	
 	def insertUser(Usuario usuario, int validado){
 		excecute[conn|
-			val ps = conn.prepareStatement("INSERT INTO users (nombreusuario, nombre, apellido, email, fechanacimiento, contrasenia, validado, codvalidacion) VALUES (?,?,?,?,?,?,?,?)")
+			val ps = conn.prepareStatement("INSERT INTO users (nombreusuario, nombre, apellido, email, fechanacimiento, contrasenha, validado, codvalidacion) VALUES (?,?,?,?,?,?,?,?)")
 			ps.setString(1, usuario.nombreUsuario)
 			ps.setString(2, usuario.nombre)
 			ps.setString(3, usuario.apellido)
@@ -50,7 +50,7 @@ class RepositorioUsuarios {
 	
 	def updateUser(Usuario usuario){
 		excecute[conn|
-			val ps = conn.prepareStatement("UPDATE users SET contrasenia = ? WHERE nombreusuario = ?")
+			val ps = conn.prepareStatement("UPDATE users SET contrasenha = ? WHERE nombreusuario = ?")
 			ps.setString(1, usuario.contrasenia)
 			ps.setString(2, usuario.nombreUsuario)
 			ps.execute()
@@ -74,7 +74,7 @@ class RepositorioUsuarios {
 					val vApellido = rs.getString("apellido")
 					val vEmail =rs.getString("email")
 					val vFechadenacimiento =rs.getString("FechaNacimiento")
-					val vContrasenia = rs.getString("contrasenia")
+					val vContrasenia = rs.getString("contrasenha")
 					val vCodValidacion = rs.getString("codvalidacion")
 					val vValidado = rs.getInt("validado")
 					
@@ -120,6 +120,6 @@ class RepositorioUsuarios {
 
 	def getConnection() {
 		Class.forName("com.mysql.jdbc.Driver");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=root")
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/aterrizar_schema?user=root&password=killer12")
 	}
 }

@@ -1,20 +1,11 @@
 CREATE TABLE `aterrizar_schema`.`users` (
-										  `iduser` INT NOT NULL AUTO_INCREMENT,
-  
-										  `nombreUsuario` VARCHAR(45) NOT NULL,
-
-								  		  `nombre` VARCHAR(45) NOT NULL,
- 					   
-										  `apellido` VARCHAR(45) NOT NULL,
- 
- 					  					  `email` VARCHAR(45) NOT NULL,
- 
-				   					 	  `fechaNacimiento` VARCHAR(45) NULL,
-  
-					   					  `contrasenia` VARCHAR(45) NOT NULL,
-  					 
-					   					  `validado` TINYINT(1) NULL,
-					   					  
-  										  `codvalidacion` VARCHAR(45) NOT NULL,
-  										  
-					    				   PRIMARY KEY (`iduser`, `nombreUsuario`));
+										  `ID_USUARIO` INT NOT NULL AUTO_INCREMENT,  
+										  `NOMBREUSUARIO` VARCHAR(45) NOT NULL,
+								  		  `NOMBRE` VARCHAR(45) NOT NULL, 					   
+										  `APELLIDO` VARCHAR(45) NOT NULL, 
+ 					  					  `EMAIL` VARCHAR(45) NOT NULL, 
+				   					 	  `FECHANACIMIENTO` VARCHAR(45) NULL,  
+					   					  `CONTRASENHA` VARCHAR(45) NOT NULL,  					 
+					   					  `VALIDADO` TINYINT(1) NULL,					   					  
+  										  `CODVALIDACION` VARCHAR(45) NOT NULL,  										  
+					    				   PRIMARY KEY (`ID_USUARIO`, `NOMBREUSUARIO`));

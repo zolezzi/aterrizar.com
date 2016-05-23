@@ -9,7 +9,6 @@ import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 
 @Accessors
 class SistemaRegistroUsuario {
-	//C = nombreUsuario, V = Usuario
 	EnviadorEmails enviadorEmails
 	ValidadorUsuario validadorUsuario
 	RepositorioUsuarios basesDeDatos

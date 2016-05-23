@@ -34,7 +34,7 @@
         </property>
         
          <property name="codValidacion" type="string">
-            <column name="CODIGO_VALIDACION" not-null="true"/>
+            <column name="CODVALIDACION" not-null="true"/>
         </property>    
  
         <bag name="historialDeBusquedas" table = "historialDeBusquedas" cascade="all" lazy= "false">

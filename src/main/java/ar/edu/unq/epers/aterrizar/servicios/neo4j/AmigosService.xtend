@@ -6,7 +6,7 @@ import ar.edu.unq.epers.aterrizar.persistencia.neo4j.RepositorioUsuariosHome
 import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 import java.util.List
 
-class RepositorioUsuariosService {
+class AmigosService {
 
 	RepositorioUsuariosHome repositorioHome
 	RepositorioUsuarios basesDeDatosUsuarios = new RepositorioUsuarios

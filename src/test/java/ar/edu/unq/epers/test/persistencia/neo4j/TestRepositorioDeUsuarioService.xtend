@@ -2,11 +2,11 @@ package ar.edu.unq.epers.test.persistencia.neo4j
 
 
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.servicios.neo4j.RepositorioUsuariosService
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
 
 class TestRepositorioUsuariosService {
 	
@@ -16,12 +16,12 @@ class TestRepositorioUsuariosService {
 	Usuario ezequiel
 	Usuario miami
 	
-	RepositorioUsuariosService repositorioService
+	AmigosService repositorioService
 	
 	@Before
 	def void setUp(){
 
-		repositorioService = new RepositorioUsuariosService() 
+		repositorioService = new AmigosService() 
 
 		ricky = new Usuario => [
 			nombreUsuario = "ricky"

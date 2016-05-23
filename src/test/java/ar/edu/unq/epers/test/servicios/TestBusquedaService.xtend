@@ -186,7 +186,7 @@ class TestBusquedaService {
 	}
 		
 	@Test
-	def void vuelosConAsientosTrusita(){
+	def void vuelosConAsientosTurista(){
 		var BusquedaService buscador = new BusquedaService()
 		var Busqueda busqueda = new Busqueda()
 		var Criterios criterio = new CriterioAsientoTurista()
