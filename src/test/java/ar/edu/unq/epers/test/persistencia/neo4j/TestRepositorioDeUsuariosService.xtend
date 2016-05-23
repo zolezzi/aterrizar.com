@@ -10,7 +10,6 @@ import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
 import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 
 class TestRepositorioUsuariosService {
-	
 	Usuario ricky
 	Usuario charlie
 	Usuario nico
@@ -18,77 +17,73 @@ class TestRepositorioUsuariosService {
 	Usuario miami
 	
 	AmigosService repositorioService
-	RepositorioUsuarios BD_SQL
 	
 	@Before
 	def void setUp(){
 
 		repositorioService = new AmigosService() 
-		BD_SQL = new RepositorioUsuarios()
 
 		ricky = new Usuario => [
 			nombreUsuario = "ricky"
-			nombre = "carlos"
-			apellido = "albar"		  
-			email = "c_alabar@hotmail.com"
-			fechaNacimiento = "12/3/1990"
-			contrasenia = "albar" 
-			codValidacion = "cod2Tst"
+			nombre = "ricardo"
+			apellido = "fort"		  
+			email = "ricky@hotmail.com"
+			fechaNacimiento = "12/3/1978"
+			contrasenia = "123456" 
+			codValidacion = "cod1"
 		]
 		
 		charlie = new Usuario => [
 			nombreUsuario = "charlie"
 			nombre = "carlos"
-			apellido = "albar"		  
-			email = "c_alabar@hotmail.com"
-			fechaNacimiento = "12/3/1990"
-			contrasenia = "albar" 
+			apellido = "z"		  
+			email = "c_z@hotmail.com"
+			fechaNacimiento = "12/3/1991"
+			contrasenia = "holaMundo" 
 			codValidacion = "cod2Tst"
 		]
 		
 		 nico = new Usuario => [
 			nombreUsuario = "nico"
-			nombre = "carlos"
-			apellido = "albar"		  
-			email = "c_alabar@hotmail.com"
+			nombre = "nico"
+			apellido = "apu"		  
+			email = "apu@hotmail.com"
 			fechaNacimiento = "12/3/1990"
-			contrasenia = "albar" 
+			contrasenia = "1234" 
 			codValidacion = "cod2Tst"
 		]
 		
 		ezequiel = new Usuario => [
 			nombreUsuario = "ezequiel"
-			nombre = "carlos"
-			apellido = "albar"		  
-			email = "c_alabar@hotmail.com"
-			fechaNacimiento = "12/3/1990"
-			contrasenia = "albar" 
+			nombre = "eze"
+			apellido = "luna"		  
+			email = "hola@hotmail.com"
+			fechaNacimiento = "12/3/1986"
+			contrasenia = "hola" 
 			codValidacion = "cod2Tst"
 		]
 		
-		miami = new Usuario => [
+		  miami = new Usuario => [
 			nombreUsuario = "miami"
-			nombre = "carlos"
-			apellido = "albar"		  
-			email = "c_alabar@hotmail.com"
+			nombre = "MiamiBeach"
+			apellido = "miamiii"		  
+			email = "miami@hotmail.com"
 			fechaNacimiento = "12/3/1990"
-			contrasenia = "albar" 
+			contrasenia = "hola" 
 			codValidacion = "cod2Tst"
 		]
-								
+		
 		repositorioService.getbase.insertUser(charlie , 1)
 		repositorioService.getbase.insertUser(nico , 1)
 		repositorioService.getbase.insertUser(ricky , 1)
 		repositorioService.getbase.insertUser(miami , 1)
 		repositorioService.getbase.insertUser(ezequiel , 1)
-		
+					
+		repositorioService.agregarAmigo(charlie, ezequiel)/*		
 		repositorioService.agregarAmigo(ricky, charlie)
-		repositorioService.agregarAmigo(charlie, ezequiel)
 		repositorioService.agregarAmigo(nico, miami)
-		repositorioService.agregarAmigo(ezequiel, nico)
-		
-		
-		
+		repositorioService.agregarAmigo(ezequiel, nico)*/
+				
 		}
 		
 		
@@ -98,5 +93,13 @@ class TestRepositorioUsuariosService {
 		Assert.assertEquals(1, cantidadDeAmigos)
 		
 	}
-
+	@After
+	def void after(){
+		
+		repositorioService.eliminarUsuario(charlie)
+		repositorioService.eliminarUsuario(ezequiel)
+	/* 	repositorioService.eliminarUsuario(nico)
+		repositorioService.eliminarUsuario(ricky)
+		repositorioService.eliminarUsuario(miami)*/
+	}
 }

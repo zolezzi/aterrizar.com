@@ -101,4 +101,11 @@ class RepositorioUsuariosHome {
 			id = node.getProperty("id") as Integer
 		]
 	}
+	
+	def formarNodo(Usuario usuario) {
+		val u = getNodo(usuario)
+		if(u == null){
+			this.crearNodo(usuario)
+		}
+	}
 }

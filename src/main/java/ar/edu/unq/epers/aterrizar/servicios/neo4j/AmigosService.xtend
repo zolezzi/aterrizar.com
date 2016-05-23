@@ -32,6 +32,8 @@ class AmigosService {
 		val amigo = basesDeDatosUsuarios.selectUser(UsuarioAgregar.nombreUsuario)
 		
 		GraphServiceRunner::run[
+			createHome(it).formarNodo(amigo)
+			createHome(it).formarNodo(usuarioADevolver) 
 			createHome(it).relacionarAmistad(usuarioADevolver, amigo)
 			null
 		]
