@@ -5,6 +5,7 @@ import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 import java.util.List
 import java.util.ArrayList
 import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
 
 @Accessors
 class Usuario {
@@ -19,6 +20,7 @@ class Usuario {
 	int id
 	Boolean logeado = false
 	List<Busqueda> historialDeBusquedas = new ArrayList<Busqueda>
+	Perfil perfil
 	
 	new(){
 		
