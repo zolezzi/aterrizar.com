@@ -1,22 +1,25 @@
 package ar.edu.unq.epers.aterrizar.persistencia.neo4j
 
-
+import ar.edu.unq.epers.aterrizar.modelo.Mensaje
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
+import ar.edu.unq.epers.aterrizar.relacion.TipoDeMensaje
+import ar.edu.unq.epers.aterrizar.relacion.TipoDeRelacion
 import org.neo4j.graphdb.Direction
 import org.neo4j.graphdb.DynamicLabel
 import org.neo4j.graphdb.GraphDatabaseService
 import org.neo4j.graphdb.Node
 import org.neo4j.graphdb.RelationshipType
-import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.relacion.TipoDeRelacion
 import org.neo4j.graphdb.traversal.Evaluators
 import org.neo4j.graphdb.traversal.Uniqueness
 
 class RepositorioUsuariosHome {
 	
 	GraphDatabaseService graph
+//	RepositorioDeMensaje repositorioMensaje
 	
 	new(GraphDatabaseService g){
 		graph = g
+	//	repositorioMensaje = new RepositorioDeMensaje(g)
 	}
 	
 	def usuarioLabel() {
@@ -98,7 +101,6 @@ class RepositorioUsuariosHome {
 	def toUsuario(Node node) {
 		new Usuario => [
 			nombreUsuario = node.getProperty("nombreUsuario") as String
-			//id = node.getProperty("id") as Integer
 		]
 	}
 	
@@ -108,4 +110,83 @@ class RepositorioUsuariosHome {
 			this.crearNodo(usuario)
 		}
 	}
+ 	
+	def eliminarMensajes(Mensaje msj) {
+		eliminarNodo(msj)
+	}
+	
+	def enviarMensaje(Usuario emisor, Mensaje msj, Usuario receptor) {
+		relacionEnviarMensaje(emisor, msj, receptor)
+	}
+	
+	def crearNodo(Mensaje m){
+		val node = graph.createNode(mensajeLabel)
+		agregarPropiedadesMensaje(node, m)
+		node
+	}
+	
+	def eliminarNodo(Mensaje m){
+		val nodo = getNodo(m)
+		borrarRelaciones(nodo)
+	}
+	
+	def agregarPropiedadesMensaje(Node node, Mensaje m){
+		node.setProperty("emisor", m.emisor)
+		node.setProperty("receptor", m.receptor)
+		node.setProperty("texto", m.texto)
+		node.setProperty("idMensaje", m.idMensaje)
+	}
+	
+		
+	def mensajeLabel() {
+		DynamicLabel.label("Mensaje")
+	}
+
+	def getNodo(Mensaje m){
+		graph.findNodes(mensajeLabel, "idMensaje", m.idMensaje).head			
+	}
+	
+		
+	def toMensaje(Node node) {
+		new Mensaje() => [
+			emisor = node.getProperty("emisor") as String
+			receptor = node.getProperty("receptor") as String
+			texto = node.getProperty("texto") as String
+			idMensaje = node.getProperty("idMensaje") as Integer
+		]
+	}
+	
+	
+	def eliminarMensajesDeUsuario(Usuario usuario) {
+		eliminarMensajesEnviados(usuario)
+		eliminarMensajesRecibidos(usuario)
+	}
+
+	def eliminarMensajesEnviados(Usuario u){
+		val nodoUsuario = getNodo(u)
+		nodosRelacionados(nodoUsuario,TipoDeMensaje.EMISOR, Direction.OUTGOING).forEach[delete]		
+	}
+	
+	def eliminarMensajesRecibidos(Usuario u){
+		val nodoUsuario = getNodo(u)
+		nodosRelacionados(nodoUsuario,TipoDeMensaje.RECEPTOR, Direction.INCOMING).forEach[delete]		
+	}
+
+	def relacionEnviarMensaje(Usuario emisor, Mensaje msjAEnviar, Usuario receptor){
+		val nodoEmisor = getNodo(emisor)
+		val nodoMensaje = crearNodo(msjAEnviar)
+		val nodoReceptor = getNodo(receptor)
+		relacionar(nodoEmisor, nodoMensaje, TipoDeMensaje.EMISOR)
+		relacionar(nodoReceptor, nodoMensaje, TipoDeMensaje.RECEPTOR)
+	}
+	
+	def mensajesEnviados(Usuario usuario) {
+		val nodoEmisor = getNodo(usuario)
+		nodosRelacionados(nodoEmisor, TipoDeMensaje.EMISOR, Direction.OUTGOING).map[toMensaje(it)].toSet
+	}
+	
+	def mensajesRecibidos(Usuario usuario) {
+		val nodoReceptor = getNodo(usuario)
+		nodosRelacionados(nodoReceptor, TipoDeMensaje.RECEPTOR, Direction.INCOMING).map[toMensaje(it)].toSet
+	}	
 }

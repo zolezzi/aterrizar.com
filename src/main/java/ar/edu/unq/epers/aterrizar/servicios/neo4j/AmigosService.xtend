@@ -5,6 +5,7 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.persistencia.neo4j.RepositorioUsuariosHome
 import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
 import java.util.List
+import ar.edu.unq.epers.aterrizar.modelo.Mensaje
 
 class AmigosService {
 
@@ -48,7 +49,41 @@ class AmigosService {
 			todosMisAmigos.toList
 		]
 	}
-		def cuantosConozco(Usuario u){
+	
+	def cuantosConozco(Usuario u){
 		amigosDeUsuario(u).length
 	}
+	
+	def eliminarMensajesDeUsuario(Usuario usuario) {
+		GraphServiceRunner::run[
+			createHome(it).eliminarMensajesDeUsuario(usuario)
+			null
+		]
+	}
+			
+	def eliminarMensaje(Mensaje m){
+		GraphServiceRunner::run[
+			createHome(it).eliminarMensajes(m)
+			null
+		]
+	}
+	
+	def void enviarMensajeAUnUsuario(Usuario emisor, Usuario receptor, Mensaje m){
+		GraphServiceRunner::run[
+			createHome(it).enviarMensaje(emisor, m, receptor)
+		]
+	}
+	
+	def List<Mensaje> buscarMensajesEnviados(Usuario u){
+		GraphServiceRunner::run[
+			createHome(it).mensajesEnviados(u).toList
+		]
+	}
+
+	def List<Mensaje> buscarMensajesRecibidos(Usuario u){
+		GraphServiceRunner::run[
+			createHome(it).mensajesRecibidos(u).toList
+		]
+	}
+	
 }
