@@ -149,5 +149,13 @@ class TestRepositorioUsuariosService {
 		repositorioService.eliminarUsuario(miami)
 		repositorioService.eliminarUsuario(usuarioConUnSoloAmigo)
 		repositorioService.eliminarUsuario(usuarioAmigo)
+		
+		repositorioService.getbase.removeUser(charlie)
+		repositorioService.getbase.removeUser(nico)
+		repositorioService.getbase.removeUser(ricky)
+		repositorioService.getbase.removeUser(miami)
+		repositorioService.getbase.removeUser(ezequiel)
+		repositorioService.getbase.removeUser(usuarioConUnSoloAmigo)
+		repositorioService.getbase.removeUser(usuarioAmigo)
 	}
 }
