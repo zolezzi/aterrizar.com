@@ -50,6 +50,10 @@ class ComentariosHome<T> {
 		this.mongoCollection = mongoCollection;
 	}
 	
+	def update(Query object, T changeObject ){
+		mongoCollection.update(object,changeObject)
+	}
+	
 	def getMongoCollection() {
 		return mongoCollection;
 	}

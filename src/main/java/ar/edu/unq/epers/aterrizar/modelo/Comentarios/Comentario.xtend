@@ -15,7 +15,6 @@ class Comentario extends Visibilidad{
 	var ArrayList<Usuario> meGusta = new ArrayList<Usuario>
 	var ArrayList<Usuario> noMeGusta = new ArrayList<Usuario>
 	String textoComentario
-	var ArrayList<Comentario> comentario = new ArrayList<Comentario>
 	
 	def cantMeGusta(){
 		meGusta.size

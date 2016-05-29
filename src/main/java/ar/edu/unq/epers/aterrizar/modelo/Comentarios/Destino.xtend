@@ -8,8 +8,6 @@ import org.mongojack.ObjectId
 
 @Accessors
 class Destino extends Visibilidad {
-	
-	
 	@ObjectId
 	@JsonProperty("_id")
 	String id

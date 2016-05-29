@@ -8,12 +8,32 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 
 @Accessors
 class Perfil {
-	
 	@ObjectId
 	@JsonProperty("_id")
 	String id
 	Usuario usuarioPerfil
-	String Titulo
+	String titulo
 	ArrayList<Destino> destinos = new ArrayList<Destino>
+	
+	def obtenerDestino(Destino destino){
+		for (dest : destinos){
+			if(dest.id == destino.id ){
+				return dest
+			}
+		}
+		return null
+	}
+	
+	def agregarComentarioADestino(Comentario coment, Destino destino){
+		var resdestino = obtenerDestino(destino)
+		if(resdestino != null){
+			resdestino.comentarios.add(coment)
+		}
+	}
+	
+	def darMeGusta(Destino destino, Usuario usuario){
+		var res = obtenerDestino(destino)
+		res.meGusta(usuario)
+	}
 	
 }
