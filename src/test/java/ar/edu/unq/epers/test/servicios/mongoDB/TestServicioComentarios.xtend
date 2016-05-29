@@ -163,7 +163,7 @@ class testServicioComentarios {
 		
 	}
 	
-		@Test
+	@Test
 	def agregarMeGustaAlDestino(){
 		
 		comentarioService.crearPerfil(charlie,"Titulo")
@@ -175,7 +175,35 @@ class testServicioComentarios {
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.destinos.get(0).cantMeGusta, 1 )
 		
-	}	
+	}
+	
+	@Test
+	def agregarNoMeGustaAlDestino(){
+		
+		comentarioService.crearPerfil(charlie,"Titulo")
+		var Destino dest = new Destino()
+		comentarioService.agregarDestino(charlie,dest)
+		comentarioService.agregarNoMeGustaAlPerfilDe(charlie,dest,nico)
+		
+		var Query query = DBQuery.in("usuarioPerfil", charlie)
+		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
+		Assert.assertEquals(resQueryPerfil.destinos.get(0).cantNoMeGusta, 1 )
+		
+	}
+	
+	@Test
+	def void mostrarDestinosPublicos(){
+		
+		comentarioService.crearPerfil(charlie,"Titulo")
+		var Destino dest = new Destino()
+		var Destino dest2 = new Destino()
+		dest2.hacerPrivado
+		comentarioService.agregarDestino(charlie,dest)
+		comentarioService.agregarDestino(charlie,dest2)
+		comentarioService.mostrarPerfil(nico,charlie)
+
+		
+	}		
 		
 	
 	@After
