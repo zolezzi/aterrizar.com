@@ -24,12 +24,29 @@ class Destino extends Visibilidad {
 	}
 	
 	def meGusta(Usuario usuario){
-		if(! meGusta.contains(usuario))
-			meGusta.add(usuario)
+		if(noMeGusta.contains(usuario)){
+			noMeGusta.remove(usuario)
+			if(! meGusta.contains(usuario)){
+				meGusta.add(usuario)
+			}
+		}else{
+			if(! meGusta.contains(usuario)){
+				meGusta.add(usuario)
+			}
+		}
 	}
 	
 	def noMeGusta(Usuario usuario){
-		if(! noMeGusta.contains(usuario))
-			noMeGusta.add(usuario)
+		if(meGusta.contains(usuario)){
+			meGusta.remove(usuario)
+			if(! noMeGusta.contains(usuario)){
+				noMeGusta.add(usuario)
+			}
+		}else{
+			if(! noMeGusta.contains(usuario)){
+				noMeGusta.add(usuario)
+			}
+		}
+		
 	}
 }

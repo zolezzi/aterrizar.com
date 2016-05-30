@@ -9,23 +9,22 @@ class Visibilidad {
 	Boolean soloAmigos = false
 	Boolean privado = false
 	
-	// idea general, si tienen una mejor adelante.
 	def hacerPublico(){
-		    publico = true
-			soloAmigos = false
-			privado = false		
+		    this.publico = true
+			this.soloAmigos = false
+			this.privado = false		
 	}
 	
 	def hacerPrivado(){
-		    publico = false
-			soloAmigos = false
-			privado = true		
+		    this.publico = false
+			this.soloAmigos = false
+			this.privado = true		
 	}
 	
 	def hacerSoloAmigos(){
-		    publico = false
-			soloAmigos = false
-			privado = true		
+		    this.publico = false
+			this.soloAmigos = true
+			this.privado = false		
 	}
 	
 	def esPublico(){

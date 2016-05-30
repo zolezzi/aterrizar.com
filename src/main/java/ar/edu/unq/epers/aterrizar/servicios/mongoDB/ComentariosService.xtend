@@ -10,15 +10,19 @@ import org.mongojack.DBQuery
 import org.mongojack.DBQuery.Query
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Visibilidad
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Comentario
-import org.mongojack.Aggregation
 import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.SistemDB
 import org.mongojack.MapReduce
 
 import org.mongojack.Id
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.mongojack.ObjectId
-import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.ArrayList
+import java.util.List
+import org.mongojack.DBSort
+import org.mongojack.DBProjection
+import com.mongodb.BasicDBObject
+import org.mongojack.Aggregation
+import org.mongojack.Aggregation.Group
+import com.mongodb.BasicDBList
 
 class ComentariosService {
 	
@@ -36,17 +40,19 @@ class ComentariosService {
 	
 	def crearPerfil(Usuario usuario, String tituloPerfil){
 		
-		//chequear si el usuario ya tiene perfil
-		
 		var Perfil perfil = new Perfil => [
 			usuarioPerfil = usuario
 			titulo = tituloPerfil
 		]
-		homePerfil.insert(perfil)
+		var Query query = DBQuery.in("usuarioPerfil.nombreUsuario", usuario.nombreUsuario)
+		var resQueryPerfil = homePerfil.mongoCollection.find(query);
+		if(resQueryPerfil.length == 0){
+			homePerfil.insert(perfil)
+		}
 		
 	}
 	
-	//posible exception
+
 	def agregarDestino(Usuario usuario, Destino destino){
 		
 		var Query query = DBQuery.in("usuarioPerfil", usuario)
@@ -58,8 +64,6 @@ class ComentariosService {
 		
 	}
 	
-	//Se asume que el comentario ya tiene al usuario que hizo el comentario.
-	//posible exception
 	def agregarComentarioAlPerfilDe(Usuario usuario, Destino destino, Comentario comentario){
 		
 		
@@ -93,49 +97,22 @@ class ComentariosService {
 		}		
 	}
 	
-	
-	def mostrarPerfil(Usuario visitante, Usuario visitado){
+	//Se envia el query como esta comentado en el codigo via BasicDBObject, pero trae un solo elemento que machea con ese valor,
+	// si hay mas los ignora. Es Decir Trae un perfil con un solo destino que sea Publico.
+	// Probe la  query que esta comentada en la consola de mongo, con 3 elementos, en los cuales 2 tienen publico: true,
+	// tambien devuelve 1 solo elemento.
+	def mostrarPerfil2(Usuario visitante, Usuario visitado){
 		
-		val map = '''
-			function() { 
-					emit(this.id, this.destinos);
-			}
-		'''
-
-		val reduce = '''
-			function(key, values) {
-				var returndests = [];
-				for(var i in values) {
-					if(values[i].publico){
-						returndest.push(values[i]);
-					}
-				}
-				return returndests;
-			}
-		'''
-
-		val command = MapReduce.build(map, reduce, 
-			MapReduce.OutputType.REPLACE, "destinos", 
-			PerfilScan, String)
-
-		command.query = DBQuery.in("usuarioPerfil",visitado)
-
-		val output = homePerfil.mongoCollection.mapReduce(command)
+		//db.Perfil.find({"usuarioPerfil.nombre": "carlos"}, {destinos : {$elemMatch :{publico : true}} })
 		
-			output.results().forEach[
-				println('''Perfil de Â«id» muestra destinos $Â«value»''')
-			]
+		val usuarioquery = new BasicDBObject('usuarioPerfil.nombre',visitado.nombre)
 		
+		val vis = new BasicDBObject('publico',true)
+		val elemMatch = new BasicDBObject('$elemMatch',vis)
+		val dest = new BasicDBObject('destinos',elemMatch)
+		
+		var res = homePerfil.mongoCollection.find(usuarioquery,dest).next() as Perfil; 
+		println(res.destinos.size)	
 	}
 	
-	
-	
-	
-}
-
-@Accessors
-public class PerfilScan {
-	@Id
-	public String id;
-	public ArrayList<Destino> value;
 }

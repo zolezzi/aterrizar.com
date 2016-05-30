@@ -37,8 +37,10 @@ class Perfil {
 	}
 	
 	def darNoMeGusta(Destino destino, Usuario usuario){
-		var res = obtenerDestino(destino)
-		res.noMeGusta(usuario)
+		var res = obtenerDestino(destino)		
+		res.noMeGusta(usuario)	
+		
+		
 	}
 	
 }

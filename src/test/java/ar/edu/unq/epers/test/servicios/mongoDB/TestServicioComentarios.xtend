@@ -115,13 +115,11 @@ class testServicioComentarios {
 		BDJDBC.insertUser(ezequiel,1)
 
 					
-//		repositorioService.agregarAmigo(charlie, ezequiel)		
-//		repositorioService.agregarAmigo(ezequiel, nico)
-//		repositorioService.agregarAmigo(ricky, charlie)
-//		repositorioService.agregarAmigo(nico, miami)
-		
-		
-		
+		repositorioService.agregarAmigo(charlie, ezequiel)		
+		repositorioService.agregarAmigo(ezequiel, nico)
+		repositorioService.agregarAmigo(ricky, charlie)
+		repositorioService.agregarAmigo(nico, miami)
+				
 	}
 	
 	@Test
@@ -131,6 +129,9 @@ class testServicioComentarios {
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.titulo, "Titulo")
 		Assert.assertEquals(resQueryPerfil.usuarioPerfil.nombreUsuario, charlie.nombreUsuario)
+		comentarioService.crearPerfil(charlie,"Titulo2")
+		resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
+		Assert.assertEquals(resQueryPerfil.titulo,"Titulo")
 	}
 	
 	@Test
@@ -194,15 +195,21 @@ class testServicioComentarios {
 	@Test
 	def void mostrarDestinosPublicos(){
 		
-		comentarioService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
 		var Destino dest2 = new Destino()
-		dest2.hacerPrivado
+		var Destino dest3 = new Destino()
+		var Destino dest4 = new Destino()
+		dest.hacerPrivado
+				
+		comentarioService.crearPerfil(charlie,"Perfil Charly")
+		comentarioService.crearPerfil(ricky,"Perfil Ricky")
+
 		comentarioService.agregarDestino(charlie,dest)
 		comentarioService.agregarDestino(charlie,dest2)
-		comentarioService.mostrarPerfil(nico,charlie)
-
+		comentarioService.agregarDestino(charlie,dest3)
+		comentarioService.agregarDestino(ricky,dest4)
 		
+		comentarioService.mostrarPerfil2(nico,charlie)		
 	}		
 		
 	
@@ -215,12 +222,12 @@ class testServicioComentarios {
 		BDJDBC.removeUser(miami)
 		BDJDBC.removeUser(ezequiel)
 		
-//		repositorioService.eliminarUsuario(charlie)
-//		repositorioService.eliminarUsuario(ezequiel)
-//	 	repositorioService.eliminarUsuario(nico)
-//		repositorioService.eliminarUsuario(ricky)
-//		repositorioService.eliminarUsuario(miami)
-//		
+		repositorioService.eliminarUsuario(charlie)
+		repositorioService.eliminarUsuario(ezequiel)
+	 	repositorioService.eliminarUsuario(nico)
+		repositorioService.eliminarUsuario(ricky)
+		repositorioService.eliminarUsuario(miami)
+		
 		homePerfil.mongoCollection.drop
 		
 		
