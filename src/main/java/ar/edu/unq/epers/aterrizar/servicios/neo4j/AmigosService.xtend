@@ -20,6 +20,10 @@ class AmigosService {
 		return basesDeDatosUsuarios
 	}
 	
+	def getRepositorioHome(){
+		repositorioHome
+	}
+	
 	def eliminarUsuario(Usuario u) {
 		GraphServiceRunner::run[
 			createHome(it).eliminarNodo(u)

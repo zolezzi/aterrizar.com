@@ -137,6 +137,11 @@ class TestRepositorioUsuariosService {
 		var cantMsj = repositorioService.buscarMensajesEnviados(charlie).length
 		Assert.assertEquals(cantMsj, 1)
 	}
+	
+	@Test
+	def void testEsAmigoDe(){
+		Assert.assertTrue(repositorioService.repositorioHome.esAmigo(charlie,ezequiel))
+	}
 
 	
 	@After
