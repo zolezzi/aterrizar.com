@@ -51,11 +51,6 @@ class RepositorioUsuariosHome {
 		node.setProperty("nombreUsuario", u.nombreUsuario)
 	}
 	
-	def esAmigo(Usuario usuario , Usuario usuarioAmigo){
-		val amigos = getAmigos(usuario)
-		return amigos.contains(usuarioAmigo) 
-	}
-	
 	def relacionarAmistad(Usuario usuario, Usuario usuarioAmigo) {
 		relacionar(usuario, usuarioAmigo, TipoDeRelacion.AMIGO)
 		relacionar(usuarioAmigo, usuario, TipoDeRelacion.AMIGO)
