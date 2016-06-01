@@ -3,14 +3,15 @@ package ar.edu.unq.epers.aterrizar.modelo.Comentarios
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.mongojack.ObjectId
+import com.fasterxml.jackson.annotation.JsonProperty
 
 @Accessors
 class Destino extends Visibilidad {
 	@ObjectId
 	@JsonProperty("_id")
 	String id
+	String TituloDestino
 	var ArrayList<Usuario> meGusta = new ArrayList<Usuario>
 	var ArrayList<Usuario> noMeGusta = new ArrayList<Usuario>
 	var ArrayList<Comentario> comentarios = new ArrayList<Comentario>

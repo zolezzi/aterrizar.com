@@ -29,6 +29,9 @@ import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoPrimera
 import ar.edu.unq.epers.aterrizar.modelo.modeloorden.OrdenCosto
 import ar.edu.unq.epers.aterrizar.persistencia.home.UsuarioHome
 import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
+import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
+import org.junit.Rule
+import org.junit.rules.ExpectedException
 
 class TestBusquedaService {
 	var Usuario usuario 				
@@ -114,6 +117,9 @@ class TestBusquedaService {
 		new SistemaRegistroAerolineas().agregaVuelo(aerolinea, vuelo2)
 		
 	}
+	
+	@Rule
+	public ExpectedException thrown = ExpectedException.none()
 	
 	@Test
 	def void busquedaPorAerolinea(){
@@ -261,9 +267,24 @@ class TestBusquedaService {
 		usuario = SessionManager.runInSession([
 		new UsuarioHome().get(usuario.id)
 		])
-		busqueda = usuario.historialDeBusquedas.last
+		busqueda = usuario.obtenerUltimaBusqueda
 		var List<Vuelo> result2 = buscador.ejecutarBusqueda(busqueda)
 		Assert.assertEquals(result.size, result2.size)		
+	}
+	
+	@Test (expected = ExceptionUsuario) 
+	def void buscarDesdeUsuarioPersisitidoElHistorialvacio(){
+		var BusquedaService buscador = new BusquedaService()
+		var Busqueda busqueda = new Busqueda()
+		SessionManager.runInSession([
+		new UsuarioHome().save(usuario)
+		null
+		])
+		usuario = SessionManager.runInSession([
+		new UsuarioHome().get(usuario.id)
+		])
+		busqueda = usuario.obtenerUltimaBusqueda
+		thrown.expectMessage("No hay busquedas en el historial" ) 		
 	}
 	
 	@After

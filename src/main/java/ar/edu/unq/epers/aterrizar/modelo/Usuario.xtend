@@ -20,7 +20,6 @@ class Usuario {
 	int id
 	Boolean logeado = false
 	List<Busqueda> historialDeBusquedas = new ArrayList<Busqueda>
-	Perfil perfil
 	
 	new(){
 		
@@ -32,21 +31,21 @@ class Usuario {
 	}
 	
 	def obtenerUltimaBusqueda(){
-		if(historialDeBusquedas.size() > 0){
-			historialDeBusquedas.get(0) 
+		if(! historialDeBusquedas.empty){
+			historialDeBusquedas.last
 		}else{
-			" "
+			throw new ExceptionUsuario("No hay busquedas en el historial ")
 		}
 	}
 	
 	def cambiarContrasenia (String nuevaContrasenia){	
-			if(contrasenia != nuevaContrasenia){
-				this.contrasenia = nuevaContrasenia
-		 	}
-		 	else{
-			 	throw new ExceptionUsuario("Contraseña invalida ")
-			}
-}	
+		if(contrasenia != nuevaContrasenia){
+			this.contrasenia = nuevaContrasenia
+		}
+		else{
+		 	throw new ExceptionUsuario("Contraseña invalida ")
+		}
+	}	
 	def validarContrasenia(String contrasenia){
 		this.contrasenia == contrasenia
 	}

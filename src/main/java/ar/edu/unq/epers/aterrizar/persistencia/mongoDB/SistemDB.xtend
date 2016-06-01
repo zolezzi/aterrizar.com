@@ -29,7 +29,7 @@ class SistemDB {
 	
 	def <T> ComentariosHome<T> collection(Class<T> entityType){
 		val dbCollection = db.getCollection(entityType.getSimpleName());
-		new ComentariosHome<T>(JacksonDBCollection.wrap(dbCollection, entityType, String));
+		new ComentariosHome<T>(JacksonDBCollection.wrap(dbCollection, entityType, String), entityType);
 	}
 
 }

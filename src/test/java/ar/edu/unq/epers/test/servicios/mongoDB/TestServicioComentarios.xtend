@@ -115,11 +115,11 @@ class testServicioComentarios {
 		BDJDBC.insertUser(ezequiel,1)
 
 					
-		repositorioService.agregarAmigo(charlie, ezequiel)		
-		repositorioService.agregarAmigo(ezequiel, nico)
-		repositorioService.agregarAmigo(ricky, charlie)
-		repositorioService.agregarAmigo(nico, miami)
-				
+//		repositorioService.agregarAmigo(charlie, ezequiel)		
+//		repositorioService.agregarAmigo(ezequiel, nico)
+//		repositorioService.agregarAmigo(ricky, charlie)
+//		repositorioService.agregarAmigo(nico, miami)
+//				
 	}
 	
 	@Test
@@ -151,14 +151,16 @@ class testServicioComentarios {
 		
 		comentarioService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
+		dest.tituloDestino = "viaje a miami"
 		comentarioService.agregarDestino(charlie,dest)
 		var Comentario comentario = new Comentario =>[
 			usuarioDelComentario = nico
 			textoComentario = "genial"
 		]
-		comentarioService.agregarComentarioAlPerfilDe(charlie,dest,comentario)
 		
 		var Query query = DBQuery.in("usuarioPerfil", charlie)
+		comentarioService.agregarComentarioAlPerfilDe(charlie,dest,comentario)
+		
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.destinos.get(0).comentarios.get(0).textoComentario, comentario.textoComentario )
 		
@@ -169,6 +171,7 @@ class testServicioComentarios {
 		
 		comentarioService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
+		dest.tituloDestino = "viaje a miami"
 		comentarioService.agregarDestino(charlie,dest)
 		comentarioService.agregarMeGustaAlPerfilDe(charlie,dest,nico)
 		
@@ -183,6 +186,7 @@ class testServicioComentarios {
 		
 		comentarioService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
+		dest.tituloDestino = "viaje a miami"
 		comentarioService.agregarDestino(charlie,dest)
 		comentarioService.agregarNoMeGustaAlPerfilDe(charlie,dest,nico)
 		
@@ -193,13 +197,14 @@ class testServicioComentarios {
 	}
 	
 	@Test
-	def void mostrarDestinosPublicos(){
+	def void mostrarDestinosPublico(){
 		
 		var Destino dest = new Destino()
+		dest.hacerPrivado
+		
 		var Destino dest2 = new Destino()
 		var Destino dest3 = new Destino()
 		var Destino dest4 = new Destino()
-		dest.hacerPrivado
 				
 		comentarioService.crearPerfil(charlie,"Perfil Charly")
 		comentarioService.crearPerfil(ricky,"Perfil Ricky")
@@ -209,8 +214,70 @@ class testServicioComentarios {
 		comentarioService.agregarDestino(charlie,dest3)
 		comentarioService.agregarDestino(ricky,dest4)
 		
-		comentarioService.mostrarPerfil2(nico,charlie)		
-	}		
+		var perfil = comentarioService.mostrarPerfil(nico,charlie)
+		Assert.assertEquals(perfil.destinos.size, 2)
+		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")
+		Assert.assertEquals(perfil.titulo, "Perfil Charly")
+		Assert.assertEquals(perfil.destinos.get(0).publico, true)
+		Assert.assertEquals(perfil.destinos.get(1).publico, true)
+	}
+	
+	@Test
+	def void mostrarDestinosParaAmigos(){
+		
+		var Destino dest = new Destino()
+		dest.hacerPrivado
+		
+		var Destino dest2 = new Destino()
+		dest2.hacerSoloAmigos
+		
+		var Destino dest3 = new Destino()
+		var Destino dest4 = new Destino()
+				
+		comentarioService.crearPerfil(charlie,"Perfil Charly")
+		comentarioService.crearPerfil(ezequiel,"Perfil Ezequiel")
+
+		comentarioService.agregarDestino(charlie,dest)
+		comentarioService.agregarDestino(charlie,dest2)
+		comentarioService.agregarDestino(charlie,dest3)
+		comentarioService.agregarDestino(ezequiel,dest4)
+		
+		var perfil = comentarioService.mostrarPerfil(ezequiel,charlie)
+		
+		Assert.assertEquals(perfil.destinos.size, 2)
+		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")
+		Assert.assertEquals(perfil.titulo, "Perfil Charly")
+
+	}
+	
+	@Test
+	def void mostarDestinoPrivado(){
+		var Destino dest = new Destino()
+		dest.hacerPrivado
+		
+		var Destino dest2 = new Destino()
+		dest2.hacerSoloAmigos
+		
+		var Destino dest3 = new Destino()
+		var Destino dest4 = new Destino()
+				
+		comentarioService.crearPerfil(charlie,"Perfil Charly")
+		comentarioService.crearPerfil(ezequiel,"Perfil Ezequiel")
+
+		comentarioService.agregarDestino(charlie,dest)
+		comentarioService.agregarDestino(charlie,dest2)
+		comentarioService.agregarDestino(charlie,dest3)
+		comentarioService.agregarDestino(ezequiel,dest4)
+		
+		var perfil = comentarioService.mostrarPerfil(charlie,charlie)
+		
+		Assert.assertEquals(perfil.destinos.size, 3)
+		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")
+		Assert.assertEquals(perfil.titulo, "Perfil Charly")
+	}
+	
+	
+			
 		
 	
 	@After
@@ -222,11 +289,11 @@ class testServicioComentarios {
 		BDJDBC.removeUser(miami)
 		BDJDBC.removeUser(ezequiel)
 		
-		repositorioService.eliminarUsuario(charlie)
-		repositorioService.eliminarUsuario(ezequiel)
-	 	repositorioService.eliminarUsuario(nico)
-		repositorioService.eliminarUsuario(ricky)
-		repositorioService.eliminarUsuario(miami)
+//		repositorioService.eliminarUsuario(charlie)
+//		repositorioService.eliminarUsuario(ezequiel)
+//	 	repositorioService.eliminarUsuario(nico)
+//		repositorioService.eliminarUsuario(ricky)
+//		repositorioService.eliminarUsuario(miami)
 		
 		homePerfil.mongoCollection.drop
 		
