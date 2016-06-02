@@ -140,7 +140,7 @@ class TestRepositorioUsuariosService {
 	
 	@Test
 	def void testEsAmigoDe(){
-		Assert.assertTrue(repositorioService.repositorioHome.esAmigo(charlie,ezequiel))
+		Assert.assertTrue(repositorioService.esAmigo(charlie,ezequiel))
 	}
 
 	
