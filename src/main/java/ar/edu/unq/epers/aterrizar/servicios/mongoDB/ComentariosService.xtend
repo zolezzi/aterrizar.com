@@ -87,7 +87,7 @@ class ComentariosService {
 	
 	def mostrarPerfil(Usuario visitante, Usuario visitado){
 		
-		if(false){
+		if(serviceAmigos.esAmigo(visitante,visitado)){
 			mostrarParaAmigos(visitado)
 		}else{
 			if(visitante == visitado){
