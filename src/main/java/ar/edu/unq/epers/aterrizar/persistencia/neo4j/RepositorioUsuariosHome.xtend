@@ -79,7 +79,8 @@ class RepositorioUsuariosHome {
 	}
 	
 	def getAmigos(Usuario u){
-		val nodoUsuario = getNodo(u)
+	//	val nodoUsuario = getNodo(u)
+		val nodoUsuario = this.formarNodo(u)
 		val nodos = nodosRelacionados(nodoUsuario, TipoDeRelacion.AMIGO, Direction.OUTGOING)
 		var amigos = nodos.map[toUsuario(it)].toSet
 		//amigos.removeIf([it.nombreUsuario.equals(u.nombreUsuario)])
