@@ -135,10 +135,11 @@ class RepositorioUsuariosHome {
 	}
 	
 	def formarNodo(Usuario usuario) {
-		val u = getNodo(usuario)
+		var u = getNodo(usuario)
 		if(u == null){
-			this.crearNodo(usuario)
+			u = this.crearNodo(usuario)
 		}
+		return u
 	}
  	
 	def eliminarMensajes(Mensaje msj) {

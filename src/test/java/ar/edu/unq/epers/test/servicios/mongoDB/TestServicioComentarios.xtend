@@ -115,11 +115,11 @@ class testServicioComentarios {
 		BDJDBC.insertUser(ezequiel,1)
 
 					
-//		repositorioService.agregarAmigo(charlie, ezequiel)		
-//		repositorioService.agregarAmigo(ezequiel, nico)
-//		repositorioService.agregarAmigo(ricky, charlie)
-//		repositorioService.agregarAmigo(nico, miami)
-//				
+		repositorioService.agregarAmigo(charlie, ezequiel)		
+		repositorioService.agregarAmigo(ezequiel, nico)
+		repositorioService.agregarAmigo(ricky, charlie)
+		repositorioService.agregarAmigo(nico, miami)
+				
 	}
 	
 	@Test
@@ -289,11 +289,11 @@ class testServicioComentarios {
 		BDJDBC.removeUser(miami)
 		BDJDBC.removeUser(ezequiel)
 		
-//		repositorioService.eliminarUsuario(charlie)
-//		repositorioService.eliminarUsuario(ezequiel)
-//	 	repositorioService.eliminarUsuario(nico)
-//		repositorioService.eliminarUsuario(ricky)
-//		repositorioService.eliminarUsuario(miami)
+		repositorioService.eliminarUsuario(charlie)
+		repositorioService.eliminarUsuario(ezequiel)
+	 	repositorioService.eliminarUsuario(nico)
+		repositorioService.eliminarUsuario(ricky)
+		repositorioService.eliminarUsuario(miami)
 		
 		homePerfil.mongoCollection.drop
 		
