@@ -11,15 +11,15 @@ import org.neo4j.graphdb.Node
 import org.neo4j.graphdb.RelationshipType
 import org.neo4j.graphdb.traversal.Evaluators
 import org.neo4j.graphdb.traversal.Uniqueness
+import java.util.List
 
 class RepositorioUsuariosHome {
 	
 	GraphDatabaseService graph
-//	RepositorioDeMensaje repositorioMensaje
+
 	
 	new(GraphDatabaseService g){
 		graph = g
-	//	repositorioMensaje = new RepositorioDeMensaje(g)
 	}
 	
 	def usuarioLabel() {
@@ -49,12 +49,34 @@ class RepositorioUsuariosHome {
 	
 	def agregarValores(Node node, Usuario u){
 		node.setProperty("nombreUsuario", u.nombreUsuario)
+		node.setProperty("nombre", u.nombre)
+		node.setProperty("apellido", u.apellido)
+		node.setProperty("email", u.email)
+		node.setProperty("fechaNacimiento", u.fechaNacimiento)
+		node.setProperty("contrasenia", u.contrasenia)
+		node.setProperty("codValidacion", u.codValidacion)
+		node.setProperty("id", u.id)
 	}
 	
 	def relacionarAmistad(Usuario usuario, Usuario usuarioAmigo) {
 		relacionar(usuario, usuarioAmigo, TipoDeRelacion.AMIGO)
 		relacionar(usuarioAmigo, usuario, TipoDeRelacion.AMIGO)
 	}	
+	
+	def esAmigoDe(Usuario u, Usuario u2){
+		val amigos = getAmigos(u)
+		var lista = amigos.toList
+		
+		return this.estaContenido(lista, u2)
+	}
+	
+	def estaContenido(List<Usuario> listaDeUsuarios, Usuario u){
+		var encontreUsuario = false
+		for (usuario : listaDeUsuarios){
+			encontreUsuario = encontreUsuario || usuario.nombreUsuario == u.nombreUsuario
+		}
+		return encontreUsuario
+	}
 	
 	def getAmigos(Usuario u){
 		val nodoUsuario = getNodo(u)
@@ -101,6 +123,13 @@ class RepositorioUsuariosHome {
 	def toUsuario(Node node) {
 		new Usuario => [
 			nombreUsuario = node.getProperty("nombreUsuario") as String
+			nombre = node.getProperty("nombre") as String
+			apellido = node.getProperty("apellido") as String
+			email = node.getProperty("email") as String
+			fechaNacimiento = node.getProperty("fechaNacimiento") as String
+			contrasenia = node.getProperty("contrasenia") as String
+			codValidacion = node.getProperty("codValidacion") as String
+			id = node.getProperty("id") as Integer
 		]
 	}
 	

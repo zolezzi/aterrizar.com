@@ -109,8 +109,8 @@ class TestRepositorioUsuariosService {
 		repositorioService.agregarAmigo(nico, miami)
 		repositorioService.agregarAmigo(ezequiel, nico)
 		repositorioService.agregarAmigo(usuarioConUnSoloAmigo, usuarioAmigo)
-				
-		}
+							
+	}
 		
 	@Test
 	def void testConsultarCantidadAmigos(){
@@ -140,8 +140,9 @@ class TestRepositorioUsuariosService {
 	
 	@Test
 	def void testEsAmigoDe(){
-		Assert.assertTrue(repositorioService.esAmigo(charlie,ezequiel))
+		Assert.assertTrue(repositorioService.esAmigo(usuarioAmigo,usuarioConUnSoloAmigo))
 	}
+	 
 
 	
 	@After

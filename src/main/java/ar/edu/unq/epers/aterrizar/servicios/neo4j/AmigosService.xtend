@@ -57,8 +57,8 @@ class AmigosService {
 		
 	def esAmigo(Usuario usuario , Usuario usuarioAmigo){
 		GraphServiceRunner::run[
-			val amigos = createHome(it).getAmigos(usuario)
-			return amigos.contains(usuarioAmigo) 
+			val sonAmigos = createHome(it).esAmigoDe(usuario, usuarioAmigo)
+			return sonAmigos
 		]
 	}
 	
