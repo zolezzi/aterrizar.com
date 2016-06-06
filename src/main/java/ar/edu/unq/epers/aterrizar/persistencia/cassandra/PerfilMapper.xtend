@@ -1,0 +1,22 @@
+package ar.edu.unq.epers.aterrizar.persistencia.cassandra
+
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
+import com.datastax.driver.mapping.annotations.FrozenValue
+import com.datastax.driver.mapping.annotations.PartitionKey
+import com.datastax.driver.mapping.annotations.Table
+import java.util.List
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtend.lib.annotations.EqualsHashCode
+
+@EqualsHashCode
+@Table(keyspace = "perfiles_aterrizar", name = "BusquedaPorCache")
+@Accessors
+class PerfilMapper {
+	
+	@PartitionKey()
+	String nombreUsuario
+	@PartitionKey(1)
+	String titulo
+	@FrozenValue
+	List<Destino> destinosDelPerfil
+}
