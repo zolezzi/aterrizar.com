@@ -4,7 +4,7 @@ import com.datastax.driver.core.Cluster
 import com.datastax.driver.core.Metadata
 import com.datastax.driver.core.Host
 
-class CassandraClient {
+class CassandraManager {
 
 	private Cluster cluster
 	
@@ -19,11 +19,11 @@ class CassandraClient {
 	}
 	
 	def close() {
-		cluster.shutdown();
+		cluster.close()
 	}
 
 	public static def main(String[] args) {
-		var client = new CassandraClient()
+		var client = new CassandraManager()
 		client.connect("127.0.0.1")
 		client.close()
 		System.exit(0)
