@@ -6,6 +6,7 @@ import com.datastax.driver.core.Host
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
 import org.eclipse.xtend.lib.annotations.Accessors
+import com.datastax.driver.mapping.MappingManager
 
 @Accessors
 class CassandraManager {
@@ -15,7 +16,8 @@ class CassandraManager {
 	Mapper<PerfilMapper> mapper
 	
 	new(){
-		createSession()
+		createSession
+		createSchema
 	}
 
 	def connect(String node) {
@@ -47,7 +49,16 @@ class CassandraManager {
 		session.execute("CREATE KEYSPACE IF NOT EXISTS perfiles_aterrizar" +
 						"WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };")
 		
-		session.execute("CREATE TYPE IF NOT EXISTS perfiles_aterrizar.PerfilMapper (" +
-						"")
+		session.execute("CREATE TYPE IF NOT EXISTS perfiles_aterrizar.Destino (" +
+						"_id text," +
+						"TituloDestino text);")
+
+		session.execute("CREATE TABLE IF NOT EXISTS perfiles_aterrizar.PerfilMapper (" +
+						"nombreUsuario text," +
+						"titulo text," +
+						"destinosDelPerfil list< frozen<Destino> >," +
+						"PRIMARY KEY (nombreUsuario, titulo);")
+
+	mapper = new MappingManager(session).mapper(PerfilMapper)
 	}
 }
