@@ -1,26 +1,23 @@
 package ar.edu.unq.epers.test.servicios.mongoDB
 
-import ar.edu.unq.epers.aterrizar.servicios.mongoDB.ComentariosService
-import org.junit.After
-import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
-import org.junit.Before
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Comentario
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.ComentariosHome
+import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
+import ar.edu.unq.epers.aterrizar.servicios.mongoDB.PerfilService
+import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.mongojack.DBQuery
 import org.mongojack.DBQuery.Query
-import org.junit.After
-import org.junit.Assert
-import ar.edu.unq.epers.aterrizar.persistencias.RepositorioUsuarios
-import ar.edu.unq.epers.aterrizar.persistencia.home.UsuarioHome
-import ar.edu.unq.epers.aterrizar.persistencia.home.SessionManager
-import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
-import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Comentario
 
-class testServicioComentarios {
-	ComentariosService comentarioService = new ComentariosService	
-	ComentariosHome<Perfil> homePerfil = comentarioService.getHomePerfil
+class testPerfilService {
+	PerfilService perfilService = new PerfilService	
+	ComentariosHome<Perfil> homePerfil = perfilService.getHomePerfil
 	RepositorioUsuarios BDJDBC = new RepositorioUsuarios()
 	
 	Usuario ricky
@@ -124,12 +121,12 @@ class testServicioComentarios {
 	
 	@Test
 	def testCrearPerfil(){
-		comentarioService.crearPerfil(charlie,"Titulo")
+		perfilService.crearPerfil(charlie,"Titulo")
 		var Query query = DBQuery.in("usuarioPerfil", charlie)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.titulo, "Titulo")
 		Assert.assertEquals(resQueryPerfil.usuarioPerfil.nombreUsuario, charlie.nombreUsuario)
-		comentarioService.crearPerfil(charlie,"Titulo2")
+		perfilService.crearPerfil(charlie,"Titulo2")
 		resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.titulo,"Titulo")
 	}
@@ -137,9 +134,9 @@ class testServicioComentarios {
 	@Test
 	def agregarDestino(){
 		
-		comentarioService.crearPerfil(charlie,"Titulo")
+		perfilService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
-		comentarioService.agregarDestino(charlie,dest)
+		perfilService.agregarDestino(charlie,dest)
 		var Query query = DBQuery.in("usuarioPerfil", charlie)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.destinos.get(0).id, dest.id)
@@ -149,17 +146,17 @@ class testServicioComentarios {
 	@Test
 	def agregarComentarioAlDestinoDelPerfil(){
 		
-		comentarioService.crearPerfil(charlie,"Titulo")
+		perfilService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
 		dest.tituloDestino = "viaje a miami"
-		comentarioService.agregarDestino(charlie,dest)
+		perfilService.agregarDestino(charlie,dest)
 		var Comentario comentario = new Comentario =>[
 			usuarioDelComentario = nico
 			textoComentario = "genial"
 		]
 		
 		var Query query = DBQuery.in("usuarioPerfil", charlie)
-		comentarioService.agregarComentarioAlPerfilDe(charlie,dest,comentario)
+		perfilService.agregarComentarioAlPerfilDe(charlie,dest,comentario)
 		
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.destinos.get(0).comentarios.get(0).textoComentario, comentario.textoComentario )
@@ -169,11 +166,11 @@ class testServicioComentarios {
 	@Test
 	def agregarMeGustaAlDestino(){
 		
-		comentarioService.crearPerfil(charlie,"Titulo")
+		perfilService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
 		dest.tituloDestino = "viaje a miami"
-		comentarioService.agregarDestino(charlie,dest)
-		comentarioService.agregarMeGustaAlPerfilDe(charlie,dest,nico)
+		perfilService.agregarDestino(charlie,dest)
+		perfilService.agregarMeGustaAlPerfilDe(charlie,dest,nico)
 		
 		var Query query = DBQuery.in("usuarioPerfil", charlie)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
@@ -184,11 +181,11 @@ class testServicioComentarios {
 	@Test
 	def agregarNoMeGustaAlDestino(){
 		
-		comentarioService.crearPerfil(charlie,"Titulo")
+		perfilService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
 		dest.tituloDestino = "viaje a miami"
-		comentarioService.agregarDestino(charlie,dest)
-		comentarioService.agregarNoMeGustaAlPerfilDe(charlie,dest,nico)
+		perfilService.agregarDestino(charlie,dest)
+		perfilService.agregarNoMeGustaAlPerfilDe(charlie,dest,nico)
 		
 		var Query query = DBQuery.in("usuarioPerfil", charlie)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
@@ -206,15 +203,15 @@ class testServicioComentarios {
 		var Destino dest3 = new Destino()
 		var Destino dest4 = new Destino()
 				
-		comentarioService.crearPerfil(charlie,"Perfil Charly")
-		comentarioService.crearPerfil(ricky,"Perfil Ricky")
+		perfilService.crearPerfil(charlie,"Perfil Charly")
+		perfilService.crearPerfil(ricky,"Perfil Ricky")
 
-		comentarioService.agregarDestino(charlie,dest)
-		comentarioService.agregarDestino(charlie,dest2)
-		comentarioService.agregarDestino(charlie,dest3)
-		comentarioService.agregarDestino(ricky,dest4)
+		perfilService.agregarDestino(charlie,dest)
+		perfilService.agregarDestino(charlie,dest2)
+		perfilService.agregarDestino(charlie,dest3)
+		perfilService.agregarDestino(ricky,dest4)
 		
-		var perfil = comentarioService.mostrarPerfil(nico,charlie)
+		var perfil = perfilService.mostrarPerfil(nico,charlie)
 		Assert.assertEquals(perfil.destinos.size, 2)
 		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")
 		Assert.assertEquals(perfil.titulo, "Perfil Charly")
@@ -234,15 +231,15 @@ class testServicioComentarios {
 		var Destino dest3 = new Destino()
 		var Destino dest4 = new Destino()
 				
-		comentarioService.crearPerfil(charlie,"Perfil Charly")
-		comentarioService.crearPerfil(ezequiel,"Perfil Ezequiel")
+		perfilService.crearPerfil(charlie,"Perfil Charly")
+		perfilService.crearPerfil(ezequiel,"Perfil Ezequiel")
 
-		comentarioService.agregarDestino(charlie,dest)
-		comentarioService.agregarDestino(charlie,dest2)
-		comentarioService.agregarDestino(charlie,dest3)
-		comentarioService.agregarDestino(ezequiel,dest4)
+		perfilService.agregarDestino(charlie,dest)
+		perfilService.agregarDestino(charlie,dest2)
+		perfilService.agregarDestino(charlie,dest3)
+		perfilService.agregarDestino(ezequiel,dest4)
 		
-		var perfil = comentarioService.mostrarPerfil(ezequiel,charlie)
+		var perfil = perfilService.mostrarPerfil(ezequiel,charlie)
 		
 		Assert.assertEquals(perfil.destinos.size, 2)
 		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")
@@ -261,15 +258,15 @@ class testServicioComentarios {
 		var Destino dest3 = new Destino()
 		var Destino dest4 = new Destino()
 				
-		comentarioService.crearPerfil(charlie,"Perfil Charly")
-		comentarioService.crearPerfil(ezequiel,"Perfil Ezequiel")
+		perfilService.crearPerfil(charlie,"Perfil Charly")
+		perfilService.crearPerfil(ezequiel,"Perfil Ezequiel")
 
-		comentarioService.agregarDestino(charlie,dest)
-		comentarioService.agregarDestino(charlie,dest2)
-		comentarioService.agregarDestino(charlie,dest3)
-		comentarioService.agregarDestino(ezequiel,dest4)
+		perfilService.agregarDestino(charlie,dest)
+		perfilService.agregarDestino(charlie,dest2)
+		perfilService.agregarDestino(charlie,dest3)
+		perfilService.agregarDestino(ezequiel,dest4)
 		
-		var perfil = comentarioService.mostrarPerfil(charlie,charlie)
+		var perfil = perfilService.mostrarPerfil(charlie,charlie)
 		
 		Assert.assertEquals(perfil.destinos.size, 3)
 		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")

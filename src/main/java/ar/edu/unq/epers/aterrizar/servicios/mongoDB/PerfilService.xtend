@@ -11,7 +11,7 @@ import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Comentario
 import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.SistemDB
 import com.mongodb.BasicDBObject
 
-class ComentariosService {
+class PerfilService {
 	
 	AmigosService serviceAmigos = new AmigosService
 	ComentariosHome<Destino> homeDestino = SistemDB.instance().collection(Destino)

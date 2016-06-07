@@ -9,7 +9,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 
 @EqualsHashCode
-@Table(keyspace = "perfiles_aterrizar", name = "BusquedaPorCache")
+@Table(keyspace = "perfiles_aterrizar", name = "PerfilMapper")
 @Accessors
 class PerfilMapper {
 	
@@ -19,4 +19,11 @@ class PerfilMapper {
 	String titulo
 	@FrozenValue
 	List<Destino> destinosDelPerfil
+	
+	new(String nombreUsuario, String titulo, List<Destino> destinos){
+
+		this.nombreUsuario = nombreUsuario
+		this.titulo = titulo
+		this.destinosDelPerfil = destinos
+	}
 }

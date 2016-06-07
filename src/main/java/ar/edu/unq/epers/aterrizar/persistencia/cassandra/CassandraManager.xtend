@@ -5,7 +5,9 @@ import com.datastax.driver.core.Metadata
 import com.datastax.driver.core.Host
 import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
+import org.eclipse.xtend.lib.annotations.Accessors
 
+@Accessors
 class CassandraManager {
 
 	Cluster cluster
@@ -42,10 +44,10 @@ class CassandraManager {
 	}
 
 	def createSchema(){
-		session.execute("CREATE KEYSPACE IF NOT EXISTS perfiles_aterrizar WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };")
+		session.execute("CREATE KEYSPACE IF NOT EXISTS perfiles_aterrizar" +
+						"WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };")
 		
-		session.execute("CREATE TYPE IF NOT EXISTS perfiles_aterrizar.BusquedaPorCache (" +
-			""
-		)
+		session.execute("CREATE TYPE IF NOT EXISTS perfiles_aterrizar.PerfilMapper (" +
+						"")
 	}
 }
