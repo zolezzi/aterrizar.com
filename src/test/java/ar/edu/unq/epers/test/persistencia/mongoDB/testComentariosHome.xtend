@@ -58,7 +58,7 @@ class testComentariosHome {
 		var Query query = DBQuery.in("titulo", "perfilTest")
 		var Perfil resQueryPefil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPefil.titulo, perfil.titulo)
-		Assert.assertEquals(resQueryPefil.usuarioPerfil, "José")
+		Assert.assertEquals(resQueryPefil.usuarioPerfil, "pepePérez")
 		Assert.assertFalse(resQueryPefil.destinos.isEmpty)
 		Assert.assertEquals(resQueryPefil.destinos.get(0).cantMeGusta, 0)
 		Assert.assertEquals(resQueryPefil.destinos.get(0).cantNoMeGusta, 0)
