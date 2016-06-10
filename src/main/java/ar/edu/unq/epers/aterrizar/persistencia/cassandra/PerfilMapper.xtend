@@ -9,7 +9,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 
 @EqualsHashCode
-@Table(keyspace = "perfiles_aterrizar", name = "PerfilMapper")
+@Table(keyspace = "perfilesAterrizar", name = "PerfilMapper")
 @Accessors
 class PerfilMapper {
 	
