@@ -16,7 +16,7 @@ class testCacheHome {
 	Usuario charly
 	Usuario eze
 
-	AmigosService repositorioService = new AmigosService()
+	AmigosService repositorioService = new AmigosService
 	PerfilService perfilService = new PerfilService
 
 	Perfil charlyPerfil
@@ -27,8 +27,24 @@ class testCacheHome {
 	@Before
 	def void setUp(){
 
-		charly = new Usuario => [nombreUsuario = "Charly"]
-		eze = new Usuario => [nombreUsuario = "Eze"]
+		charly = new Usuario => [
+			nombreUsuario = "Charly"
+			nombre = "Carlos"
+			apellido = "Cardozo"
+			email = "carlos@gmail.com"
+			contrasenia = "cardozo"
+			fechaNacimiento = "1/1/1"
+			codValidacion = "0"
+		]
+		eze = new Usuario => [
+			nombreUsuario = "Eze"
+			nombre = "Ezequiel"
+			apellido = "Luna"
+			email = "eze@microsoft.edu"
+			contrasenia = "luna"
+			fechaNacimiento = "2/2/2"
+			codValidacion = "0"
+		]
 		
 		repositorioService.getbase.insertUser(charly , 1)
 		repositorioService.getbase.insertUser(eze, 1)
@@ -66,6 +82,12 @@ class testCacheHome {
 	@After
 	def void setDown(){
 		
+		repositorioService.eliminarUsuario(charly)
+		repositorioService.eliminarUsuario(eze)
+		
+		repositorioService.getbase.removeUser(charly)
+		repositorioService.getbase.removeUser(eze)
+
 		perfilService.getHomePerfil.mongoCollection.drop
 		cacheHome.delete(charlyPerfilMapper)		
 	}
