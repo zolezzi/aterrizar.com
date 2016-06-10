@@ -122,10 +122,10 @@ class testPerfilService {
 	@Test
 	def testCrearPerfil(){
 		perfilService.crearPerfil(charlie,"Titulo")
-		var Query query = DBQuery.in("usuarioPerfil", charlie)
+		var Query query = DBQuery.in("usuarioPerfil", charlie.nombreUsuario)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.titulo, "Titulo")
-		Assert.assertEquals(resQueryPerfil.usuarioPerfil.nombreUsuario, charlie.nombreUsuario)
+		Assert.assertEquals(resQueryPerfil.usuarioPerfil, charlie.nombreUsuario)
 		perfilService.crearPerfil(charlie,"Titulo2")
 		resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.titulo,"Titulo")
@@ -137,7 +137,7 @@ class testPerfilService {
 		perfilService.crearPerfil(charlie,"Titulo")
 		var Destino dest = new Destino()
 		perfilService.agregarDestino(charlie,dest)
-		var Query query = DBQuery.in("usuarioPerfil", charlie)
+		var Query query = DBQuery.in("usuarioPerfil", charlie.nombreUsuario)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.destinos.get(0).id, dest.id)
 		
@@ -151,11 +151,11 @@ class testPerfilService {
 		dest.tituloDestino = "viaje a miami"
 		perfilService.agregarDestino(charlie,dest)
 		var Comentario comentario = new Comentario =>[
-			usuarioDelComentario = nico
+			usuarioDelComentario = nico.nombreUsuario
 			textoComentario = "genial"
 		]
 		
-		var Query query = DBQuery.in("usuarioPerfil", charlie)
+		var Query query = DBQuery.in("usuarioPerfil", charlie.nombreUsuario)
 		perfilService.agregarComentarioAlPerfilDe(charlie,dest,comentario)
 		
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
@@ -172,7 +172,7 @@ class testPerfilService {
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarMeGustaAlPerfilDe(charlie,dest,nico)
 		
-		var Query query = DBQuery.in("usuarioPerfil", charlie)
+		var Query query = DBQuery.in("usuarioPerfil", charlie.nombreUsuario)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.destinos.get(0).cantMeGusta, 1 )
 		
@@ -187,7 +187,7 @@ class testPerfilService {
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarNoMeGustaAlPerfilDe(charlie,dest,nico)
 		
-		var Query query = DBQuery.in("usuarioPerfil", charlie)
+		var Query query = DBQuery.in("usuarioPerfil", charlie.nombreUsuario)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPerfil.destinos.get(0).cantNoMeGusta, 1 )
 		
@@ -213,7 +213,7 @@ class testPerfilService {
 		
 		var perfil = perfilService.mostrarPerfil(nico,charlie)
 		Assert.assertEquals(perfil.destinos.size, 2)
-		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")
+		Assert.assertEquals(perfil.usuarioPerfil, "charlie")
 		Assert.assertEquals(perfil.titulo, "Perfil Charly")
 		Assert.assertEquals(perfil.destinos.get(0).publico, true)
 		Assert.assertEquals(perfil.destinos.get(1).publico, true)
@@ -242,7 +242,7 @@ class testPerfilService {
 		var perfil = perfilService.mostrarPerfil(ezequiel,charlie)
 		
 		Assert.assertEquals(perfil.destinos.size, 2)
-		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")
+		Assert.assertEquals(perfil.usuarioPerfil, "charlie")
 		Assert.assertEquals(perfil.titulo, "Perfil Charly")
 
 	}
@@ -269,7 +269,7 @@ class testPerfilService {
 		var perfil = perfilService.mostrarPerfil(charlie,charlie)
 		
 		Assert.assertEquals(perfil.destinos.size, 3)
-		Assert.assertEquals(perfil.usuarioPerfil.nombreUsuario, "charlie")
+		Assert.assertEquals(perfil.usuarioPerfil, "charlie")
 		Assert.assertEquals(perfil.titulo, "Perfil Charly")
 	}
 	

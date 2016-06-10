@@ -44,9 +44,9 @@ class testComentariosHome {
 		nombreUsuario = "pepePérez"
 		]
 		
-		comentario.usuarioDelComentario = josePerez
+		comentario.usuarioDelComentario = josePerez.nombreUsuario
 		destino.comentarios.add(comentario)
-		perfil.usuarioPerfil = josePerez
+		perfil.usuarioPerfil = josePerez.nombreUsuario
 		perfil.destinos.add(destino)		
 			
 	
@@ -58,7 +58,7 @@ class testComentariosHome {
 		var Query query = DBQuery.in("titulo", "perfilTest")
 		var Perfil resQueryPefil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		Assert.assertEquals(resQueryPefil.titulo, perfil.titulo)
-		Assert.assertEquals(resQueryPefil.usuarioPerfil.nombre, "José")
+		Assert.assertEquals(resQueryPefil.usuarioPerfil, "José")
 		Assert.assertFalse(resQueryPefil.destinos.isEmpty)
 		Assert.assertEquals(resQueryPefil.destinos.get(0).cantMeGusta, 0)
 		Assert.assertEquals(resQueryPefil.destinos.get(0).cantNoMeGusta, 0)

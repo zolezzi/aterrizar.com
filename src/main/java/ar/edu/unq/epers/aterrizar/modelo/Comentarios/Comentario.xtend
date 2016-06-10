@@ -11,7 +11,7 @@ class Comentario extends Visibilidad{
 	@ObjectId
 	@JsonProperty("_id")
 	String id
-	var Usuario usuarioDelComentario
+	var String usuarioDelComentario
 	var ArrayList<Usuario> meGusta = new ArrayList<Usuario>
 	var ArrayList<Usuario> noMeGusta = new ArrayList<Usuario>
 	String textoComentario

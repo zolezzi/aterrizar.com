@@ -11,7 +11,7 @@ class Perfil {
 	@ObjectId
 	@JsonProperty("_id")
 	String id
-	Usuario usuarioPerfil
+	String usuarioPerfil
 	String titulo
 	ArrayList<Destino> destinos = new ArrayList<Destino>
 	
@@ -31,12 +31,12 @@ class Perfil {
 		}
 	}
 	
-	def darMeGusta(Destino destino, Usuario usuario){
+	def darMeGusta(Destino destino, String usuario){
 		var res = obtenerDestino(destino)
 		res.meGusta(usuario)
 	}
 	
-	def darNoMeGusta(Destino destino, Usuario usuario){
+	def darNoMeGusta(Destino destino, String usuario){
 		var res = obtenerDestino(destino)		
 		res.noMeGusta(usuario)	
 		

@@ -55,7 +55,7 @@ class testCacheHome {
 		perfilService.crearPerfil(eze, "El perfil de Eze")
 
 		charlyPerfil = perfilService.mostrarPerfil(eze,charly)
-		charlyPerfilMapper = new PerfilMapper(	charlyPerfil.usuarioPerfil.nombre,
+		charlyPerfilMapper = new PerfilMapper(	charlyPerfil.usuarioPerfil,
 												charlyPerfil.titulo, charlyPerfil.destinos)
 	}
 	

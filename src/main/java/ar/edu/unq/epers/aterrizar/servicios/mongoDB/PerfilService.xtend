@@ -28,7 +28,7 @@ class PerfilService {
 	def crearPerfil(Usuario usuario, String tituloPerfil){
 		
 		var Perfil perfil = new Perfil => [
-			usuarioPerfil = usuario
+			usuarioPerfil = usuario.nombreUsuario
 			titulo = tituloPerfil
 		]
 		var Query query = DBQuery.in("usuarioPerfil.nombreUsuario", usuario.nombreUsuario)
@@ -42,7 +42,7 @@ class PerfilService {
 
 	def agregarDestino(Usuario usuario, Destino destino){
 		
-		var Query query = DBQuery.in("usuarioPerfil", usuario)
+		var Query query = DBQuery.in("usuarioPerfil", usuario.nombreUsuario)
 		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
 		if(resQueryPerfil != null){
 			resQueryPerfil.destinos.add(destino)
@@ -54,7 +54,7 @@ class PerfilService {
 	def agregarComentarioAlPerfilDe(Usuario usuario, Destino destino, Comentario comentario){
 		
 		
-		var Query query = DBQuery.in("usuarioPerfil.nombreUsuario", usuario.nombreUsuario)
+		var Query query = DBQuery.in("usuarioPerfil", usuario.nombreUsuario)
 		var Perfil res = traerDestinoDe(usuario,destino)
 		if(res != null){
 			res.agregarComentarioADestino(comentario,destino)
@@ -67,20 +67,20 @@ class PerfilService {
 	def agregarMeGustaAlPerfilDe(Usuario usuario, Destino destino, Usuario usuarioMeGusta){
 		
 		
-		var Query query = DBQuery.in("usuarioPerfil", usuario)
+		var Query query = DBQuery.in("usuarioPerfil", usuario.nombreUsuario)
 		var Perfil res = traerDestinoDe(usuario,destino)
 		if(res != null){
-			res.darMeGusta(destino, usuarioMeGusta)
+			res.darMeGusta(destino, usuarioMeGusta.nombreUsuario)
 			homePerfil.update(query,res)
 		}		
 	}
 	
 	def agregarNoMeGustaAlPerfilDe(Usuario usuario, Destino destino, Usuario usuarioMeGusta){
 			
-		var Query query = DBQuery.in("usuarioPerfil", usuario)
+		var Query query = DBQuery.in("usuarioPerfil", usuario.nombreUsuario)
 		var Perfil res = traerDestinoDe(usuario,destino)
 		if(res != null){
-			res.darNoMeGusta(destino, usuarioMeGusta)
+			res.darNoMeGusta(destino, usuarioMeGusta.nombreUsuario)
 			homePerfil.update(query,res)
 		}		
 	}
@@ -101,7 +101,7 @@ class PerfilService {
 	
 	def baseQuery(Usuario visitado){
 		var preQuery = homePerfil.aggregate
-				   	   .match("usuarioPerfil.nombre",visitado.nombre)
+				   	   .match("usuarioPerfil",visitado.nombreUsuario)
 				       .project
 				       .rtn("id")
 				       .rtn("usuarioPerfil")

@@ -12,8 +12,8 @@ class Destino extends Visibilidad {
 	@JsonProperty("_id")
 	String id
 	String TituloDestino
-	var ArrayList<Usuario> meGusta = new ArrayList<Usuario>
-	var ArrayList<Usuario> noMeGusta = new ArrayList<Usuario>
+	var ArrayList<String> meGusta = new ArrayList<String>
+	var ArrayList<String> noMeGusta = new ArrayList<String>
 	var ArrayList<Comentario> comentarios = new ArrayList<Comentario>
 	
 	def cantMeGusta(){
@@ -24,7 +24,7 @@ class Destino extends Visibilidad {
 		noMeGusta.size
 	}
 	
-	def meGusta(Usuario usuario){
+	def meGusta(String usuario){
 		if(noMeGusta.contains(usuario)){
 			noMeGusta.remove(usuario)
 			if(! meGusta.contains(usuario)){
@@ -37,7 +37,7 @@ class Destino extends Visibilidad {
 		}
 	}
 	
-	def noMeGusta(Usuario usuario){
+	def noMeGusta(String usuario){
 		if(meGusta.contains(usuario)){
 			meGusta.remove(usuario)
 			if(! noMeGusta.contains(usuario)){
