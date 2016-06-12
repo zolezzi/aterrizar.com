@@ -188,7 +188,7 @@ class TestSistemaRegistroVuelos {
 	def void ReservarAsientosYaReservados(){
 		new SistemaRegistroAerolineas().reservarAsientos(asientos,usuarios,"Argentina","Chile")
 		new SistemaRegistroAerolineas().reservarAsientos(asientos,usuarios,"Argentina","Chile")
-		thrown.expectMessage("El asiento solicitado ya esta reservado")
+		thrown.expectMessage("No hay suficientes asientos libres")
 
 	}
 	

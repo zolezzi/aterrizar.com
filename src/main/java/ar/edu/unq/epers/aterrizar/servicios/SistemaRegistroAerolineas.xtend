@@ -101,43 +101,48 @@ class SistemaRegistroAerolineas {
 		])
 	}
 	
+	def contains(ArrayList<String>numeroAsientos,List<Asiento>asientosDisponibles){
+			var estaContenido = true
+			for(String nro: numeroAsientos){
+				if(estaContenido){
+					var estaDentro = false
+					for(Asiento a: asientosDisponibles){
+						if(!estaDentro){
+							estaDentro = a.numeroAsiento == nro
+						}
+					}
+					estaContenido = estaDentro
+				}
+			}
+			estaContenido		
+	}
+	
 	def reservarAsientos(ArrayList<String> numeroAsientos, ArrayList<Usuario> usuarios, String origen, String destino){
 		SessionManager.runInSession([
 			var Tramo tramo = tramoHome.getBy("origen", origen, "destino", destino)
+			var List<Asiento> asientosDisponibles = null
+			var puedeReservar=true;
 			if(tramo != null){
-				var ArrayList<Asiento> asientosAReservar = new ArrayList()
-				
-				for (Asiento a : tramo.asientos) {
-					for(String numero : numeroAsientos){
-						if(a.numeroAsiento == numero){
-							if(!a.reservado){
-								asientosAReservar.add(a)
-							}else{
-								throw new Exception("El asiento solicitado ya esta reservado")
-							}
-						}
-
-					}
-				}
-				
-				if(asientosAReservar.size == numeroAsientos.size){
-					var int i = 0
-					for(Asiento a : asientosAReservar){
-						a.reservado = true
-						a.usuario = usuarios.get(i)
-						i++;
-						new AsientoHome().save(a)
-					}
-					tramoHome.save(tramo)
-				}else{
-					throw new Exception("No hay suficientes asientos libres")
-				}
+			 	asientosDisponibles = this.consultarAsientosLibresDeTramo(tramo)
 			}else{
 				throw new Exception("No se encontro un Tramo para esa busqueda")
-			}			
+			}
+			
+			puedeReservar = contains(numeroAsientos,asientosDisponibles)
+			
+			if(puedeReservar){
+				var n = 0
+				for(String nro:numeroAsientos){
+					this.reservarAsientoDeTramo(origen,destino,numeroAsientos.get(n),usuarios.get(n))
+					n++
+				}
+			}else{
+				throw new Exception("No hay suficientes asientos libres")
+			}
 			null
 		])
 	}
+	
 	
 	def consultarAsientosLibresDeTramo(Tramo tramo){
 		SessionManager.runInSession([

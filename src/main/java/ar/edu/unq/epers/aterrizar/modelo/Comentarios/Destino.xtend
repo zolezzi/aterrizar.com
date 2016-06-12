@@ -11,7 +11,7 @@ class Destino extends Visibilidad {
 	@ObjectId
 	@JsonProperty("_id")
 	String id
-	String TituloDestino
+	String tituloDestino
 	var ArrayList<String> meGusta = new ArrayList<String>
 	var ArrayList<String> noMeGusta = new ArrayList<String>
 	var ArrayList<Comentario> comentarios = new ArrayList<Comentario>
@@ -33,6 +33,8 @@ class Destino extends Visibilidad {
 		}else{
 			if(! meGusta.contains(usuario)){
 				meGusta.add(usuario)
+			}else{
+				throw new Exception("Ya diste tu opinion")
 			}
 		}
 	}
@@ -46,6 +48,8 @@ class Destino extends Visibilidad {
 		}else{
 			if(! noMeGusta.contains(usuario)){
 				noMeGusta.add(usuario)
+			}else{
+				throw new Exception("Ya diste tu opinion")
 			}
 		}
 		

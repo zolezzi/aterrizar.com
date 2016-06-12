@@ -31,109 +31,67 @@ class PerfilService {
 			usuarioPerfil = usuario.nombreUsuario
 			titulo = tituloPerfil
 		]
-		var Query query = DBQuery.in("usuarioPerfil.nombreUsuario", usuario.nombreUsuario)
-		var resQueryPerfil = homePerfil.mongoCollection.find(query);
-		if(resQueryPerfil.length == 0){
-			homePerfil.insert(perfil)
-		}
+		homePerfil.insertPerfilAUsuario(usuario,perfil)
 		
 	}
 	
+	def validarPerfil(Usuario usuario){
+		var Perfil res = homePerfil.getPerfilDeUsuario(usuario)
+		if(res == null){
+			this.crearPerfil(usuario, "Perfil " + usuario.nombreUsuario)
+		}
+	}	
 
 	def agregarDestino(Usuario usuario, Destino destino){
-		
-		var Query query = DBQuery.in("usuarioPerfil", usuario.nombreUsuario)
-		var Perfil resQueryPerfil = homePerfil.mongoCollection.find(query).next() as Perfil;
-		if(resQueryPerfil != null){
-			resQueryPerfil.destinos.add(destino)
-			homePerfil.update(query, resQueryPerfil)
+		validarPerfil(usuario)
+		var Perfil res = homePerfil.getPerfilDeUsuario(usuario)
+		if(res != null){
+			res.destinos.add(destino)
+			homePerfil.updateDestinoPerfil(usuario,res);
 		}
 		
 	}
 	
 	def agregarComentarioAlPerfilDe(Usuario usuario, Destino destino, Comentario comentario){
-		
-		
-		var Query query = DBQuery.in("usuarioPerfil", usuario.nombreUsuario)
-		var Perfil res = traerDestinoDe(usuario,destino)
+		validarPerfil(usuario)
+		var Perfil res = homePerfil.traerDestinoDe(usuario, destino)
 		if(res != null){
-			res.agregarComentarioADestino(comentario,destino)
-			homePerfil.update(query,res)
-		}
+			res.agregarComentarioADestino(comentario ,destino)
+			homePerfil.updateDestinoPerfil(usuario,res);
+		}		
 				
 	}
 	
 	
 	def agregarMeGustaAlPerfilDe(Usuario usuario, Destino destino, Usuario usuarioMeGusta){
-		
-		
-		var Query query = DBQuery.in("usuarioPerfil", usuario.nombreUsuario)
-		var Perfil res = traerDestinoDe(usuario,destino)
+		validarPerfil(usuario)
+		var Perfil res = homePerfil.traerDestinoDe(usuario, destino)
 		if(res != null){
 			res.darMeGusta(destino, usuarioMeGusta.nombreUsuario)
-			homePerfil.update(query,res)
+			homePerfil.updateDestinoPerfil(usuario,res);
 		}		
 	}
 	
 	def agregarNoMeGustaAlPerfilDe(Usuario usuario, Destino destino, Usuario usuarioMeGusta){
-			
-		var Query query = DBQuery.in("usuarioPerfil", usuario.nombreUsuario)
-		var Perfil res = traerDestinoDe(usuario,destino)
+		validarPerfil(usuario)
+		var Perfil res = homePerfil.traerDestinoDe(usuario, destino)
 		if(res != null){
 			res.darNoMeGusta(destino, usuarioMeGusta.nombreUsuario)
-			homePerfil.update(query,res)
-		}		
+			homePerfil.updateDestinoPerfil(usuario,res);
+		}			
 	}
 	
 	def mostrarPerfil(Usuario visitante, Usuario visitado){
-		
+		validarPerfil(visitado)
 		if(serviceAmigos.esAmigo(visitante,visitado)){
-			mostrarParaAmigos(visitado)
+			homePerfil.mostrarParaAmigos(visitado)
 		}else{
 			if(visitante == visitado){
-				mostrarParaPrivado(visitado)
+				homePerfil.mostrarParaPrivado(visitado)
 			}else{
-				mostrarParaPublico(visitado)
+				homePerfil.mostrarParaPublico(visitado)
 			}
 		}
-	}
-	
-	
-	def baseQuery(Usuario visitado){
-		var preQuery = homePerfil.aggregate
-				   	   .match("usuarioPerfil",visitado.nombreUsuario)
-				       .project
-				       .rtn("id")
-				       .rtn("usuarioPerfil")
-				       .rtn("titulo")
-				       .filter("destinos")
-		preQuery
-	}
-	
-	def traerDestinoDe(Usuario visitado, Destino destino){
-		var result = baseQuery(visitado).or(#[ [it.eq("tituloDestino",destino.tituloDestino)]])
-					 .execute
-		result.get(0) as Perfil
-	}
-	
-	def mostrarParaPublico(Usuario visitado){
-			var result = baseQuery(visitado).or(#[ [it.eq("publico",true)]])
-				       .execute
-			result.get(0) as Perfil
-	}
-	
-	def mostrarParaAmigos(Usuario visitado){
-			var result = baseQuery(visitado)
-						 .or(#[ [it.eq("publico",true)],[it.eq("soloAmigos",true)] ])
-				         .execute
-			result.get(0) as Perfil
-	}
-	
-	def mostrarParaPrivado(Usuario visitado){
-		var result = baseQuery(visitado)
-					 .or(#[ [it.eq("publico",true)],[it.eq("soloAmigos",true)],[it.eq("privado",true)] ])
-				      .execute
-		return result.get(0) as Perfil
 	}
 	
 }
