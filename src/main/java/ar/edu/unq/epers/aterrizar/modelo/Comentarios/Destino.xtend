@@ -12,6 +12,9 @@ class Destino extends Visibilidad {
 	@JsonProperty("_id")
 	String id
 	String tituloDestino
+	String origen
+	String destino
+	String nombreAerolinea
 	var ArrayList<String> meGusta = new ArrayList<String>
 	var ArrayList<String> noMeGusta = new ArrayList<String>
 	var ArrayList<Comentario> comentarios = new ArrayList<Comentario>
