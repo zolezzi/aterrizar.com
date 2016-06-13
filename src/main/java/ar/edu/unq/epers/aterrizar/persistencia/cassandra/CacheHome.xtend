@@ -8,8 +8,8 @@ class CacheHome {
 		manager.mapper.save(perfilMapper)
 	}
 
-	def getPerfilMapper(String nombreUsuario, String titulo){
-		manager.mapper.get(nombreUsuario, titulo)
+	def getPerfilMapper(String nombreUsuario){
+		manager.mapper.get(nombreUsuario)
 	}
 
 	def update(PerfilMapper perfilMapper){

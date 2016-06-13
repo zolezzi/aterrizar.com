@@ -10,6 +10,7 @@ import ar.edu.unq.epers.aterrizar.servicios.mongoDB.PerfilService
 import org.junit.Assert
 import org.junit.After
 import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
 
 class testCacheHome {
 
@@ -20,6 +21,7 @@ class testCacheHome {
 	PerfilService perfilService = new PerfilService
 
 	Perfil charlyPerfil
+	Destino bariloche
 	PerfilMapper charlyPerfilMapper
 		
 	CacheHome cacheHome = new CacheHome
@@ -52,9 +54,17 @@ class testCacheHome {
 		repositorioService.agregarAmigo(charly, eze)
 
 		perfilService.crearPerfil(charly, "El perfil de Charly")
+		bariloche = new Destino() => [
+			tituloDestino = "Viaje de Egresados"
+			origen = "Buenos Aires"
+			destino = "Bariloche"
+			nombreAerolinea = "Aerolineas Payaso"
+		]
 		perfilService.crearPerfil(eze, "El perfil de Eze")
 
-		charlyPerfil = perfilService.mostrarPerfil(eze,charly)
+		charlyPerfil = perfilService.mostrarPerfil(charly,charly)
+		charlyPerfil.agregarDestino(bariloche)
+		charlyPerfil.darMeGusta(bariloche,eze.nombreUsuario)
 		charlyPerfilMapper = new PerfilMapper(	charlyPerfil.usuarioPerfil,
 												charlyPerfil.titulo, charlyPerfil.destinos)
 	}
@@ -64,7 +74,10 @@ class testCacheHome {
 		
 		cacheHome.save(charlyPerfilMapper)
 		
-		Assert.assertEquals(cacheHome.getPerfilMapper("Charly","El perfil de Charly"),charlyPerfilMapper)
+		var query = cacheHome.getPerfilMapper("Charly")
+		
+		Assert.assertEquals(query.nombreUsuario,charlyPerfilMapper.nombreUsuario)
+		Assert.assertEquals(query.destinosDelPerfil.size,1)
 	}
 
 	@Test
@@ -75,8 +88,12 @@ class testCacheHome {
 		charlyPerfilMapper.setTitulo = "El perfil de Carlos"
 
 		cacheHome.update(charlyPerfilMapper)
+		
+		var query = cacheHome.getPerfilMapper("Carlos")
 
-		Assert.assertEquals(cacheHome.getPerfilMapper("Carlos","El perfil de Carlos"),charlyPerfilMapper)
+		Assert.assertEquals(query.nombreUsuario,charlyPerfilMapper.nombreUsuario)
+		Assert.assertEquals(query.destinosDelPerfil.size,1)
+		Assert.assertEquals(query.destinosDelPerfil.get(0).tituloDestino,"Viaje de Egresados")
 	}
 
 	@After

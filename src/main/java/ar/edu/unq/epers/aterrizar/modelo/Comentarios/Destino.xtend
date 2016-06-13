@@ -1,11 +1,12 @@
 package ar.edu.unq.epers.aterrizar.modelo.Comentarios
 
-import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.mongojack.ObjectId
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.datastax.driver.mapping.annotations.UDT
 
+@UDT (keyspace = "simplex", name = "Destino")
 @Accessors
 class Destino extends Visibilidad {
 	@ObjectId

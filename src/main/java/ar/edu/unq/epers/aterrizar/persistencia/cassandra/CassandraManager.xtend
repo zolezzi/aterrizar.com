@@ -46,18 +46,18 @@ class CassandraManager {
 	}
 
 	def createSchema(){
-		session.execute("CREATE KEYSPACE IF NOT EXISTS perfilesAterrizar " +
+		session.execute("CREATE KEYSPACE IF NOT EXISTS simplex " +
 						"WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };")
 		
-		session.execute("CREATE TYPE IF NOT EXISTS perfilesAterrizar.Destino (" +
+		session.execute("CREATE TYPE IF NOT EXISTS simplex.Destino (" +
 						"id text," +
 						"TituloDestino text);")
 
-		session.execute("CREATE TABLE IF NOT EXISTS perfilesAterrizar.PerfilMapper (" +
+		session.execute("CREATE TABLE IF NOT EXISTS simplex.perfiles (" +
 						"nombreUsuario text," +
 						"titulo text," +
 						"destinosDelPerfil list< frozen<Destino> >," +
-						"PRIMARY KEY (nombreUsuario, titulo));")
+						"PRIMARY KEY (nombreUsuario));")
 
 	mapper = new MappingManager(session).mapper(PerfilMapper)
 	}

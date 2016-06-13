@@ -39,8 +39,9 @@ class Perfil {
 	def darNoMeGusta(Destino destino, String usuario){
 		var res = obtenerDestino(destino)		
 		res.noMeGusta(usuario)	
-		
-		
 	}
 	
+	def agregarDestino(Destino destino) {
+		destinos.add(destino)
+	}
 }

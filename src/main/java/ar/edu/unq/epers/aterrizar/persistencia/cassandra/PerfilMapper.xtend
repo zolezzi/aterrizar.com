@@ -7,18 +7,23 @@ import com.datastax.driver.mapping.annotations.Table
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
+import com.datastax.driver.mapping.annotations.Column
 
 @EqualsHashCode
-@Table(keyspace = "perfilesAterrizar", name = "PerfilMapper")
+@Table(keyspace = "simplex", name = "perfiles")
 @Accessors
 class PerfilMapper {
 	
-	@PartitionKey()
+	@PartitionKey
 	String nombreUsuario
-	@PartitionKey(1)
+	@Column(name = "titulo")
 	String titulo
 	@FrozenValue
 	List<Destino> destinosDelPerfil
+
+	new(){
+		
+	}
 	
 	new(String nombreUsuario, String titulo, List<Destino> destinos){
 
