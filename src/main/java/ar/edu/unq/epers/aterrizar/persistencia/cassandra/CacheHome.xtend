@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.aterrizar.persistencia.cassandra
 
+import ar.edu.unq.epers.aterrizar.exception.GetPerfilMapperException
+
 class CacheHome {
 	
 	CassandraManager manager = new CassandraManager
@@ -8,8 +10,13 @@ class CacheHome {
 		manager.mapper.save(perfilMapper)
 	}
 
-	def getPerfilMapper(String nombreUsuario){
-		manager.mapper.get(nombreUsuario)
+	def getPerfilMapper(String nombreUsuario) throws GetPerfilMapperException{
+		try{
+			manager.mapper.get(nombreUsuario)
+		} catch (GetPerfilMapperException e){
+			throw new GetPerfilMapperException
+			("No hay un usuario con un perfil que tenga ese nombre")
+		}
 	}
 
 	def update(PerfilMapper perfilMapper){

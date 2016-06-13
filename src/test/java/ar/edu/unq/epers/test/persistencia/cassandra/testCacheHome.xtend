@@ -11,6 +11,7 @@ import org.junit.Assert
 import org.junit.After
 import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
+import ar.edu.unq.epers.aterrizar.exception.GetPerfilMapperException
 
 class testCacheHome {
 
@@ -94,6 +95,12 @@ class testCacheHome {
 		Assert.assertEquals(query.nombreUsuario,charlyPerfilMapper.nombreUsuario)
 		Assert.assertEquals(query.destinosDelPerfil.size,1)
 		Assert.assertEquals(query.destinosDelPerfil.get(0).tituloDestino,"Viaje de Egresados")
+	}
+	
+	@Test (expected = GetPerfilMapperException)
+	def void testGetPerfilMapperException(){
+
+		cacheHome.getPerfilMapper("David")
 	}
 
 	@After
