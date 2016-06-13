@@ -11,11 +11,13 @@ class CacheHome {
 	}
 
 	def getPerfilMapper(String nombreUsuario) throws GetPerfilMapperException{
-		try{
-			manager.mapper.get(nombreUsuario)
-		} catch (GetPerfilMapperException e){
-			throw new GetPerfilMapperException
-			("No hay un usuario con un perfil que tenga ese nombre")
+		
+			val perfilMapper  = manager.mapper.get(nombreUsuario)
+				if(perfilMapper != null){
+					return perfilMapper
+			} else {
+				throw new GetPerfilMapperException
+				("No hay un usuario con un perfil que tenga ese nombre")
 		}
 	}
 

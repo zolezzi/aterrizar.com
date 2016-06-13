@@ -12,6 +12,8 @@ import org.junit.After
 import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
 import ar.edu.unq.epers.aterrizar.exception.GetPerfilMapperException
+import org.junit.Rule
+import org.junit.rules.ExpectedException
 
 class testCacheHome {
 
@@ -69,7 +71,10 @@ class testCacheHome {
 		charlyPerfilMapper = new PerfilMapper(	charlyPerfil.usuarioPerfil,
 												charlyPerfil.titulo, charlyPerfil.destinos)
 	}
-	
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none()
+
 	@Test
 	def void testSavePerfilMapper(){
 		
@@ -101,6 +106,7 @@ class testCacheHome {
 	def void testGetPerfilMapperException(){
 
 		cacheHome.getPerfilMapper("David")
+		thrown.expectMessage("No hay un usuario con un perfil que tenga ese nombre")
 	}
 
 	@After
