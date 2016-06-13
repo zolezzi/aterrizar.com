@@ -12,10 +12,17 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import java.util.List
 import org.mongojack.DBQuery
 import org.mongojack.DBQuery.Query
 import org.junit.Rule
 import org.junit.rules.ExpectedException
+import ar.edu.unq.epers.aterrizar.servicios.SistemaRegistroAerolineas
+import ar.edu.unq.epers.aterrizar.modelo.Vuelo
+import ar.edu.unq.epers.aterrizar.modelo.Tramo
+import java.util.ArrayList
+import ar.edu.unq.epers.aterrizar.modelo.Asiento
+import ar.edu.unq.epers.aterrizar.modelo.Aerolinea
 
 class testPerfilService {
 	PerfilService perfilService = new PerfilService	
@@ -29,8 +36,14 @@ class testPerfilService {
 	Usuario miami
 	Usuario usuarioConUnSoloAmigo
 	Usuario usuarioAmigo
+	Destino dest
+	Destino dest2
+	Destino dest3
+	Destino dest4
 	
 	AmigosService repositorioService
+	SistemaRegistroAerolineas aerolineasService = new SistemaRegistroAerolineas
+	
 	
 	@Before
 	def void setUp(){
@@ -107,19 +120,95 @@ class testPerfilService {
 			codValidacion = "cod2T222"
 		]
 		
-		BDJDBC.insertUser(charlie,1)
-		BDJDBC.insertUser(ricky,1)
-		BDJDBC.insertUser(nico,1)
-		BDJDBC.insertUser(miami,1)
-		BDJDBC.insertUser(ezequiel,1)
 
-					
+		
+		var Tramo tramo= new Tramo=>[
+			origen = "Argentina"
+			destino = "Miami"
+		]
+	
+		
+		var ArrayList<Tramo> tramos = new ArrayList<Tramo>()
+		var ArrayList<Asiento> asientos = new ArrayList<Asiento>()
+		
+		var Vuelo vuelo = new Vuelo =>[
+			origen = "Argentina"
+			destino = "Miami"
+		]
+		
+		
+		var Asiento asiento = new Asiento=>[
+			origen = "Argentina"
+			destino = "Miami"
+			numeroAsiento = "A1"
+			reservado = false
+		]
+		
+		var Asiento asiento2 = new Asiento=>[
+			origen = "Argentina"
+			destino = "Miami"
+			numeroAsiento = "A2"
+			reservado = false
+		]
+		
+		var Asiento asiento3 = new Asiento=>[
+			origen = "Argentina"
+			destino = "Miami"
+			numeroAsiento = "A3"
+			reservado = false
+		]
+		
+		var Asiento asiento4 = new Asiento=>[
+			origen = "Argentina"
+			destino = "Miami"
+			numeroAsiento = "A4"
+			reservado = false
+		]
+		
+		asientos.add(asiento)
+		tramo.asientos = asientos
+		asiento.tramo = tramo
+		tramo.agregarAsiento(asiento)
+		tramo.agregarAsiento(asiento2)
+		tramo.agregarAsiento(asiento3)
+		tramo.agregarAsiento(asiento4)
+		tramos.add(tramo)
+		vuelo.tramos = tramos
+		
+		dest = new Destino()
+		dest.origen="Argentina"
+		dest.destino="Miami"
+		dest.nombreAerolinea = "Aerolineas Payaso"
+		
+		dest2 = new Destino()
+		dest2.origen="Argentina"
+		dest2.destino="Miami"
+		dest2.nombreAerolinea = "Aerolineas Payaso"
+		
+		dest3 = new Destino()
+		dest3.origen="Argentina"
+		dest3.destino="Miami"
+		dest3.nombreAerolinea = "Aerolineas Payaso"
+		
+		dest4 = new Destino()
+		dest4.origen="Argentina"
+		dest4.destino="Miami"
+		dest4.nombreAerolinea = "Aerolineas Payaso"
+		
+		aerolineasService.registrarAerolinea("Aerolineas Payaso")
+		var Aerolinea a = aerolineasService.consultarAerolineaPor("nombreAerolinea", "Aerolineas Payaso")
+		aerolineasService.agregaVuelo(a,vuelo)
+		aerolineasService.reservarAsientoDeTramo("Argentina","Miami","A1",charlie)
+		aerolineasService.reservarAsientoDeTramo("Argentina","Miami","A2",ezequiel)
+		aerolineasService.reservarAsientoDeTramo("Argentina","Miami","A3",nico)
+		aerolineasService.reservarAsientoDeTramo("Argentina","Miami","A4",miami)
+		
 		repositorioService.agregarAmigo(charlie, ezequiel)		
 		repositorioService.agregarAmigo(ezequiel, nico)
-		repositorioService.agregarAmigo(ricky, charlie)
 		repositorioService.agregarAmigo(nico, miami)
-				
 	}
+	
+	
 	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none()
@@ -138,17 +227,27 @@ class testPerfilService {
 	@Test
 	def agregarDestino(){
 		
-		var Destino dest = new Destino()
 		perfilService.agregarDestino(charlie,dest)
 		var Perfil resQueryPerfil = homePerfil.getPerfilDeUsuario(charlie)
 		Assert.assertEquals(resQueryPerfil.destinos.get(0).id, dest.id)
 		
 	}
 	
+	@Test(expected = Exception)
+	def agregarDestinoSinRegistro(){
+		
+		var Destino dest = new Destino()
+		dest.origen="Argentina"
+		dest.destino="Canada"
+		dest.nombreAerolinea = "Aerolineas Payaso"
+		perfilService.agregarDestino(charlie,dest)
+		thrown.expectMessage("No posee un vuelo registrado para ese destino")
+		
+	}
+	
 	@Test
 	def agregarComentarioAlDestinoDelPerfil(){
 		
-		var Destino dest = new Destino()
 		dest.tituloDestino = "viaje a miami"
 		perfilService.agregarDestino(charlie,dest)
 		var Comentario comentario = new Comentario =>[
@@ -166,7 +265,6 @@ class testPerfilService {
 	@Test
 	def agregarMeGustaAlDestino(){
 		
-		var Destino dest = new Destino()
 		dest.tituloDestino = "viaje a miami"
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarMeGustaAlPerfilDe(charlie,dest,nico)
@@ -179,7 +277,6 @@ class testPerfilService {
 	@Test(expected = Exception)
 	def darDosVecesMeGustaAlMismoDestinoYUsuario(){
 		
-		var Destino dest = new Destino()
 		dest.tituloDestino = "viaje a miami"
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarMeGustaAlPerfilDe(charlie,dest,nico)
@@ -191,7 +288,6 @@ class testPerfilService {
 	@Test(expected = Exception)
 	def darDosVecesNoMeGustaAlMismoDestinoYUsuario(){
 		
-		var Destino dest = new Destino()
 		dest.tituloDestino = "viaje a miami"
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarNoMeGustaAlPerfilDe(charlie,dest,nico)
@@ -203,7 +299,6 @@ class testPerfilService {
 	@Test
 	def agregarNoMeGustaAlDestino(){
 		
-		var Destino dest = new Destino()
 		dest.tituloDestino = "viaje a miami"
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarNoMeGustaAlPerfilDe(charlie,dest,nico)
@@ -215,18 +310,12 @@ class testPerfilService {
 	
 	@Test
 	def void mostrarDestinosPublico(){
-		
-		var Destino dest = new Destino()
 		dest.hacerPrivado
-		
-		var Destino dest2 = new Destino()
-		var Destino dest3 = new Destino()
-		var Destino dest4 = new Destino()
 
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarDestino(charlie,dest2)
 		perfilService.agregarDestino(charlie,dest3)
-		perfilService.agregarDestino(ricky,dest4)
+		perfilService.agregarDestino(ezequiel,dest4)
 		
 		var perfil = perfilService.mostrarPerfil(nico,charlie)
 		Assert.assertEquals(perfil.destinos.size, 2)
@@ -239,14 +328,8 @@ class testPerfilService {
 	@Test
 	def void mostrarDestinosParaAmigos(){
 		
-		var Destino dest = new Destino()
 		dest.hacerPrivado
-		
-		var Destino dest2 = new Destino()
 		dest2.hacerSoloAmigos
-		
-		var Destino dest3 = new Destino()
-		var Destino dest4 = new Destino()
 
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarDestino(charlie,dest2)
@@ -263,15 +346,8 @@ class testPerfilService {
 	
 	@Test
 	def void mostarDestinoPrivado(){
-		var Destino dest = new Destino()
 		dest.hacerPrivado
-		
-		var Destino dest2 = new Destino()
 		dest2.hacerSoloAmigos
-		
-		var Destino dest3 = new Destino()
-		var Destino dest4 = new Destino()
-
 		perfilService.agregarDestino(charlie,dest)
 		perfilService.agregarDestino(charlie,dest2)
 		perfilService.agregarDestino(charlie,dest3)
@@ -286,23 +362,16 @@ class testPerfilService {
 	
 
 	@After
-	def dropAll(){
-		
-		BDJDBC.removeUser(charlie)
-		BDJDBC.removeUser(ricky)
-		BDJDBC.removeUser(nico)
-		BDJDBC.removeUser(miami)
-		BDJDBC.removeUser(ezequiel)
+	def void dropAll(){
 		
 		repositorioService.eliminarUsuario(charlie)
 		repositorioService.eliminarUsuario(ezequiel)
 	 	repositorioService.eliminarUsuario(nico)
-		repositorioService.eliminarUsuario(ricky)
 		repositorioService.eliminarUsuario(miami)
 		
 		homePerfil.mongoCollection.drop
 		
-		
+		new SistemaRegistroAerolineas().eliminarAerolineaPor("nombreAerolinea","Aerolineas Payaso")
 	}
 }
 	

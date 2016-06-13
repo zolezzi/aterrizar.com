@@ -12,6 +12,9 @@ import org.mongojack.DBQuery
 import org.mongojack.DBQuery.Query
 import org.junit.Assert
 import org.junit.Test
+import org.junit.Rule
+import org.junit.rules.ExpectedException
+import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 
 class testComentariosHome {
 	
@@ -22,6 +25,7 @@ class testComentariosHome {
 	var Destino destinoAmigos
 	var Destino destinoPublico
 	var Destino destinoPrivado
+	var Destino destinoVoid
 	@Before
 	def void startUP(){
 		homePerfil = SistemDB.instance().collection(Perfil)
@@ -44,10 +48,12 @@ class testComentariosHome {
 		destinoAmigos = new Destino()
 		destinoPublico = new Destino()
 		destinoPrivado = new Destino()
+		destinoVoid = new Destino()
 		
 		destinoAmigos.tituloDestino = "destino1"
 		destinoPublico.tituloDestino="destino2"
 		destinoPrivado.tituloDestino="destino3"
+		destinoVoid.tituloDestino = "destino4"
 		
 		destinoAmigos.hacerSoloAmigos
 		destinoPublico.hacerPublico
@@ -67,6 +73,8 @@ class testComentariosHome {
 			
 	
 	}
+	@Rule
+	public ExpectedException thrown = ExpectedException.none()
 	
 	@Test
 	def testInsert(){
@@ -108,6 +116,13 @@ class testComentariosHome {
 		var Perfil perfil = homePerfil.traerDestinoDe(josePerez,destinoAmigos)
 		Assert.assertEquals(perfil.destinos.size,1)
 		Assert.assertEquals(perfil.destinos.get(0).tituloDestino,"destino1")
+	}
+	
+	@Test (expected = ExceptionUsuario) 
+	def getPerfilDeUsuarioSinDestino(){
+		homePerfil.insertPerfilAUsuario(josePerez, perfil)
+		homePerfil.traerDestinoDe(josePerez,destinoVoid)
+		thrown.expectMessage("No se encontraron destinos") 
 	}
 	
 	@Test

@@ -9,6 +9,7 @@ import org.mongojack.DBQuery
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
+import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 
 class ComentariosHome<T> {
 	private JacksonDBCollection<T, String> mongoCollection
@@ -51,7 +52,12 @@ class ComentariosHome<T> {
 	def  traerDestinoDe(Usuario visitado, Destino destino){
 		var result = baseQuery(visitado).or(#[ [it.eq("tituloDestino",destino.tituloDestino)]])
 					 .execute
-		result.get(0) as Perfil
+		var perfil = result.get(0) as Perfil
+		if(!perfil.destinos.empty){
+			perfil
+		}else{
+			throw new ExceptionUsuario("No se encontraron destinos")
+		}
 	}
 	
 	def mostrarParaPublico(Usuario visitado){

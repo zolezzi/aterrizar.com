@@ -20,4 +20,6 @@ class Asiento {
 	Boolean reservado = false
 	
 	new (){}
+	
+	
 }
