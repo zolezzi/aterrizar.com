@@ -1,18 +1,18 @@
 package ar.edu.unq.epers.test.persistencia.cassandra
 
-import org.junit.Test
+import ar.edu.unq.epers.aterrizar.exception.PerfilMapperException
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.persistencia.cassandra.CacheHome
 import ar.edu.unq.epers.aterrizar.persistencia.cassandra.PerfilMapper
-import org.junit.Before
-import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
 import ar.edu.unq.epers.aterrizar.servicios.mongoDB.PerfilService
-import org.junit.Assert
-import org.junit.After
 import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
-import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
-import ar.edu.unq.epers.aterrizar.exception.GetPerfilMapperException
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.ExpectedException
 
 class testCacheHome {
@@ -26,7 +26,7 @@ class testCacheHome {
 	Perfil charlyPerfil
 	Destino bariloche
 	PerfilMapper charlyPerfilMapper
-		
+
 	CacheHome cacheHome = new CacheHome
 
 	@Before
@@ -102,7 +102,7 @@ class testCacheHome {
 		Assert.assertEquals(query.destinosDelPerfil.get(0).tituloDestino,"Viaje de Egresados")
 	}
 	
-	@Test (expected = GetPerfilMapperException)
+	@Test (expected = PerfilMapperException)
 	def void testGetPerfilMapperException(){
 
 		cacheHome.getPerfilMapper("David")

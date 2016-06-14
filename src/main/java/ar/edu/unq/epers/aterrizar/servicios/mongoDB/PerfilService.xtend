@@ -1,31 +1,31 @@
 package ar.edu.unq.epers.aterrizar.servicios.mongoDB
 
-import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
-import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
-import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
-import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.ComentariosHome
+import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
+import ar.edu.unq.epers.aterrizar.modelo.Asiento
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Comentario
-import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.SistemDB
-import ar.edu.unq.epers.aterrizar.servicios.BusquedaService
-import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.Criterios
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
+import ar.edu.unq.epers.aterrizar.modelo.Tramo
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
+import ar.edu.unq.epers.aterrizar.modelo.Vuelo
+import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAND
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAerolinea
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioDestino
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioOrigen
-import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAND
-import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
-import ar.edu.unq.epers.aterrizar.modelo.Vuelo
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.Criterios
+import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.ComentariosHome
+import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.SistemDB
+import ar.edu.unq.epers.aterrizar.servicios.BusquedaService
+import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
 import java.util.List
-import ar.edu.unq.epers.aterrizar.modelo.Tramo
-import ar.edu.unq.epers.aterrizar.modelo.Asiento
-import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 
 class PerfilService {
 	
 	AmigosService serviceAmigos = new AmigosService
 	ComentariosHome<Destino> homeDestino = SistemDB.instance().collection(Destino)
 	ComentariosHome<Perfil> homePerfil = SistemDB.instance().collection(Perfil)
-	BusquedaService servicioBusqueda = new BusquedaService()
+	BusquedaService servicioBusqueda = new BusquedaService
 	
 	def getHomePerfil(){
 		homePerfil
@@ -42,7 +42,6 @@ class PerfilService {
 			titulo = tituloPerfil
 		]
 		homePerfil.insertPerfilAUsuario(usuario,perfil)
-		
 	}
 	
 	def traerPerfilDestino(Usuario usuario, Destino destino){

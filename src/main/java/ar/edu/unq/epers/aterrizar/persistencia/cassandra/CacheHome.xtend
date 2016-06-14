@@ -1,6 +1,6 @@
 package ar.edu.unq.epers.aterrizar.persistencia.cassandra
 
-import ar.edu.unq.epers.aterrizar.exception.GetPerfilMapperException
+import ar.edu.unq.epers.aterrizar.exception.PerfilMapperException
 
 class CacheHome {
 	
@@ -10,13 +10,13 @@ class CacheHome {
 		manager.mapper.save(perfilMapper)
 	}
 
-	def getPerfilMapper(String nombreUsuario) throws GetPerfilMapperException{
+	def getPerfilMapper(String nombreUsuario) throws PerfilMapperException{
 		
 			val perfilMapper  = manager.mapper.get(nombreUsuario)
 				if(perfilMapper != null){
 					return perfilMapper
 			} else {
-				throw new GetPerfilMapperException
+				throw new PerfilMapperException
 				("No hay un usuario con un perfil que tenga ese nombre")
 		}
 	}
@@ -27,6 +27,7 @@ class CacheHome {
 	}
 	
 	def delete(PerfilMapper perfilMapper){
+
 		manager.mapper.delete(perfilMapper)
 	}
 }
