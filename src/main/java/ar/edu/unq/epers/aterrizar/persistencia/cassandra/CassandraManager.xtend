@@ -7,6 +7,9 @@ import com.datastax.driver.core.Session
 import com.datastax.driver.mapping.Mapper
 import org.eclipse.xtend.lib.annotations.Accessors
 import com.datastax.driver.mapping.MappingManager
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
+import java.util.List
+import java.util.ArrayList
 
 @Accessors
 class CassandraManager {
@@ -60,5 +63,40 @@ class CassandraManager {
 						"PRIMARY KEY (nombreUsuario));")
 
 	mapper = new MappingManager(session).mapper(PerfilMapper)
+	}
+	
+	def mostrarParaAmigos(String nombreUsuario){
+		
+		realizarConsulta("SELECT * FROM simplex.perfiles "+
+					"WHERE usuarioPerfil='nombreUsuario' "+
+					"AND destinos.publico = true OR destinos.soloAmigos = true")
+		}
+	
+	def mostrarParaPublico(String nombreUsuario){
+		
+		realizarConsulta("SELECT * FROM simplex.perfiles "+
+					"WHERE usuarioPerfil='nombreUsuario' "+
+					"AND destinos.publico = true")
+	}
+	
+	def realizarConsulta(String query){
+		
+		var result = session.execute(query)
+		var row = result.get(0)
+		var destinos = row.getList("destinosDelPerfil",Destino).toList
+		
+		new PerfilMapper(row.getString("nombreUsuario"),
+						row.getString("titulo"),
+						convertToArray(destinos))
+	}
+
+	def convertToArray(List<Destino> destinos) {
+		//CHEQUEAR A VER SI SE PUEDE CORREGIR ESTA CONVERSION
+		var result = new ArrayList<Destino>
+		
+		for(destino : destinos){
+			result.add(destino)
+		}
+		result
 	}
 }

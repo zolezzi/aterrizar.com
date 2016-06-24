@@ -19,6 +19,8 @@ import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.SistemDB
 import ar.edu.unq.epers.aterrizar.servicios.BusquedaService
 import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
 import java.util.List
+import ar.edu.unq.epers.aterrizar.persistencia.cassandra.CacheHome
+import ar.edu.unq.epers.aterrizar.persistencia.cassandra.IHomePerfil
 
 class PerfilService {
 	
@@ -26,6 +28,7 @@ class PerfilService {
 	ComentariosHome<Destino> homeDestino = SistemDB.instance().collection(Destino)
 	ComentariosHome<Perfil> homePerfil = SistemDB.instance().collection(Perfil)
 	BusquedaService servicioBusqueda = new BusquedaService
+	CacheHome cacheHome = new CacheHome
 	
 	def getHomePerfil(){
 		homePerfil
@@ -117,16 +120,33 @@ class PerfilService {
 	}
 	
 	def mostrarPerfil(Usuario visitante, Usuario visitado){
-		validarPerfil(visitado)
-		if(serviceAmigos.esAmigo(visitante,visitado)){
-			homePerfil.mostrarParaAmigos(visitado)
-		}else{
-			if(visitante == visitado){
-				homePerfil.mostrarParaPrivado(visitado)
-			}else{
-				homePerfil.mostrarParaPublico(visitado)
-			}
+		
+		var Perfil perfil = null
+
+		if(!cacheHome.perfilEnCache(visitado.nombreUsuario)){
+			validarPerfil(visitado)
+			perfil = filtrarPerfilPara(homePerfil,visitante,visitado)
+			cacheHome.savePerfil(perfil)
+			return perfil
+		} else {
+			perfil = filtrarPerfilPara(cacheHome,visitante,visitado)
+			return perfil
 		}
 	}
 	
+	def filtrarPerfilPara(IHomePerfil home, Usuario visitante, Usuario visitado){
+		
+		var Perfil perfil = null 
+		
+		if(serviceAmigos.esAmigo(visitante,visitado)){
+				perfil = home.mostrarParaAmigos(visitado)
+			}else{
+				if(visitante == visitado){
+					perfil = home.mostrarParaPrivado(visitado)
+				}else{
+					perfil = home.mostrarParaPublico(visitado)
+				}
+			}
+		perfil
+	}
 }

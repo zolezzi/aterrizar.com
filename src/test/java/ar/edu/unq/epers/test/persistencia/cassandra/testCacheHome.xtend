@@ -108,6 +108,15 @@ class testCacheHome {
 		cacheHome.getPerfilMapper("David")
 		thrown.expectMessage("No hay un usuario con un perfil que tenga ese nombre")
 	}
+	
+	@Test
+	def void testMostrarPrivado(){
+		
+		var Perfil result
+		result = cacheHome.mostrarParaPrivado(charly)
+		
+		Assert.assertEquals(result.destinos.size,3)
+	}
 
 	@After
 	def void setDown(){

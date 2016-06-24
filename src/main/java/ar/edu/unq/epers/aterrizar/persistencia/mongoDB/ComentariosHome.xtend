@@ -1,17 +1,17 @@
 package ar.edu.unq.epers.aterrizar.persistencia.mongoDB
 
+import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
+import ar.edu.unq.epers.aterrizar.modelo.Usuario
+import ar.edu.unq.epers.aterrizar.persistencia.cassandra.IHomePerfil
 import java.util.List
 import org.mongojack.AggregationResult
+import org.mongojack.DBQuery
 import org.mongojack.DBQuery.Query
 import org.mongojack.JacksonDBCollection
-import org.mongojack.MapReduce
-import org.mongojack.DBQuery
-import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
-import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
-import ar.edu.unq.epers.aterrizar.modelo.Usuario
-import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
 
-class ComentariosHome<T> {
+class ComentariosHome<T> implements IHomePerfil{
 	private JacksonDBCollection<T, String> mongoCollection
 	var Class<T> entityType
 	
@@ -60,20 +60,20 @@ class ComentariosHome<T> {
 		}
 	}
 	
-	def mostrarParaPublico(Usuario visitado){
+	override mostrarParaPublico(Usuario visitado){
 			var result = baseQuery(visitado).or(#[ [it.eq("publico",true)]])
 				       .execute
 			result.get(0) as Perfil
 	}
 	
-	def mostrarParaAmigos(Usuario visitado){
+	override mostrarParaAmigos(Usuario visitado){
 			var result = baseQuery(visitado)
 						 .or(#[ [it.eq("publico",true)],[it.eq("soloAmigos",true)] ])
 				         .execute
 			result.get(0) as Perfil
 	}
 	
-	def mostrarParaPrivado(Usuario visitado){
+	override mostrarParaPrivado(Usuario visitado){
 		var result = baseQuery(visitado)
 					 .or(#[ [it.eq("publico",true)],[it.eq("soloAmigos",true)],[it.eq("privado",true)] ])
 				      .execute
