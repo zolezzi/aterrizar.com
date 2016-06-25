@@ -21,6 +21,7 @@ import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
 import java.util.List
 import ar.edu.unq.epers.aterrizar.persistencia.cassandra.CacheHome
 import ar.edu.unq.epers.aterrizar.persistencia.cassandra.IHomePerfil
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoUsuario
 
 class PerfilService {
 	
@@ -67,20 +68,13 @@ class PerfilService {
 		var Criterios criterio = new CriterioAerolinea(destino.nombreAerolinea)
 		var Criterios criterio2= new CriterioDestino(destino.destino)
 		var Criterios criterio3= new CriterioOrigen(destino.origen)
+		var Criterios criterio4= new CriterioAsientoUsuario(usuario.nombreUsuario)
 		var Criterios andCrit = new CriterioAND(criterio, criterio2)
 		var Criterios andCrit2 = new CriterioAND(andCrit,criterio3)
-		busqueda.agregarCriterioBusqueda(andCrit2)
+		var Criterios andCrit3= new CriterioAND(andCrit2,criterio4)
+		busqueda.agregarCriterioBusqueda(andCrit3)
 		var List<Vuelo> result = servicioBusqueda.ejecutarBusqueda(busqueda)
-		var boolean valido = false
-		for(Vuelo v: result){
-			for(Tramo t: v.tramos){
-				for(Asiento a: t.asientos){
-					if(!valido &&a.usuario.nombreUsuario == usuario.nombreUsuario){
-						return true;
-					}
-				}
-			}
-		}
+		!result.empty
 		
 	}
 	

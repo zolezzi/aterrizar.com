@@ -9,6 +9,7 @@ import com.datastax.driver.mapping.annotations.Table
 import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
+import java.util.List
 
 @EqualsHashCode
 @Table(keyspace = "simplex", name = "perfiles")
@@ -20,13 +21,13 @@ class PerfilMapper {
 	@Column(name = "titulo")
 	String titulo
 	@FrozenValue
-	ArrayList<Destino> destinosDelPerfil
+	List<Destino> destinosDelPerfil
 
 	new(){
 		
 	}
 	
-	new(String nombreUsuario, String titulo, ArrayList<Destino> destinos){
+	new(String nombreUsuario, String titulo, List<Destino> destinos){
 
 		this.nombreUsuario = nombreUsuario
 		this.titulo = titulo
@@ -37,7 +38,17 @@ class PerfilMapper {
 		new Perfil => [
 			it.usuarioPerfil = nombreUsuario
 			it.titulo = titulo
-			it.destinos = destinosDelPerfil
+			it.destinos = convertToArray(destinosDelPerfil)
 		]
+	}
+	
+	def convertToArray(List<Destino> destinos) {
+		//CHEQUEAR A VER SI SE PUEDE CORREGIR ESTA CONVERSION
+		var result = new ArrayList<Destino>
+		
+		for(destino : destinos){
+			result.add(destino)
+		}
+		result
 	}
 }
