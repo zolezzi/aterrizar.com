@@ -1,11 +1,9 @@
 package ar.edu.unq.epers.aterrizar.servicios.mongoDB
 
 import ar.edu.unq.epers.aterrizar.exception.ExceptionUsuario
-import ar.edu.unq.epers.aterrizar.modelo.Asiento
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Comentario
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Destino
 import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Perfil
-import ar.edu.unq.epers.aterrizar.modelo.Tramo
 import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.modelo.Vuelo
 import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
@@ -22,6 +20,8 @@ import java.util.List
 import ar.edu.unq.epers.aterrizar.persistencia.cassandra.CacheHome
 import ar.edu.unq.epers.aterrizar.persistencia.cassandra.IHomePerfil
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoUsuario
+import org.eclipse.xtext.xbase.lib.Functions.Function3
+import org.eclipse.xtext.xbase.lib.Functions.Function4
 
 class PerfilService {
 	
@@ -90,27 +90,39 @@ class PerfilService {
 		
 	}
 	
-	def agregarComentarioAlPerfilDe(Usuario usuario, Destino destino, Comentario comentario){
-		
+	
+	var(Usuario, Destino, Function4<Perfil,Destino,String,Comentario,Boolean> , Comentario) => void aplicarFuncionAPerfil=[usuario, destino, toApply,comentario|
 		validarPerfil(usuario)
 		var res = traerPerfilDestino(usuario,destino)
-		res.agregarComentarioADestino(comentario ,destino)
-		homePerfil.updateDestinoPerfil(usuario,res);		
-				
-	}
+		toApply.apply(res,destino,usuario.nombreUsuario,comentario)
+		homePerfil.updateDestinoPerfil(usuario,res);
+	]
 	
 	
 	def agregarMeGustaAlPerfilDe(Usuario usuario, Destino destino, Usuario usuarioMeGusta){
-		var res = traerPerfilDestino(usuario,destino)
-		res.darMeGusta(destino, usuarioMeGusta.nombreUsuario)
-		homePerfil.updateDestinoPerfil(usuario,res);
+		
+		var  f = [Perfil p, Destino d, String n, Comentario c|
+			p.darMeGusta(d,n)
+		]		
+		aplicarFuncionAPerfil.apply(usuario,destino,f,null)	
 				
 	}
 	
+	
 	def agregarNoMeGustaAlPerfilDe(Usuario usuario, Destino destino, Usuario usuarioMeGusta){
-		var res = traerPerfilDestino(usuario,destino)
-		res.darNoMeGusta(destino, usuarioMeGusta.nombreUsuario)
-		homePerfil.updateDestinoPerfil(usuario,res);
+		var  f = [Perfil p, Destino d, String n, Comentario c|
+			p.darNoMeGusta(d,n)
+		]		
+		aplicarFuncionAPerfil.apply(usuario,destino, f, null)	
+	}
+	
+	def agregarComentarioAlPerfilDe(Usuario usuario, Destino destino, Comentario comentario){
+		
+		var  f = [Perfil p, Destino d, String n,Comentario c|
+			p.agregarComentarioADestino(c,d)
+		]		
+		aplicarFuncionAPerfil.apply(usuario,destino,f,comentario)		
+				
 	}
 	
 	def mostrarPerfil(Usuario visitante, Usuario visitado){
@@ -144,3 +156,4 @@ class PerfilService {
 		perfil
 	}
 }
+
