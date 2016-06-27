@@ -12,6 +12,8 @@ import ar.edu.unq.epers.aterrizar.modelo.Usuario
 import ar.edu.unq.epers.aterrizar.persistencia.home.AsientoHome
 import java.util.List
 import java.util.ArrayList
+import org.hibernate.SQLQuery
+import org.hibernate.Query
 
 class SistemaRegistroAerolineas {
 	
@@ -38,13 +40,31 @@ class SistemaRegistroAerolineas {
 		])
 	}
 	
-		def eliminarAerolineaPor(String campo, String nombreAerolinea ){
+	def eliminarAerolineaPor(String campo, String nombreAerolinea ){
 		SessionManager.runInSession([
 			var aerolinea = aerolineaHome.getBy (campo , nombreAerolinea)
 			aerolineaHome.delete(aerolinea)
 			null
 		])
 	}	
+	
+	def truncateTables(){
+		SessionManager.runInSession([
+			
+			SessionManager.session.createSQLQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate		
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE usuarios").executeUpdate
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE categorias").executeUpdate				
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE orden").executeUpdate			
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE tramos").executeUpdate			
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE criterios").executeUpdate			
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE vuelos").executeUpdate			
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE busqueda").executeUpdate			
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE asiento").executeUpdate			
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE aerolineas").executeUpdate
+			SessionManager.session.createSQLQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate
+			null
+		])
+	}
 	
 		def consultarAerolineaPor(String campo, String valor){
 			SessionManager.runInSession([

@@ -289,7 +289,7 @@ class TestBusquedaService {
 	
 	@After
 	def void dropData(){
-		new SistemaRegistroAerolineas().eliminarAerolineaPor("nombreAerolinea","Aerolinea Payaso")
+		new SistemaRegistroAerolineas().truncateTables
 	}
 	
 	

@@ -371,7 +371,7 @@ class testPerfilService {
 		
 		homePerfil.mongoCollection.drop
 		
-		new SistemaRegistroAerolineas().eliminarAerolineaPor("nombreAerolinea","Aerolineas Payaso")
+		new SistemaRegistroAerolineas().truncateTables
 	}
 }
 	
