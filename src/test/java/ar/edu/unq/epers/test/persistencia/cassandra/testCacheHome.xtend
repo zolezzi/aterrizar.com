@@ -88,9 +88,11 @@ class testCacheHome {
 		charlyPerfil.agregarDestino(catamarca)
 		charlyPerfil.darMeGusta(bariloche,eze.nombreUsuario)
 		charlyPerfilMapper = new PerfilMapper(	charlyPerfil.usuarioPerfil,
-												charlyPerfil.titulo, charlyPerfil.destinos)
+												charlyPerfil.titulo, charlyPerfil.destinos,
+												"publico")
 		ezePerfilMapper = new PerfilMapper(	ezePerfil.usuarioPerfil,
-												ezePerfil.titulo, ezePerfil.destinos)
+												ezePerfil.titulo, ezePerfil.destinos,
+												"publico")
 	}
 
 	@Rule

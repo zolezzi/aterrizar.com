@@ -58,36 +58,27 @@ class CassandraManager {
 
 		session.execute("CREATE TABLE IF NOT EXISTS simplex.perfiles (" +
 						"nombreUsuario text," +
+						"visibilidad text," +
 						"titulo text," +
 						"destinosDelPerfil list< frozen<Destino> >," +
-						"PRIMARY KEY (nombreUsuario));")
+						"PRIMARY KEY (nombreUsuario, visibilidad));")
 
 	mapper = new MappingManager(session).mapper(PerfilMapper)
 	}
 	
 	def mostrarParaAmigos(String nombreUsuario){
 		
-		realizarConsulta("SELECT * FROM simplex.perfiles "+
-					"WHERE usuarioPerfil='nombreUsuario' "+
-					"AND destinos.publico = true OR destinos.soloAmigos = true")
-		}
+		mapper.get(nombreUsuario,"amigo")
+	}
 	
 	def mostrarParaPublico(String nombreUsuario){
 		
-		realizarConsulta("SELECT * FROM simplex.perfiles "+
-					"WHERE usuarioPerfil='nombreUsuario' "+
-					"AND destinos.publico = true")
+		mapper.get(nombreUsuario,"publico")
 	}
 	
-	def realizarConsulta(String query){
+	def mostrarParaPrivado(String nombreUsuario){
 		
-		var result = session.execute(query)
-		var row = result.get(0)
-		var destinos = row.getList("destinosDelPerfil",Destino).toList
-		
-		new PerfilMapper(row.getString("nombreUsuario"),
-						row.getString("titulo"),
-						convertToArray(destinos))
+		mapper.get(nombreUsuario,"privado")
 	}
 
 	def convertToArray(List<Destino> destinos) {

@@ -10,14 +10,17 @@ import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import java.util.List
+import ar.edu.unq.epers.aterrizar.modelo.Comentarios.Visibilidad
 
 @EqualsHashCode
 @Table(keyspace = "simplex", name = "perfiles")
 @Accessors
 class PerfilMapper {
 	
-	@PartitionKey
+	@PartitionKey(0)
 	String nombreUsuario
+	@PartitionKey(1)
+	String visibilidad
 	@Column(name = "titulo")
 	String titulo
 	@FrozenValue
@@ -27,11 +30,12 @@ class PerfilMapper {
 		
 	}
 	
-	new(String nombreUsuario, String titulo, List<Destino> destinos){
+	new(String nombreUsuario, String titulo, List<Destino> destinos, String visibilidad){
 
 		this.nombreUsuario = nombreUsuario
 		this.titulo = titulo
 		this.destinosDelPerfil = destinos
+		this.visibilidad = visibilidad
 	}
 	
 	def toPerfil() {

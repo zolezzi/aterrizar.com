@@ -22,6 +22,8 @@ import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.xtext.xbase.lib.Functions.Function4
+import java.util.Map
+import java.util.HashMap
 
 class PerfilService {
 	
@@ -98,11 +100,7 @@ class PerfilService {
 		toApply.apply(res,destino,usuario.nombreUsuario,comentario)
 		homePerfil.updateDestinoPerfil(usuario,res);
 		res = traerPerfilDestino(usuario,destino)
-		if(!cacheHome.perfilEnCache(res.usuarioPerfil)){
-			cacheHome.savePerfil(res)
-		} else {
-			cacheHome.updatePerfil(res)
-		}
+		cacheHome.estoyDesactualizado
 	]
 	
 	
@@ -134,33 +132,40 @@ class PerfilService {
 	
 	def mostrarPerfil(Usuario visitante, Usuario visitado){
 		
-		var Perfil perfil = null
+		var Map<String, Perfil> map = null
 
-		if(!cacheHome.perfilEnCache(visitado.nombreUsuario)){
+		if(!cacheHome.perfilEnCache(visitado.nombreUsuario) || cacheHome.desactualizado){
 			validarPerfil(visitado)
-			perfil = filtrarPerfilPara(homePerfil,visitante,visitado)
-			cacheHome.savePerfil(perfil)
-			return perfil
+			map = filtrarPerfilPara(homePerfil,visitante,visitado)
+			var String key = map.keySet.get(0)
+			var Perfil value = map.values.get(0)
+			cacheHome.savePerfil(value, key)
+			cacheHome.estoyActualizado
+			return value
 		} else {
-			perfil = filtrarPerfilPara(cacheHome,visitante,visitado)
-			return perfil
+			map = filtrarPerfilPara(cacheHome,visitante,visitado)
+			return map.values.get(0)
 		}
 	}
 	
 	def filtrarPerfilPara(IHomePerfil home, Usuario visitante, Usuario visitado){
 		
-		var Perfil perfil = null 
+		var Perfil perfil = null
+		var Map<String, Perfil> map = new HashMap<String, Perfil>
 		
 		if(serviceAmigos.esAmigo(visitante,visitado)){
 				perfil = home.mostrarParaAmigos(visitado)
+				map.put("amigo",perfil)
 			}else{
 				if(visitante == visitado){
 					perfil = home.mostrarParaPrivado(visitado)
+					map.put("privado",perfil)
 				}else{
 					perfil = home.mostrarParaPublico(visitado)
+					map.put("publico",perfil)
 				}
 			}
-		perfil
+		map
 	}
 }
 
