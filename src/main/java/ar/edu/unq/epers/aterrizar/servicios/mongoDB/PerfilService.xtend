@@ -9,18 +9,18 @@ import ar.edu.unq.epers.aterrizar.modelo.Vuelo
 import ar.edu.unq.epers.aterrizar.modelo.modelobusqueda.Busqueda
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAND
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAerolinea
+import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoUsuario
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioDestino
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioOrigen
 import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.Criterios
+import ar.edu.unq.epers.aterrizar.persistencia.cassandra.CacheHome
+import ar.edu.unq.epers.aterrizar.persistencia.cassandra.IHomePerfil
 import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.ComentariosHome
 import ar.edu.unq.epers.aterrizar.persistencia.mongoDB.SistemDB
 import ar.edu.unq.epers.aterrizar.servicios.BusquedaService
 import ar.edu.unq.epers.aterrizar.servicios.neo4j.AmigosService
+import java.util.ArrayList
 import java.util.List
-import ar.edu.unq.epers.aterrizar.persistencia.cassandra.CacheHome
-import ar.edu.unq.epers.aterrizar.persistencia.cassandra.IHomePerfil
-import ar.edu.unq.epers.aterrizar.modelo.modelocriterios.CriterioAsientoUsuario
-import org.eclipse.xtext.xbase.lib.Functions.Function3
 import org.eclipse.xtext.xbase.lib.Functions.Function4
 
 class PerfilService {
@@ -44,6 +44,7 @@ class PerfilService {
 		var Perfil perfil = new Perfil => [
 			usuarioPerfil = usuario.nombreUsuario
 			titulo = tituloPerfil
+			destinos = new ArrayList<Destino>
 		]
 		homePerfil.insertPerfilAUsuario(usuario,perfil)
 	}
@@ -96,6 +97,12 @@ class PerfilService {
 		var res = traerPerfilDestino(usuario,destino)
 		toApply.apply(res,destino,usuario.nombreUsuario,comentario)
 		homePerfil.updateDestinoPerfil(usuario,res);
+		res = traerPerfilDestino(usuario,destino)
+		if(!cacheHome.perfilEnCache(res.usuarioPerfil)){
+			cacheHome.savePerfil(res)
+		} else {
+			cacheHome.updatePerfil(res)
+		}
 	]
 	
 	

@@ -24,8 +24,12 @@ class testCacheHome {
 	PerfilService perfilService = new PerfilService
 
 	Perfil charlyPerfil
+	Perfil ezePerfil
 	Destino bariloche
+	Destino rioDeJaneiro
+	Destino catamarca
 	PerfilMapper charlyPerfilMapper
+	PerfilMapper ezePerfilMapper
 
 	CacheHome cacheHome = new CacheHome
 
@@ -63,13 +67,30 @@ class testCacheHome {
 			destino = "Bariloche"
 			nombreAerolinea = "Aerolineas Payaso"
 		]
+		rioDeJaneiro = new Destino() => [
+			tituloDestino = "Mochileando"
+			origen = "Bariloche"
+			destino = "Rio de Janeiro"
+			nombreAerolinea = "Aerolineas Payaso"
+		]
+		catamarca = new Destino() => [
+			tituloDestino = "Volviendo al origen"
+			origen = "Buenos Aires"
+			destino = "San Fernando del Valle de Catamarca"
+			nombreAerolinea = "Aerolineas Payaso"
+		]
 		perfilService.crearPerfil(eze, "El perfil de Eze")
 
+		ezePerfil = perfilService.mostrarPerfil(eze,eze)
 		charlyPerfil = perfilService.mostrarPerfil(charly,charly)
 		charlyPerfil.agregarDestino(bariloche)
+		charlyPerfil.agregarDestino(rioDeJaneiro)
+		charlyPerfil.agregarDestino(catamarca)
 		charlyPerfil.darMeGusta(bariloche,eze.nombreUsuario)
 		charlyPerfilMapper = new PerfilMapper(	charlyPerfil.usuarioPerfil,
 												charlyPerfil.titulo, charlyPerfil.destinos)
+		ezePerfilMapper = new PerfilMapper(	ezePerfil.usuarioPerfil,
+												ezePerfil.titulo, ezePerfil.destinos)
 	}
 
 	@Rule
@@ -78,12 +99,12 @@ class testCacheHome {
 	@Test
 	def void testSavePerfilMapper(){
 		
-		cacheHome.save(charlyPerfilMapper)
+		cacheHome.save(ezePerfilMapper)
 		
-		var query = cacheHome.getPerfilMapper("Charly")
+		var query = cacheHome.getPerfilMapper("Eze")
 		
-		Assert.assertEquals(query.nombreUsuario,charlyPerfilMapper.nombreUsuario)
-		Assert.assertEquals(query.destinosDelPerfil.size,1)
+		Assert.assertEquals(query.nombreUsuario,ezePerfilMapper.nombreUsuario)
+		Assert.assertEquals(query.destinosDelPerfil.size,0)
 	}
 
 	@Test
@@ -98,7 +119,7 @@ class testCacheHome {
 		var query = cacheHome.getPerfilMapper("Carlos")
 
 		Assert.assertEquals(query.nombreUsuario,charlyPerfilMapper.nombreUsuario)
-		Assert.assertEquals(query.destinosDelPerfil.size,1)
+		Assert.assertEquals(query.destinosDelPerfil.size,3)
 		Assert.assertEquals(query.destinosDelPerfil.get(0).tituloDestino,"Viaje de Egresados")
 	}
 	
@@ -113,9 +134,27 @@ class testCacheHome {
 	def void testMostrarPrivado(){
 		
 		var Perfil result
-		result = cacheHome.mostrarParaPrivado(charly)
+		result = cacheHome.mostrarParaPrivado(eze)
 		
-		Assert.assertEquals(result.destinos.size,3)
+		Assert.assertEquals(result.destinos.size,0)
+	}
+
+	@Test
+	def void testMostrarPublico(){
+		
+		var Perfil result
+		result = cacheHome.mostrarParaPublico(eze)
+		
+		Assert.assertEquals(result.destinos.size,1)
+	}
+	
+	@Test
+	def void testMostrarParaAmigos(){
+		
+		var Perfil result
+		result = cacheHome.mostrarParaAmigos(eze)
+		
+		Assert.assertEquals(result.destinos.size,2)
 	}
 
 	@After
@@ -128,6 +167,7 @@ class testCacheHome {
 		repositorioService.getbase.removeUser(eze)
 
 		perfilService.getHomePerfil.mongoCollection.drop
-		cacheHome.delete(charlyPerfilMapper)		
+		cacheHome.delete(charlyPerfilMapper)
+		cacheHome.delete(ezePerfilMapper)		
 	}
 }

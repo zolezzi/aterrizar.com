@@ -21,7 +21,7 @@ class PerfilMapper {
 	@Column(name = "titulo")
 	String titulo
 	@FrozenValue
-	List<Destino> destinosDelPerfil
+	List<Destino> destinosDelPerfil = new ArrayList<Destino>
 
 	new(){
 		
@@ -43,7 +43,7 @@ class PerfilMapper {
 	}
 	
 	def convertToArray(List<Destino> destinos) {
-		//CHEQUEAR A VER SI SE PUEDE CORREGIR ESTA CONVERSION
+
 		var result = new ArrayList<Destino>
 		
 		for(destino : destinos){
