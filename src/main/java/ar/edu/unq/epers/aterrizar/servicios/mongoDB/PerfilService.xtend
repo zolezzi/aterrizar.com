@@ -81,6 +81,14 @@ class PerfilService {
 		
 	}
 	
+	//solo para testing de CacheHome, cassandra side.
+	def agregarDestinoSinValidarDestino(Usuario usuario, Destino destino){
+			validarPerfil(usuario)
+			var Perfil res = homePerfil.getPerfilDeUsuario(usuario)
+			res.destinos.add(destino)
+			homePerfil.updateDestinoPerfil(usuario,res);
+	}
+	
 	def agregarDestino(Usuario usuario, Destino destino){
 		validarPerfil(usuario)
 		if(validarDestino(destino,usuario)){

@@ -23,11 +23,10 @@ class testCacheHome {
 	AmigosService repositorioService = new AmigosService
 	PerfilService perfilService = new PerfilService
 
-	Perfil charlyPerfil
+	Perfil perfilEze
 	Perfil ezePerfil
 	Destino bariloche
 	Destino rioDeJaneiro
-	Destino catamarca
 	PerfilMapper charlyPerfilMapper
 	PerfilMapper ezePerfilMapper
 
@@ -61,6 +60,7 @@ class testCacheHome {
 		repositorioService.agregarAmigo(charly, eze)
 
 		perfilService.crearPerfil(charly, "El perfil de Charly")
+		
 		bariloche = new Destino() => [
 			tituloDestino = "Viaje de Egresados"
 			origen = "Buenos Aires"
@@ -72,23 +72,21 @@ class testCacheHome {
 			origen = "Bariloche"
 			destino = "Rio de Janeiro"
 			nombreAerolinea = "Aerolineas Payaso"
-		]
-		catamarca = new Destino() => [
-			tituloDestino = "Volviendo al origen"
-			origen = "Buenos Aires"
-			destino = "San Fernando del Valle de Catamarca"
-			nombreAerolinea = "Aerolineas Payaso"
-		]
+		]	
+		
 		perfilService.crearPerfil(eze, "El perfil de Eze")
-
+		
+		bariloche.hacerSoloAmigos()
+		rioDeJaneiro.hacerPublico()
+		
 		ezePerfil = perfilService.mostrarPerfil(eze,eze)
-		charlyPerfil = perfilService.mostrarPerfil(charly,charly)
-		charlyPerfil.agregarDestino(bariloche)
-		charlyPerfil.agregarDestino(rioDeJaneiro)
-		charlyPerfil.agregarDestino(catamarca)
-		charlyPerfil.darMeGusta(bariloche,eze.nombreUsuario)
-		charlyPerfilMapper = new PerfilMapper(	charlyPerfil.usuarioPerfil,
-												charlyPerfil.titulo, charlyPerfil.destinos,
+		ezePerfil = perfilService.mostrarPerfil(charly,eze)
+		perfilEze = perfilService.mostrarPerfil(eze,eze)
+		perfilService.agregarDestinoSinValidarDestino(eze,bariloche)
+		perfilService.agregarDestinoSinValidarDestino(eze,rioDeJaneiro)
+		perfilService.agregarMeGustaAlPerfilDe(eze,bariloche,charly) 
+		charlyPerfilMapper = new PerfilMapper(	perfilEze.usuarioPerfil,
+												perfilEze.titulo, perfilEze.destinos,
 												"publico")
 		ezePerfilMapper = new PerfilMapper(	ezePerfil.usuarioPerfil,
 												ezePerfil.titulo, ezePerfil.destinos,
@@ -145,18 +143,29 @@ class testCacheHome {
 	def void testMostrarPublico(){
 		
 		var Perfil result
+		var dummy = new Usuario => [
+			nombreUsuario = "Dummy"
+			nombre = "NombreDummy"
+			apellido = "ApellidoDummy"
+			email = "Dummy@gmail.com"
+			contrasenia = "dummy"
+			fechaNacimiento = "1/1/1"
+			codValidacion = "0"
+		]
+		perfilService.mostrarPerfil(dummy,eze)
 		result = cacheHome.mostrarParaPublico(eze)
 		
-		Assert.assertEquals(result.destinos.size,1)
+		Assert.assertEquals(result.destinos.size,0)
 	}
 	
 	@Test
 	def void testMostrarParaAmigos(){
 		
 		var Perfil result
+		perfilService.mostrarPerfil(charly,eze)
 		result = cacheHome.mostrarParaAmigos(eze)
 		
-		Assert.assertEquals(result.destinos.size,2)
+		Assert.assertEquals(result.destinos.size,1)
 	}
 
 	@After
@@ -170,6 +179,7 @@ class testCacheHome {
 
 		perfilService.getHomePerfil.mongoCollection.drop
 		cacheHome.delete(charlyPerfilMapper)
-		cacheHome.delete(ezePerfilMapper)		
+		cacheHome.delete(ezePerfilMapper)
+			
 	}
 }

@@ -35,7 +35,7 @@ class CacheHome implements IHomePerfil {
 
 	def getPerfilMapper(String nombreUsuario) throws PerfilMapperException{
 		
-			val perfilMapper  = manager.mapper.get(nombreUsuario)
+			val perfilMapper  = manager.mapper.get(nombreUsuario, "privado")
 				if(perfilMapper != null){
 					return perfilMapper
 			} else {
@@ -50,7 +50,7 @@ class CacheHome implements IHomePerfil {
 		var boolean esPublico = manager.mapper.get(nombreUsuario,"publico")!=null
 		var boolean esPrivado = manager.mapper.get(nombreUsuario,"privado")!=null
 		
-		return esAmigo||esPublico||esPrivado
+		return esAmigo&&esPublico&&esPrivado
 	}
 
 	def update(PerfilMapper perfilMapper){

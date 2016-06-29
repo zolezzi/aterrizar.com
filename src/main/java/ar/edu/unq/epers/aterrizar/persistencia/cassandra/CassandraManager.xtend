@@ -38,6 +38,7 @@ class CassandraManager {
 	public static def main(String[] args) {
 		var client = new CassandraManager()
 		client.connect("127.0.0.1")
+		client.session.execute("DROP KEYSPACE simplex;")
 		client.close()
 		System.exit(0)
 	}
