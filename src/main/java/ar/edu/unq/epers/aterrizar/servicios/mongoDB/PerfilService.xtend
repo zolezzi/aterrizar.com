@@ -108,7 +108,7 @@ class PerfilService {
 		toApply.apply(res,destino,usuario.nombreUsuario,comentario)
 		homePerfil.updateDestinoPerfil(usuario,res);
 		res = traerPerfilDestino(usuario,destino)
-		cacheHome.estoyDesactualizado
+		cacheHome.perfilDesactualizado(usuario.nombreUsuario)
 	]
 	
 	
@@ -138,42 +138,80 @@ class PerfilService {
 				
 	}
 	
+	def mostrarPerfilMongoDB(Usuario visitante, Usuario visitado){
+		var Map<String, Perfil> map = null
+		var String visibilidad = this.definirVisibilidad(visitante,visitado) 
+		validarPerfil(visitado)
+		map = filtrarPerfilPara(homePerfil,visitante,visitado,visibilidad)
+		var String key = map.keySet.get(0)
+		var Perfil perfil = map.values.get(0)
+		//cacheHome.savePerfil(perfil, key, true)
+		return perfil	
+	}
+	
 	def mostrarPerfil(Usuario visitante, Usuario visitado){
 		
 		var Map<String, Perfil> map = null
-
-		if(!cacheHome.perfilEnCache(visitado.nombreUsuario) || cacheHome.desactualizado){
-			validarPerfil(visitado)
-			map = filtrarPerfilPara(homePerfil,visitante,visitado)
+		var String visibilidad = this.definirVisibilidad(visitante,visitado) 
+		validarPerfil(visitado)
+		if(!cacheHome.perfilEnCache(visitado.nombreUsuario,visibilidad) || cacheHome.perfilUsuarioDesactualizado(visitado.nombreUsuario,visibilidad)){		
+			map = filtrarPerfilPara(homePerfil,visitante,visitado,visibilidad)
 			var String key = map.keySet.get(0)
-			var Perfil value = map.values.get(0)
-			cacheHome.savePerfil(value, key)
-			cacheHome.estoyActualizado
-			return value
+			var Perfil perfil = map.values.get(0)
+			cacheHome.savePerfil(perfil, key, true)
+			return perfil
 		} else {
-			map = filtrarPerfilPara(cacheHome,visitante,visitado)
+			map = filtrarPerfilPara(cacheHome,visitante,visitado,visibilidad)
 			return map.values.get(0)
 		}
 	}
 	
-	def filtrarPerfilPara(IHomePerfil home, Usuario visitante, Usuario visitado){
+	def filtrarPerfilPara(IHomePerfil home, Usuario visitante, Usuario visitado,String visibilidad){
 		
-		var Perfil perfil = null
+		
 		var Map<String, Perfil> map = new HashMap<String, Perfil>
 		
-		if(serviceAmigos.esAmigo(visitante,visitado)){
-				perfil = home.mostrarParaAmigos(visitado)
-				map.put("amigo",perfil)
+		switch(visibilidad){
+			case visibilidad == "amigo": mostrarParaAmigos(home,visitado,map)
+			case visibilidad == "privado": mostrarParaPrivado(home,visitado,map)
+			case visibilidad == "publico": mostrarParaPublico(home,visitado,map)
+		}
+		
+		map
+	}
+	
+	def mostrarParaAmigos(IHomePerfil home,Usuario visitado, Map<String,Perfil> map){
+		var Perfil perfil = home.mostrarParaAmigos(visitado)
+		map.put("amigo",perfil)
+		perfil
+	}
+	
+	def mostrarParaPrivado(IHomePerfil home,Usuario visitado, Map<String,Perfil> map){
+		var Perfil perfil = home.mostrarParaPrivado(visitado)
+		map.put("privado",perfil)
+		perfil
+	}
+	
+	def mostrarParaPublico(IHomePerfil home,Usuario visitado, Map<String,Perfil> map){
+		var Perfil perfil = home.mostrarParaPublico(visitado)
+		map.put("publico",perfil)
+		perfil
+	}
+	
+	def definirVisibilidad(Usuario visitante, Usuario visitado){
+			var String visibilidad  = "amigo"
+			
+			if(serviceAmigos.esAmigo(visitante,visitado)){
+				visibilidad = "amigo"
 			}else{
 				if(visitante == visitado){
-					perfil = home.mostrarParaPrivado(visitado)
-					map.put("privado",perfil)
+					visibilidad = "privado"
 				}else{
-					perfil = home.mostrarParaPublico(visitado)
-					map.put("publico",perfil)
+					visibilidad = "publico"
 				}
 			}
-		map
+			
+			return visibilidad
 	}
 }
 

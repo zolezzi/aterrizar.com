@@ -23,6 +23,8 @@ class PerfilMapper {
 	String visibilidad
 	@Column(name = "titulo")
 	String titulo
+	@Column(name = "actualizado")
+	Boolean actualizado
 	@FrozenValue
 	List<Destino> destinosDelPerfil = new ArrayList<Destino>
 
@@ -30,12 +32,13 @@ class PerfilMapper {
 		
 	}
 	
-	new(String nombreUsuario, String titulo, List<Destino> destinos, String visibilidad){
+	new(String nombreUsuario, String titulo, List<Destino> destinos, String visibilidad,Boolean actualizado){
 
 		this.nombreUsuario = nombreUsuario
 		this.titulo = titulo
 		this.destinosDelPerfil = destinos
 		this.visibilidad = visibilidad
+		this.actualizado = actualizado
 	}
 	
 	def toPerfil() {

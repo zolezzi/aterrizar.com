@@ -15,20 +15,21 @@ class CacheHome implements IHomePerfil {
 		manager.mapper.save(perfilMapper)
 	}
 	
-	def savePerfil(Perfil perfil, String visibilidad){
-		save(convertToPerfilMapper(perfil, visibilidad))
+	def savePerfil(Perfil perfil, String visibilidad,boolean actualizado){
+		save(convertToPerfilMapper(perfil, visibilidad, actualizado))
 	}
 	
 	def updatePerfil(Perfil perfil, String visibilidad){
-		update(convertToPerfilMapper(perfil, visibilidad))
+		update(convertToPerfilMapper(perfil, visibilidad,true))
 	}
 	
-	private def convertToPerfilMapper(Perfil perfil, String visibilidad){
+	private def convertToPerfilMapper(Perfil perfil, String visibilidad,boolean actualizado){
 		var perfilMapper = new PerfilMapper => [
 			it.nombreUsuario = perfil.usuarioPerfil
 			it.titulo = perfil.titulo
 			it.destinosDelPerfil = perfil.destinos
 			it.visibilidad = visibilidad
+			it.actualizado = actualizado
 		]
 		perfilMapper
 	}
@@ -44,13 +45,8 @@ class CacheHome implements IHomePerfil {
 		}
 	}
 	
-	def perfilEnCache(String nombreUsuario){
-		
-		var boolean	esAmigo = manager.mapper.get(nombreUsuario,"amigo")!=null
-		var boolean esPublico = manager.mapper.get(nombreUsuario,"publico")!=null
-		var boolean esPrivado = manager.mapper.get(nombreUsuario,"privado")!=null
-		
-		return esAmigo&&esPublico&&esPrivado
+	def perfilEnCache(String nombreUsuario,String visibilidad){
+		manager.mapper.get(nombreUsuario,visibilidad)!=null
 	}
 
 	def update(PerfilMapper perfilMapper){
@@ -75,11 +71,35 @@ class CacheHome implements IHomePerfil {
 		manager.mostrarParaPublico(usuario.nombreUsuario).toPerfil
 	}
 	
-	def estoyDesactualizado() {
-		desactualizado = true
+	def perfilDesactualizado(String nombreUsuario) {
+		var PerfilMapper pmPrivado = manager.mapper.get(nombreUsuario,"privado")
+		var PerfilMapper pmAmigo = manager.mapper.get(nombreUsuario,"amigo")
+		var PerfilMapper pmPublico = manager.mapper.get(nombreUsuario,"publico")
+		
+		if(pmPrivado != null){
+			pmPrivado.actualizado = false
+			save(pmPrivado)
+		}
+		
+		if(pmAmigo != null){
+			pmAmigo.actualizado = false
+			save(pmAmigo)
+		}
+		
+		if(pmPublico!=null){
+			pmPublico.actualizado = false
+			save(pmPublico)
+		}
+		
 	}
 	
-	def estoyActualizado() {
-		desactualizado = false
+	def void truncateAll(){
+		manager.truncateAll()
 	}
+	
+	def perfilUsuarioDesactualizado(String nombreUsuario, String visibilidad) {
+		manager.mapper.get(nombreUsuario,visibilidad).actualizado
+	}
+	
+	
 }

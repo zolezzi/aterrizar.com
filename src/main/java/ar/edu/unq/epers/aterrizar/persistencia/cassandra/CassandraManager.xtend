@@ -61,6 +61,7 @@ class CassandraManager {
 						"nombreUsuario text," +
 						"visibilidad text," +
 						"titulo text," +
+						"actualizado boolean,"+
 						"destinosDelPerfil list< frozen<Destino> >," +
 						"PRIMARY KEY (nombreUsuario, visibilidad));")
 
@@ -83,7 +84,7 @@ class CassandraManager {
 	}
 
 	def convertToArray(List<Destino> destinos) {
-		//CHEQUEAR A VER SI SE PUEDE CORREGIR ESTA CONVERSION
+
 		var result = new ArrayList<Destino>
 		
 		for(destino : destinos){
@@ -91,4 +92,12 @@ class CassandraManager {
 		}
 		result
 	}
+	
+	def void truncateAll() {
+		var client = new CassandraManager()
+		client.connect("127.0.0.1")
+		client.session.execute("DROP KEYSPACE simplex;")
+		client.close()
+	}
+	
 }

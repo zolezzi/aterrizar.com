@@ -81,16 +81,16 @@ class testCacheHome {
 		
 		ezePerfil = perfilService.mostrarPerfil(eze,eze)
 		ezePerfil = perfilService.mostrarPerfil(charly,eze)
-		perfilEze = perfilService.mostrarPerfil(eze,eze)
 		perfilService.agregarDestinoSinValidarDestino(eze,bariloche)
 		perfilService.agregarDestinoSinValidarDestino(eze,rioDeJaneiro)
 		perfilService.agregarMeGustaAlPerfilDe(eze,bariloche,charly) 
+		perfilEze = perfilService.mostrarPerfil(eze,eze)
 		charlyPerfilMapper = new PerfilMapper(	perfilEze.usuarioPerfil,
 												perfilEze.titulo, perfilEze.destinos,
-												"publico")
+												"publico",true)
 		ezePerfilMapper = new PerfilMapper(	ezePerfil.usuarioPerfil,
 												ezePerfil.titulo, ezePerfil.destinos,
-												"publico")
+												"publico",true)
 	}
 
 	@Rule
@@ -162,10 +162,10 @@ class testCacheHome {
 	def void testMostrarParaAmigos(){
 		
 		var Perfil result
-		perfilService.mostrarPerfil(charly,eze)
+		var p = perfilService.mostrarPerfilMongoDB(charly,eze)
 		result = cacheHome.mostrarParaAmigos(eze)
 		
-		Assert.assertEquals(result.destinos.size,1)
+		Assert.assertEquals(p.destinos.size,1)
 	}
 
 	@After
@@ -178,8 +178,6 @@ class testCacheHome {
 		repositorioService.getbase.removeUser(eze)
 
 		perfilService.getHomePerfil.mongoCollection.drop
-		cacheHome.delete(charlyPerfilMapper)
-		cacheHome.delete(ezePerfilMapper)
 			
 	}
 }
