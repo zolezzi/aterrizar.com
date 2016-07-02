@@ -97,7 +97,7 @@ class CacheHome implements IHomePerfil {
 		manager.truncateAll()
 	}
 	
-	def perfilUsuarioDesactualizado(String nombreUsuario, String visibilidad) {
+	def perfilUsuarioActualizado(String nombreUsuario, String visibilidad) {
 		manager.mapper.get(nombreUsuario,visibilidad).actualizado
 	}
 	

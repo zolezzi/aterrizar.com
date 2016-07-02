@@ -44,4 +44,17 @@ class Perfil {
 	def agregarDestino(Destino destino) {
 		destinos.add(destino)
 	}
+	
+	def insertDestinos(ArrayList<Destino> modificados){
+		var int i = 0
+		for(Destino d:modificados){
+			if(this.destinos.get(i).id == d.id){
+				this.destinos.remove(i)
+				this.destinos.add(d)
+			}else{
+				this.destinos.add(d)
+			}
+			i++
+		}
+	}
 }

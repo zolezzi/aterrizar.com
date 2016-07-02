@@ -87,10 +87,10 @@ class testCacheHome {
 		perfilEze = perfilService.mostrarPerfil(eze,eze)
 		charlyPerfilMapper = new PerfilMapper(	perfilEze.usuarioPerfil,
 												perfilEze.titulo, perfilEze.destinos,
-												"publico",true)
+												"privado",true)
 		ezePerfilMapper = new PerfilMapper(	ezePerfil.usuarioPerfil,
 												ezePerfil.titulo, ezePerfil.destinos,
-												"publico",true)
+												"privado",true)
 	}
 
 	@Rule
@@ -111,16 +111,17 @@ class testCacheHome {
 	def void testUpdatePerfilMapper(){
 
 		cacheHome.save(charlyPerfilMapper)
-		charlyPerfilMapper.setNombreUsuario = "Carlos"
-		charlyPerfilMapper.setTitulo = "El perfil de Carlos"
+		charlyPerfilMapper.setNombreUsuario = "Carlitos"
+		charlyPerfilMapper.setTitulo = "El perfil de Carlitos"
+		
 
 		cacheHome.update(charlyPerfilMapper)
 		
-		var query = cacheHome.getPerfilMapper("Carlos")
+		var query = cacheHome.getPerfilMapper("Carlitos")
 
 		Assert.assertEquals(query.nombreUsuario,charlyPerfilMapper.nombreUsuario)
-		Assert.assertEquals(query.destinosDelPerfil.size,3)
-		Assert.assertEquals(query.destinosDelPerfil.get(0).tituloDestino,"Viaje de Egresados")
+		Assert.assertEquals(query.destinosDelPerfil.size,2)
+		Assert.assertEquals(query.destinosDelPerfil.get(0).tituloDestino,"Mochileando")
 	}
 	
 	@Test (expected = PerfilMapperException)
@@ -134,9 +135,9 @@ class testCacheHome {
 	def void testMostrarPrivado(){
 		
 		var Perfil result
+		perfilService.mostrarPerfil(eze,eze)
 		result = cacheHome.mostrarParaPrivado(eze)
-		
-		Assert.assertEquals(result.destinos.size,0)
+		Assert.assertEquals(result.destinos.size,2)
 	}
 
 	@Test
@@ -154,18 +155,16 @@ class testCacheHome {
 		]
 		perfilService.mostrarPerfil(dummy,eze)
 		result = cacheHome.mostrarParaPublico(eze)
-		
-		Assert.assertEquals(result.destinos.size,0)
+		Assert.assertEquals(result.destinos.size,1)
 	}
 	
 	@Test
 	def void testMostrarParaAmigos(){
 		
 		var Perfil result
-		var p = perfilService.mostrarPerfilMongoDB(charly,eze)
+		perfilService.mostrarPerfil(charly,eze)
 		result = cacheHome.mostrarParaAmigos(eze)
-		
-		Assert.assertEquals(p.destinos.size,1)
+		Assert.assertEquals(result.destinos.size,2)
 	}
 
 	@After
