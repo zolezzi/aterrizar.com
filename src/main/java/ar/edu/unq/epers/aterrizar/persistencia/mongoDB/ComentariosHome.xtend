@@ -78,9 +78,7 @@ class ComentariosHome<T> implements IHomePerfil{
 		var result = baseQuery(visitado)
 					 .or(#[ [it.eq("publico",true)],[it.eq("soloAmigos",true)],[it.eq("privado",true)] ])
 				      .execute
-		var result2 = getPerfilDeUsuario(visitado)
-		return result2 as Perfil
-		//return result.get(0) as Perfil
+		return result.get(0) as Perfil
 	}
 	
   
