@@ -98,7 +98,12 @@ class CacheHome implements IHomePerfil {
 	}
 	
 	def perfilUsuarioActualizado(String nombreUsuario, String visibilidad) {
-		manager.mapper.get(nombreUsuario,visibilidad).actualizado
+		var res = manager.mapper.get(nombreUsuario,visibilidad)
+		if(res!=null){
+			res.actualizado
+		}else{
+			false
+		}
 	}
 	
 	
