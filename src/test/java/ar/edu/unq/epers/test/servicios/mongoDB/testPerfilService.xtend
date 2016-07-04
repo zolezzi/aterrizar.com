@@ -341,7 +341,7 @@ class testPerfilService {
 		Assert.assertEquals(perfil.destinos.size, 2)
 		Assert.assertEquals(perfil.usuarioPerfil, "charlie")
 		Assert.assertEquals(perfil.titulo, "Perfil charlie")
-
+    
 	}
 	
 	@Test

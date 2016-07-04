@@ -15,8 +15,8 @@ class CacheHome implements IHomePerfil {
 		manager.mapper.save(perfilMapper)
 	}
 	
-	def savePerfil(Perfil perfil, String visibilidad,boolean actualizado){
-		save(convertToPerfilMapper(perfil, visibilidad, actualizado))
+	def savePerfil(Perfil perfil, String visibilidad){
+		save(convertToPerfilMapper(perfil, visibilidad, true))
 	}
 	
 	def updatePerfil(Perfil perfil, String visibilidad){
@@ -46,7 +46,12 @@ class CacheHome implements IHomePerfil {
 	}
 	
 	def perfilEnCache(String nombreUsuario,String visibilidad){
-		manager.mapper.get(nombreUsuario,visibilidad)!=null
+		var PerfilMapper perfilMapper = manager.mapper.get(nombreUsuario,visibilidad)
+		if(perfilMapper!=null){
+			return  perfilMapper.actualizado
+		}else{
+			false
+		}
 	}
 
 	def update(PerfilMapper perfilMapper){
@@ -96,15 +101,5 @@ class CacheHome implements IHomePerfil {
 	def void truncateAll(){
 		manager.truncateAll()
 	}
-	
-	def perfilUsuarioActualizado(String nombreUsuario, String visibilidad) {
-		var res = manager.mapper.get(nombreUsuario,visibilidad)
-		if(res!=null){
-			res.actualizado
-		}else{
-			false
-		}
-	}
-	
 	
 }

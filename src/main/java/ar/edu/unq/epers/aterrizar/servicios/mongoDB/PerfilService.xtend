@@ -78,7 +78,6 @@ class PerfilService {
 		busqueda.agregarCriterioBusqueda(andCrit3)
 		var List<Vuelo> result = servicioBusqueda.ejecutarBusqueda(busqueda)
 		!result.empty
-		
 	}
 	
 	//solo para testing de CacheHome, cassandra side.
@@ -142,53 +141,38 @@ class PerfilService {
 	
 	def mostrarPerfil(Usuario visitante, Usuario visitado){
 		
-		var Map<String, Perfil> map = null
 		var String visibilidad = this.definirVisibilidad(visitante,visitado) 
 		validarPerfil(visitado)
-		var boolean hayCache = cacheHome.perfilEnCache(visitado.nombreUsuario,visibilidad) 
-		var boolean perfilActualizado = cacheHome.perfilUsuarioActualizado(visitado.nombreUsuario,visibilidad)
-		if( !hayCache || !perfilActualizado){		
-			map = filtrarPerfilPara(homePerfil,visitante,visitado,visibilidad)
-			var String key = map.keySet.get(0)
-			var Perfil perfil = map.values.get(0)
-			cacheHome.savePerfil(perfil, key, true)
+		var boolean estaEnCache = cacheHome.perfilEnCache(visitado.nombreUsuario,visibilidad) 
+		if(!estaEnCache){		
+			var perfil = filtrarPerfilPara(homePerfil,visitante,visitado,visibilidad)
+			cacheHome.savePerfil(perfil, visibilidad)
 			return perfil
 		} else {
-			map = filtrarPerfilPara(cacheHome,visitante,visitado,visibilidad)
-			return map.values.get(0)
+			filtrarPerfilPara(cacheHome,visitante,visitado,visibilidad)
 		}
 	}
 	
-	def filtrarPerfilPara(IHomePerfil home, Usuario visitante, Usuario visitado,String visibilidad){
-		
-		
-		var Map<String, Perfil> map = new HashMap<String, Perfil>
+	def filtrarPerfilPara(IHomePerfil home, Usuario visitante, Usuario visitado,String visibilidad){	
 		
 		switch(visibilidad){
-			case "amigo": mostrarParaAmigos(home,visitado,map)
-			case "privado": mostrarParaPrivado(home,visitado,map)
-			case "publico": mostrarParaPublico(home,visitado,map)
+			case "amigo": mostrarParaAmigos(home,visitado)
+			case "privado": mostrarParaPrivado(home,visitado)
+			case "publico": mostrarParaPublico(home,visitado)
 		}
+	}
+	
+	def mostrarParaAmigos(IHomePerfil home,Usuario visitado){
+		home.mostrarParaAmigos(visitado)
 		
-		map
 	}
 	
-	def mostrarParaAmigos(IHomePerfil home,Usuario visitado, Map<String,Perfil> map){
-		var Perfil perfil = home.mostrarParaAmigos(visitado)
-		map.put("amigo",perfil)
-		perfil
+	def mostrarParaPrivado(IHomePerfil home,Usuario visitado){
+		home.mostrarParaPrivado(visitado)
 	}
 	
-	def mostrarParaPrivado(IHomePerfil home,Usuario visitado, Map<String,Perfil> map){
-		var Perfil perfil = home.mostrarParaPrivado(visitado)
-		map.put("privado",perfil)
-		perfil
-	}
-	
-	def mostrarParaPublico(IHomePerfil home,Usuario visitado, Map<String,Perfil> map){
-		var Perfil perfil = home.mostrarParaPublico(visitado)
-		map.put("publico",perfil)
-		perfil
+	def mostrarParaPublico(IHomePerfil home,Usuario visitado){
+		home.mostrarParaPublico(visitado)
 	}
 	
 	def definirVisibilidad(Usuario visitante, Usuario visitado){
