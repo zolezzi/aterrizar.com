@@ -54,7 +54,7 @@ class SistemaRegistroAerolineas {
 			SessionManager.session.createSQLQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate		
 			SessionManager.session.createSQLQuery("TRUNCATE TABLE usuarios").executeUpdate
 			SessionManager.session.createSQLQuery("TRUNCATE TABLE categorias").executeUpdate				
-			SessionManager.session.createSQLQuery("TRUNCATE TABLE orden").executeUpdate			
+			SessionManager.session.createSQLQuery("TRUNCATE TABLE Orden").executeUpdate			
 			SessionManager.session.createSQLQuery("TRUNCATE TABLE tramos").executeUpdate			
 			SessionManager.session.createSQLQuery("TRUNCATE TABLE criterios").executeUpdate			
 			SessionManager.session.createSQLQuery("TRUNCATE TABLE vuelos").executeUpdate			
